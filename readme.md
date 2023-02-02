@@ -69,3 +69,6 @@
 
 - [ ] Users will be provided usergroup based on their email (g.bracu.ac.bd for students, bracu.ac.bd for faculties)
 - [ ] Registration will be failed if any mail used other than bracu.ac.bd domain
+
+
+[![HitCount](https://hits.dwyl.com/errhythm/CSE470.svg?style=flat-square&show=unique)](http://hits.dwyl.com/errhythm/CSE470)
