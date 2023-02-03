@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-lg-12">
                 @foreach ($listings as $faculty)
-                    <x-facultyCard :faculty="$faculty" />
+                    <x-facultyCard :faculty="$faculty" :facultyCourses="$facultyCourses" />
                 @endforeach
                 <!-- /strip_list -->
 

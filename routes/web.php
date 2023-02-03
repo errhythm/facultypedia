@@ -25,6 +25,7 @@ Route::get('/faculties/{page?}', function ($page = 1) {
         'page' => $page,
         'page_count' => $pageCount,
         'listings' => $listings,
+        'facultyCourses' => \App\Models\Faculties::all(),
     ]);
 });
 

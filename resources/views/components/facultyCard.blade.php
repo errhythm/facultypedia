@@ -1,4 +1,9 @@
 @props(['faculty' => $faculty])
+{{-- add \App\Models\Faculties::all() --}}
+@php
+    $facultyCourses = \App\Models\Faculties::where('user_id', $faculty->id)->get();
+    $courses = \App\Models\Courses::all();
+@endphp
 
 <div class="strip_list wow fadeIn">
     <figure>
@@ -15,6 +20,17 @@
         <b>Email:</b> {{ $faculty->email }} <br />
         <b>Created at:</b> {{ $faculty->created_at }}
     </p>
+
+    @foreach ($facultyCourses as $facultycourse)
+        @foreach (json_decode($facultycourse->courses) as $facultycoursex)
+            @foreach ($courses as $course)
+                @if ($course->id == $facultycoursex)
+                    {{ $course->course_code }}
+                @endif
+            @endforeach
+        @endforeach
+    @endforeach
+
     <span class="rating">
         <i class="icon_star voted"></i>
         <i class="icon_star voted"></i>

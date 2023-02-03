@@ -20,7 +20,7 @@ class FacultiesFactory extends Factory
             'user_id' => \App\Models\User::factory()->create(['role' => 'faculty'])->id,
             // courses will be pivot table of courses and faculty, courses are already made. so just add them to pivot table
             'courses' => \App\Models\Courses::all()
-                ->random(1)
+                ->random(rand(1, 5))
                 ->pluck('id'),
         ];
     }

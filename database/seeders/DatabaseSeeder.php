@@ -14,13 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::factory(50)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-        // create courses
+        // \App\Models\User::factory(50)->create();
 
         \App\Models\Courses::create([
             'course_code' => 'CSE100',
@@ -93,6 +87,7 @@ class DatabaseSeeder extends Seeder
             'course_credit' => 3,
         ]);
 
-        \App\Models\Faculties::factory(50)->create();
+        \App\Models\User::factory(30)->create(['role' => 'student']);
+        \App\Models\Faculties::factory(20)->create();
     }
 }
