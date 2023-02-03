@@ -23,7 +23,6 @@ Route::get(
         $pageCount = ceil($total / $perPage);
         $listings = User::where('role', 'faculty')->paginate($perPage, ['*'], 'page', $page);
         return view('faculties', [
-            'heading' => 'Faculties',
             'total' => $total,
             'page' => $page,
             'page_count' => $pageCount,
