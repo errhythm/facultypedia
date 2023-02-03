@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Facades\Route;
 
@@ -16,6 +17,12 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('listings', [
-        'heading' => 'Listingss'
+        'heading' => 'Listings',
+        'listings' => User::where('role', 'faculty')->get()
     ]);
+});
+
+// show Register/Sign Up form
+Route::get('/register', function () {
+    return view('register');
 });

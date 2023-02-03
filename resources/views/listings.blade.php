@@ -1,15 +1,14 @@
 <h1>{{$heading}}</h1>
 
-<?php
+@foreach ($listings as $faculty)
+    <div class="faculty">
+        <h2>{{$faculty->name}}</h2>
+        <p>{{$faculty->email}}</p>
+        <p>{{$faculty->created_at}}</p>
+    </div>
+@endforeach
 
-if(DB::connection()->getDatabaseName())
-{
-   echo "Yes! successfully connected to the DB: " . DB::connection()->getDatabaseName();
-}
+{{-- print the count --}}
+<p>There are {{$listings->count()}} faculties</p>
 
-if(DB::connection()) {
-    // connection is made
-    echo "Yes! successfully connected to the DB: " . DB::connection()->getDatabaseName();
-}
-
-?>
+{{-- print the total number of records --}}
