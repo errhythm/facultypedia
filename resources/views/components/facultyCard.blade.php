@@ -1,3 +1,5 @@
+@props(['faculty' => $faculty])
+
 <div class="strip_list wow fadeIn">
     <figure>
         <a href="/profile/{{ $faculty->id }}">

@@ -15,27 +15,32 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get(
-    '/faculties/{page?}',
-    function ($page = 1) {
-        $perPage = 8;
-        $total = User::where('role', 'faculty')->count();
-        $pageCount = ceil($total / $perPage);
-        $listings = User::where('role', 'faculty')->paginate($perPage, ['*'], 'page', $page);
-        return view('faculties', [
-            'total' => $total,
-            'page' => $page,
-            'page_count' => $pageCount,
-            'listings' => $listings
-        ]);
-    }
-);
+Route::get('/faculties/{page?}', function ($page = 1) {
+    $perPage = 8;
+    $total = User::where('role', 'faculty')->count();
+    $pageCount = ceil($total / $perPage);
+    $listings = User::where('role', 'faculty')->paginate($perPage, ['*'], 'page', $page);
+    return view('faculties', [
+        'total' => $total,
+        'page' => $page,
+        'page_count' => $pageCount,
+        'listings' => $listings,
+    ]);
+});
 
 // user profile
 Route::get('/profile/{user}', function (User $user) {
     return view('profile', [
         'heading' => 'Profile',
-        'user' => $user
+        'user' => $user,
+    ]);
+});
+
+// show all courses
+Route::get('/courses', function () {
+    return view('courses', [
+        'heading' => 'Courses',
+        'courses' => \App\Models\Courses::all(),
     ]);
 });
 
