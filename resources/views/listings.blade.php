@@ -2,7 +2,7 @@
 
 @foreach ($listings as $faculty)
     <div class="faculty">
-        <h2>{{$faculty->name}}</h2>
+        <a href="/profile/{{$faculty->id}}"><h2>{{$faculty->name}}</h2></a>
         <p>{{$faculty->email}}</p>
         <p>{{$faculty->created_at}}</p>
     </div>

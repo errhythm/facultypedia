@@ -17,8 +17,16 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('listings', [
-        'heading' => 'Listings',
+        'heading' => 'Faculty List',
         'listings' => User::where('role', 'faculty')->get()
+    ]);
+});
+
+// user profile
+Route::get('/profile/{user}', function (User $user) {
+    return view('profile', [
+        'heading' => 'Profile',
+        'user' => $user
     ]);
 });
 
