@@ -9,27 +9,28 @@
 	<title>FacultyPedia - Review & Consult your Faculty!</title>
 
 	<!-- Favicons-->
-	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
-	<link rel="apple-touch-icon" type="image/x-icon" href="img/apple-touch-icon-57x57-precomposed.png">
-	<link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="img/apple-touch-icon-72x72-precomposed.png">
-	<link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="img/apple-touch-icon-114x114-precomposed.png">
-	<link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="img/apple-touch-icon-144x144-precomposed.png">
+	{{-- <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon"> --}}
+    <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
+    <link rel="apple-touch-icon" type="image/x-icon" href="{{ asset('img/apple-touch-icon-57x57-precomposed.png') }}">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="{{ asset('img/apple-touch-icon-72x72-precomposed.png') }}">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="{{ asset('img/apple-touch-icon-114x114-precomposed.png') }}">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="{{ asset('img/apple-touch-icon-144x144-precomposed.png') }}">
 
 	<!-- GOOGLE WEB FONT -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-	<!-- BASE CSS -->
-	<link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/style.css" rel="stylesheet">
-	<link href="css/menu.css" rel="stylesheet">
-	<link href="css/vendors.css" rel="stylesheet">
-	<link href="css/icon_fonts/css/all_icons_min.css" rel="stylesheet">
+    <!-- BASE CSS -->
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/menu.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/vendors.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/icon_fonts/css/all_icons_min.css') }}" rel="stylesheet">
 
     <!-- SPECIFIC CSS -->
-    <link href="css/date_picker.css" rel="stylesheet">
+    <link href="{{ asset('css/date_picker.css') }}" rel="stylesheet">
 
 	<!-- YOUR CUSTOM CSS -->
-	<link href="css/custom.css" rel="stylesheet">
+    <link href="{{ asset('css/custom.css') }}" rel="stylesheet">
 
 </head>
 
@@ -54,7 +55,7 @@
 			<div class="row">
 				<div class="col-lg-3 col-6">
 					<div id="logo">
-						<a href="index.html" title="Findoctor"><img src="img/logo.png" alt="" width="163" height="36"></a>
+						<a href="index.html" title="Findoctor"><img src="{{ asset('img/logo.png') }}" alt="" width="163" height="36"></a>
 					</div>
 				</div>
 				<div class="col-lg-9 col-6">
@@ -66,7 +67,7 @@
 						<ul>
 							<li>
 								<span><a href="#0">Home</a></span>
-								<ul>
+								{{-- <ul>
 									<li><a href="index.html">Home Default</a></li>
 									<li><a href="index-8.html">KenBurns Slider</a></li>
 									<li><a href="index-2.html">Home Version 2</a></li>
@@ -75,9 +76,9 @@
 									<li><a href="index-7.html">Home with Map</a></li>
                                     <li><a href="index-6.html">Revolution Slider</a></li>
 									<li><a href="index-5.html">With Cookie Bar (EU law)</a></li>
-								</ul>
+								</ul> --}}
 							</li>
-							<li>
+							{{-- <li>
 								<span><a href="#0">Pages</a></span>
 								<ul>
 									<li>
@@ -129,8 +130,8 @@
 									<li><a href="icon-pack-3.html">Icon pack 3</a></li>
 									<li><a href="404.html">404 page</a></li>
 								</ul>
-							</li>
-							<li><span><a href="#0">Buy this template</a></span></li>
+							</li> --}}
+							<li><span><a href="../faculties">Faculties</a></span></li>
 						</ul>
 					</nav>
 					<!-- /main-menu -->
@@ -152,7 +153,7 @@
 				<div class="col-lg-3 col-md-12">
 					<p>
 						<a href="index.html" title="Findoctor">
-							<img src="img/logo.png" alt="" width="163" height="36" class="img-fluid">
+							<img src="{{ asset('img/logo.png') }}" alt="" width="163" height="36" class="img-fluid">
 						</a>
 					</p>
 				</div>
@@ -179,8 +180,8 @@
 				<div class="col-lg-3 col-md-4">
 					<h5>Contact with Us</h5>
 					<ul class="contacts">
-						<li><a href="tel://61280932400"><i class="icon_mobile"></i> + 61 23 8093 3400</a></li>
-						<li><a href="mailto:info@findoctor.com"><i class="icon_mail_alt"></i> help@findoctor.com</a></li>
+						<li><a href="tel://01521706649"><i class="icon_mobile"></i> + 880 1521706649</a></li>
+						<li><a href="mailto:help@facultypedia.com"><i class="icon_mail_alt"></i> help@facultypedia.com</a></li>
 					</ul>
 					<div class="follow_us">
 						<h5>Follow us</h5>
@@ -203,7 +204,7 @@
 					</ul>
 				</div>
 				<div class="col-md-4">
-					<div id="copy">© 2021 Findoctor</div>
+					<div id="copy">© 2023 FacultyPedia</div>
 				</div>
 			</div>
 		</div>
@@ -216,15 +217,19 @@
 	<!-- Back to top button -->
 
 	<!-- COMMON SCRIPTS -->
-	<script src="js/jquery-3.6.1.min.js"></script>
-	<script src="js/common_scripts.min.js"></script>
-	<script src="js/functions.js"></script>
+    <script src="{{ asset('js/jquery-3.6.1.min.js') }}"></script>
+    <script src="{{ asset('js/common_scripts.min.js') }}"></script>
+    <script src="{{ asset('js/functions.js') }}"></script>
+
 
 	<!-- SPECIFIC SCRIPTS -->
-	<script src="http://maps.googleapis.com/maps/api/js"></script>
-	<script src="js/markerclusterer.js"></script>
-    <script src="js/map_listing.js"></script>
-    <script src="js/infobox.js"></script>
+
+    <script src="http://maps.googleapis.com/maps/api/js"></script>
+    <script src="{{ asset('js/markerclusterer.js') }}"></script>
+    <script src="{{ asset('js/map_listing.js') }}"></script>
+    <script src="{{ asset('js/infobox.js') }}"></script>
+
+
 
 </body>
 </html>

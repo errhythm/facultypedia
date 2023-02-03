@@ -15,23 +15,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/faculties', function () {
-    return view('faculties', [
-        'heading' => 'Faculties',
-        'total' => User::where('role', 'faculty')->count(),
-        'page_count' => ceil(User::where('role', 'faculty')->count() / 8),
-        'listings' => User::where('role', 'faculty')->paginate(8)
-    ]);
-});
-
-Route::get('/faculties?page={page}', function ($page) {
-    return view('faculties', [
-        'heading' => 'Faculties',
-        'total' => User::where('role', 'faculty')->count(),
-        'page_count' => ceil(User::where('role', 'faculty')->count() / 8),
-        'listings' => User::where('role', 'faculty')->paginate(8, ['*'], 'page', $page)
-    ]);
-});
+Route::get(
+    '/faculties/{page?}',
+    function ($page = 1) {
+        $perPage = 8;
+        $total = User::where('role', 'faculty')->count();
+        $pageCount = ceil($total / $perPage);
+        $listings = User::where('role', 'faculty')->paginate($perPage, ['*'], 'page', $page);
+        return view('faculties', [
+            'heading' => 'Faculties',
+            'total' => $total,
+            'page' => $page,
+            'page_count' => $pageCount,
+            'listings' => $listings
+        ]);
+    }
+);
 
 // user profile
 Route::get('/profile/{user}', function (User $user) {
