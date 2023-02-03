@@ -17,12 +17,20 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $name = $this->faker->name();
+        $email = $this->faker->unique()->safeEmail();
+        $role = $this->faker->randomElement(['faculty', 'student']);
+        $safe_name = preg_replace('/[^A-Za-z0-9\-]/', '', $name);
+        $initials = strtoupper(substr($safe_name, 0, 1) . substr($safe_name, strpos($safe_name, ' ') + 1, 1) . substr($safe_name, strpos($safe_name, ' ') + 2, 1));
+        $university_id = $role == 'student' ? $this->faker->randomNumber(8) : $initials;
         return [
-            'name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'name' => $name,
+            'email' => $email,
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'role' => $this->faker->randomElement(['faculty', 'student']),
+            'role' => $role,
+            'department' => $this->faker->randomElement(['Department of Computer Science and Engineering', 'Department of Architecture', 'Department of English and Humanities', 'Department of Electrical and Electronic Engineering']),
+            'university_id' => $university_id,
             'remember_token' => Str::random(10),
         ];
     }

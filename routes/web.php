@@ -15,10 +15,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('listings', [
-        'heading' => 'Faculty List',
-        'listings' => User::where('role', 'faculty')->get()
+Route::get('/faculties', function () {
+    return view('faculties', [
+        'heading' => 'Faculties',
+        'total' => User::where('role', 'faculty')->count(),
+        'page_count' => ceil(User::where('role', 'faculty')->count() / 8),
+        'listings' => User::where('role', 'faculty')->paginate(8)
+    ]);
+});
+
+Route::get('/faculties?page={page}', function ($page) {
+    return view('faculties', [
+        'heading' => 'Faculties',
+        'total' => User::where('role', 'faculty')->count(),
+        'page_count' => ceil(User::where('role', 'faculty')->count() / 8),
+        'listings' => User::where('role', 'faculty')->paginate(8, ['*'], 'page', $page)
     ]);
 });
 
