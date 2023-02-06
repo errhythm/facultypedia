@@ -20,7 +20,7 @@ Route::get('/faculties/{page?}', [FacultyController::class, 'index']);
 
 // user profile
 Route::get('/profile/{user}', function (User $user) {
-    return view('profile', [
+    return view('profile.show', [
         'heading' => 'Profile',
         'user' => $user,
     ]);

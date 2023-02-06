@@ -5,14 +5,14 @@
     $faculty = \App\Models\Faculties::where('user_id', $user->id)->first();
 @endphp
 
-@extends('layout')
-
-@section('content')
+<x-layout>
     <div id="breadcrumb">
         <div class="container">
             <ul>
                 <li><a href="/">Home</a></li>
-                <li><a href="/faculties">Faculties</a></li>
+                @if ($user->role == 'faculty')
+                    <li><a href="/faculties">Faculties</a></li>
+                @endif
                 <li>{{ $user->name }}</li>
             </ul>
         </div>
@@ -37,26 +37,30 @@
                             <div class="row">
                                 <div class="col-lg-5 col-md-4">
                                     <figure>
-                                        <img src="https://api.dicebear.com/5.x/bottts-neutral/svg?seed={{ md5($faculty->user_id . $faculty->created_at) }}&rotate=20&scale=110"
-                                            alt="{{ $faculty->user_id . $faculty->created_at }}" class="img-fluid">
+                                        <img src="https://api.dicebear.com/5.x/bottts-neutral/svg?seed={{ md5($user->id . $user->created_at) }}&rotate=20&scale=110"
+                                            alt="{{ $user->name }}" class="img-fluid">
                                     </figure>
                                 </div>
                                 <div class="col-lg-7 col-md-8">
                                     <small>{{ $user->university_id }}</small>
                                     <h1>{{ $user->name }}</h1>
-                                    <span class="rating">
-                                        <i class="icon_star voted"></i>
-                                        <i class="icon_star voted"></i>
-                                        <i class="icon_star voted"></i>
-                                        <i class="icon_star voted"></i>
-                                        <i class="icon_star"></i>
-                                        <small>(145)</small>
-                                        <a href="badges.html" data-bs-toggle="tooltip" data-bs-placement="top"
-                                            title="Badge Level" class="badge_list_1"><img src="img/badges/badge_1.svg"
-                                                width="15" height="15" alt=""></a>
-                                    </span>
-                                    <br>
-                                    <x-faculty-courses :facultyCourses="$facultyCourses" :courses="$courses" />
+                                    {{-- if user role is faculty then show a div --}}
+                                    @if ($user->role == 'faculty')
+                                        <span class="rating">
+                                            <i class="icon_star voted"></i>
+                                            <i class="icon_star voted"></i>
+                                            <i class="icon_star voted"></i>
+                                            <i class="icon_star voted"></i>
+                                            <i class="icon_star"></i>
+                                            <small>(145)</small>
+                                            <a href="badges.html" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                title="Badge Level" class="badge_list_1"><img
+                                                    src="img/badges/badge_1.svg" width="15" height="15"
+                                                    alt=""></a>
+                                        </span>
+                                        <br>
+                                        <x-faculty-courses :facultyCourses="$facultyCourses" :courses="$courses" />
+                                    @endif
                                     <ul class="contacts">
                                         <li>
                                             <h6>Email</h6>
@@ -286,4 +290,4 @@
         <!-- /row -->
     </div>
     <!-- /container -->
-@endsection
+</x-layout>

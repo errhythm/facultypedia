@@ -1,6 +1,4 @@
-@extends('layout')
-
-@section('content')
+<x-layout>
     @if (count($listings) == 0)
         <script>
             window.location = "/404";
@@ -50,4 +48,4 @@
         <!-- /row -->
     </div>
     <!-- /container -->
-@endsection
+</x-layout>
