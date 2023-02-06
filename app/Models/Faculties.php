@@ -2,15 +2,23 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Courses;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Faculties extends Model
 {
     use HasFactory;
 
-    public function scopeFilter($course, array $filters)
+    public function scopeFilter($courseQuery, array $filters)
     {
-        $course->when($filters['course'] ?? false, fn ($query, $course) => $query->where('course', $course));
+        if (isset($filters['course'])) {
+            $course_id = Courses::where('course_code', $filters['course'] ?? false)->first();
+            if ($course_id) {
+                $courseQuery->where('courses', 'like', '%' . $course_id->id . '%');
+            } else {
+                abort(404);
+            }
+        }
     }
 }

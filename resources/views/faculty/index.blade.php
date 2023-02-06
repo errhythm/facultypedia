@@ -1,11 +1,22 @@
 <x-layout>
     @if (count($listings) == 0)
-        <script>
+        {{-- <script>
             window.location = "/404";
-        </script>
+        </script> --}}
+        @php
+            abort(404);
+        @endphp
     @endif
 
-    @include('partials._search', ['heading' => 'All Faculties'])
+    @php
+        $heading = 'All Faculties';
+        
+        if (request('course')) {
+            $heading = 'Faculties for ' . request('course');
+        }
+    @endphp
+    @include('partials._search', ['heading' => $heading])
+
 
     <div class="container margin_60_35">
         <div class="row">
