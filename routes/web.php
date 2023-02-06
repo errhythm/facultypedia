@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\FacultyController;
 use App\Models\User;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Facades\Route;
@@ -15,19 +16,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/faculties/{page?}', function ($page = 1) {
-    $perPage = 8;
-    $total = User::where('role', 'faculty')->count();
-    $pageCount = ceil($total / $perPage);
-    $listings = User::where('role', 'faculty')->paginate($perPage, ['*'], 'page', $page);
-    return view('faculties', [
-        'total' => $total,
-        'page' => $page,
-        'page_count' => $pageCount,
-        'listings' => $listings,
-        'facultyCourses' => \App\Models\Faculties::all(),
-    ]);
-});
+Route::get('/faculties/{page?}', [FacultyController::class, 'index']);
 
 // user profile
 Route::get('/profile/{user}', function (User $user) {

@@ -16,7 +16,6 @@
                     <x-facultyCard :faculty="$faculty" :facultyCourses="$facultyCourses" />
                 @endforeach
                 <!-- /strip_list -->
-
                 <nav aria-label="" class="add_top_20">
                     <ul class="pagination pagination-sm">
                         @if ($page != 1)

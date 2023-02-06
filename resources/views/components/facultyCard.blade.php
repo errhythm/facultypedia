@@ -9,7 +9,7 @@
     <figure>
         <a href="/profile/{{ $faculty->id }}">
             <img src="https://api.dicebear.com/5.x/bottts-neutral/svg?seed={{ md5($faculty->id . $faculty->created_at) }}&rotate=20&scale=110"
-                alt="" />
+                alt="{{ $faculty->id . $faculty->created_at }}" />
         </a>
     </figure>
     <small>{{ $faculty->university_id }}</small>
@@ -21,16 +21,11 @@
         <b>Created at:</b> {{ $faculty->created_at }}
     </p>
 
-    @foreach ($facultyCourses as $facultycourse)
-        @foreach (json_decode($facultycourse->courses) as $facultycoursex)
-            @foreach ($courses as $course)
-                @if ($course->id == $facultycoursex)
-                    {{ $course->course_code }}
-                @endif
-            @endforeach
-        @endforeach
-    @endforeach
+    <span>
+        <x-faculty-courses :facultyCourses="$facultyCourses" :courses="$courses" />
+    </span>
 
+    <span style="font-weight: 400; margin-left: 8px; margin-right: 8px; color: #ccc; user-select: none;">|</span>
     <span class="rating">
         <i class="icon_star voted"></i>
         <i class="icon_star voted"></i>
