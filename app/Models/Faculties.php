@@ -9,8 +9,8 @@ class Faculties extends Model
 {
     use HasFactory;
 
-    public function courseFilter($course, array $filters)
+    public function scopeFilter($course, array $filters)
     {
-        dd($filters['course']);
+        $course->when($filters['course'] ?? false, fn ($query, $course) => $query->where('course', $course));
     }
 }

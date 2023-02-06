@@ -15,12 +15,13 @@ class FacultyController extends Controller
     {
         $total = User::where('role', 'faculty')->count();
         $pageCount = ceil($total / 8);
-        $listings = Faculties::latest()->get();
         return view('faculty.index', [
             'total' => $total,
             'page' => $page,
             'page_count' => $pageCount,
-            'listings' => $listings,
+            'listings' => Faculties::latest()
+                ->filter(request(['course']))
+                ->get(),
             'facultyCourses' => \App\Models\Faculties::all(),
         ]);
     }
