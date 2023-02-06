@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Faculties;
 use Illuminate\Http\Request;
 
 class FacultyController extends Controller
@@ -12,10 +13,9 @@ class FacultyController extends Controller
     // show all faculties
     public function index($page = 1)
     {
-        $perPage = 8;
         $total = User::where('role', 'faculty')->count();
-        $pageCount = ceil($total / $perPage);
-        $listings = User::where('role', 'faculty')->paginate($perPage, ['*'], 'page', $page);
+        $pageCount = ceil($total / 8);
+        $listings = Faculties::latest()->get();
         return view('faculty.index', [
             'total' => $total,
             'page' => $page,

@@ -1,8 +1,12 @@
 @props(['faculty' => $faculty])
 {{-- add \App\Models\Faculties::all() --}}
 @php
-    $facultyCourses = \App\Models\Faculties::where('user_id', $faculty->id)->get();
     $courses = \App\Models\Courses::all();
+
+    $user = \App\Models\User::where('id', $faculty->user_id)->get();
+    $faculty = $user[0];
+    $facultyCourses = \App\Models\Faculties::where('user_id', $faculty->id)->get();
+
 @endphp
 
 <div class="strip_list wow fadeIn">

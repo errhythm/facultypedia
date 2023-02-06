@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\SearchController;
 use App\Models\User;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Facades\Route;
