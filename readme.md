@@ -24,6 +24,7 @@
 
 - [x] Search functionality for students to find faculty based on criteria such as course, department, initials, etc.
 - [x] View faculty profile information such as email, courses, department, initials
+- [ ] Registration Ability for faculty and students (feature)
 
 #### Requirement 2
 
