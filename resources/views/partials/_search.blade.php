@@ -1,5 +1,6 @@
 @php
     $search = request('search');
+    $course = request('course');
 @endphp
 <div id="results">
     <div class="container">
@@ -18,6 +19,9 @@
                         @else
                             <input type="text" name="search" class="form-control"
                                 placeholder="Ex. Initial, Department, Name..." />
+                        @endif
+                        @if ($course)
+                            <input type="hidden" name="course" value="{{ $course }}" />
                         @endif
                         <input type="submit" value="Search" />
                     </form>

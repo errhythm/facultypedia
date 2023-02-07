@@ -22,7 +22,7 @@
 
 **Faculty Profile & Search System:**
 
-- [ ] Search functionality for students to find faculty based on criteria such as course, department, initials, etc.
+- [x] Search functionality for students to find faculty based on criteria such as course, department, initials, etc.
 - [x] View faculty profile information such as email, courses, department, initials
 
 #### Requirement 2
