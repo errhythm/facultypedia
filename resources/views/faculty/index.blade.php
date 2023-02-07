@@ -8,9 +8,21 @@
         @endphp
     @endif
 
+    {{-- get total page from pagination --}}
     @php
+        $page = request('page');
+        $page_count = $listings->lastPage();
+        $per_page = $listings->perPage();
+        $total = $listings->total();
+        $query = request()->query();
+        $query = http_build_query($query);
+        // add an & to the query if it is not empty
+        if ($query) {
+            $query = $query . '&';
+        }
+
         $heading = 'All Faculties';
-        
+
         if (request('course')) {
             $heading = 'Faculties for ' . request('course');
         }
@@ -29,26 +41,31 @@
                     <ul class="pagination pagination-sm">
                         @if ($page != 1)
                             <li class="page-item">
-                                <a class="page-link" href="/faculties/{{ $page - 1 }}">Previous</a>
+                                <a class="page-link"
+                                    href="/faculties/?{{ $query }}{{ $page - 1 }}">Previous</a>
                             </li>
                         @endif
                         @foreach (range(1, $page_count) as $pages)
                             @if ($page == $pages)
                                 <li class="page-item active">
-                                    <a class="page-link" href="/faculties/{{ $pages }}">{{ $pages }}</a>
+                                    <a class="page-link"
+                                        href="/faculties/?{{ $query }}page={{ $pages }}">{{ $pages }}</a>
                                 </li>
                             @else
                                 <li class="page-item"><a class="page-link"
-                                        href="/faculties/{{ $pages }}">{{ $pages }}</a></li>
+                                        href="/faculties/?{{ $query }}page={{ $pages }}">{{ $pages }}</a>
+                                </li>
                             @endif
                         @endforeach
                         @if ($page_count != $page)
                             <li class="page-item">
-                                <a class="page-link" href="/faculties/{{ $page + 1 }}">Next</a>
+                                <a class="page-link"
+                                    href="/faculties/?{{ $query }}page={{ $page + 1 }}">Next</a>
                             </li>
                         @endif
                     </ul>
-                    <p class="text-center">Showing {{ $page * 8 - 7 }} to {{ min($page * 8, $total) }} of
+                    <p class="text-center">Showing {{ $page * $per_page }} to
+                        {{ min($page * $per_page, $total) }} of
                         {{ $total }}
                         results</p>
                 </nav>

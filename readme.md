@@ -1,5 +1,7 @@
 <p align="center" style="margin-bottom: 0px !important;">
-  <img width="200" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Brac_University_Logo.png/432px-Brac_University_Logo.png" alt="Material Bread logo" align="center">
+    <img width="200"
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Brac_University_Logo.png/432px-Brac_University_Logo.png"
+        alt="Material Bread logo" align="center">
 </p>
 
 **DEPARTMENT OF COMPUTER SCIENCE AND ENGINEERING**
