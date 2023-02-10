@@ -1,40 +1,37 @@
 <header class="static">
-		<a href="#menu" class="btn_mobile">
-			<div class="hamburger hamburger--spin" id="hamburger">
-				<div class="hamburger-box">
-					<div class="hamburger-inner"></div>
-				</div>
-			</div>
-		</a>
-		<!-- /btn_mobile-->
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-3 col-6">
-					<div id="logo">
-						<a href="index.html" title="Findoctor"><img src="{{ asset('img/logo.png') }}" alt="" width="163" height="36"></a>
-					</div>
-				</div>
-				<div class="col-lg-9 col-6">
-					<ul id="top_access">
-						<li><a href="login.html"><i class="pe-7s-user"></i></a></li>
-						<li><a href="register-doctor.html"><i class="pe-7s-add-user"></i></a></li>
-					</ul>
-					<nav id="menu" class="main-menu">
-						<ul>
-							<li>
-								<span><a href="#0">Home</a></span>
-								{{-- <ul>
-									<li><a href="index.html">Home Default</a></li>
-									<li><a href="index-8.html">KenBurns Slider</a></li>
-									<li><a href="index-2.html">Home Version 2</a></li>
-									<li><a href="index-3.html">Home Version 3</a></li>
-									<li><a href="index-4.html">Home Version 4</a></li>
-									<li><a href="index-7.html">Home with Map</a></li>
-                                    <li><a href="index-6.html">Revolution Slider</a></li>
-									<li><a href="index-5.html">With Cookie Bar (EU law)</a></li>
-								</ul> --}}
-							</li>
-							{{-- <li>
+    <a href="#menu" class="btn_mobile">
+        <div class="hamburger hamburger--spin" id="hamburger">
+            <div class="hamburger-box">
+                <div class="hamburger-inner"></div>
+            </div>
+        </div>
+    </a>
+    <!-- /btn_mobile-->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <div id="logo">
+                    <a href="index.html" title="Findoctor"><img src="{{ asset('img/logo.png') }}" alt=""
+                            width="163" height="36"></a>
+                </div>
+            </div>
+            <div class="col-lg-9 col-6">
+                <nav id="menu" class="main-menu">
+                    <ul>
+                        <li>
+                            <span><a href="#0">Home</a></span>
+                            <ul>
+                                <li><a href="index.html">Home Default</a></li>
+                                <li><a href="index-8.html">KenBurns Slider</a></li>
+                                <li><a href="index-2.html">Home Version 2</a></li>
+                                <li><a href="index-3.html">Home Version 3</a></li>
+                                <li><a href="index-4.html">Home Version 4</a></li>
+                                <li><a href="index-7.html">Home with Map</a></li>
+                                <li><a href="index-6.html">Revolution Slider</a></li>
+                                <li><a href="index-5.html">With Cookie Bar (EU law)</a></li>
+                            </ul>
+                        </li>
+                        {{-- <li>
 								<span><a href="#0">Pages</a></span>
 								<ul>
 									<li>
@@ -87,12 +84,33 @@
 									<li><a href="404.html">404 page</a></li>
 								</ul>
 							</li> --}}
-							<li><span><a href="../faculties">Faculties</a></span></li>
-						</ul>
-					</nav>
-					<!-- /main-menu -->
-				</div>
-			</div>
-		</div>
-		<!-- /container -->
+                        <li><span><a href="../faculties">Faculties</a></span></li>
+                        @auth
+                            {{-- profile --}}
+                            <li id="user" class="submenu">
+                                <a href="/profile/{{ auth()->user()->id }}">
+                                    <figure><img
+                                            src="https://api.dicebear.com/5.x/bottts-neutral/svg?seed={{ md5(auth()->user()->id . auth()->user()->created_at) }}&rotate=20&scale=110"
+                                            alt=""></figure>
+                                    {{ auth()->user()->name }}
+                                </a>
+                                {{-- create a submenu --}}
+                                <ul style="transform: translateY(12px);">
+                                    <li><a href="/profile/{{ auth()->user()->id }}">Profile</a></li>
+                                    <li><a href="/profile/{{ auth()->user()->id }}/edit">Edit Profile</a></li>
+                                    <li><a href="/profile/{{ auth()->user()->id }}/edit/password">Change Password</a></li>
+                                    <li><a href="/logout">Logout</a></li>
+                                </ul>
+                            </li>
+                        @else
+                            <li><span><a href="/login">Login</a></span></li>
+                            <li><span><a href="/register">Register</a></span></li>
+                        @endauth
+                    </ul>
+                </nav>
+                <!-- /main-menu -->
+            </div>
+        </div>
+    </div>
+    <!-- /container -->
 </header>

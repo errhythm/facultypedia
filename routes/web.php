@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\FacultyController;
-use App\Http\Controllers\SearchController;
 use App\Models\User;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\SearchController;
+use App\Http\Controllers\FacultyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,12 +21,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/faculties/{page?}', [FacultyController::class, 'index']);
 
 // user profile
-Route::get('/profile/{user}', function (User $user) {
-    return view('profile.show', [
-        'heading' => 'Profile',
-        'user' => $user,
-    ]);
-});
+Route::get('/profile/{user}', [UserController::class, 'show']);
 
 // show all courses
 Route::get('/courses', function () {
@@ -36,6 +32,16 @@ Route::get('/courses', function () {
 });
 
 // show Register/Sign Up form
-Route::get('/register', function () {
-    return view('register');
-});
+Route::get('/register', [UserController::class, 'create']);
+
+// show Login form
+Route::get('/login', [UserController::class, 'login']);
+
+// create new user
+Route::post('/registeruser', [UserController::class, 'store']);
+
+// Log User In
+Route::post('/loginuser', [UserController::class, 'loginUser']);
+
+// Log User Out
+Route::get('/logout', [UserController::class, 'logout']);
