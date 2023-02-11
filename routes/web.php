@@ -18,6 +18,15 @@ use App\Http\Controllers\FacultyController;
 |
 */
 
+// home page
+Route::get('/', function () {
+    return view('home', [
+        'heading' => 'Find your Faculty!',
+        'subheading' => 'Search for your faculty, book a consultation, review them.',
+    ]);
+});
+
+//  faculty index
 Route::get('/faculties/{page?}', [FacultyController::class, 'index']);
 
 // user profile

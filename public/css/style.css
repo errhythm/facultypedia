@@ -838,7 +838,7 @@ height: 500px;
 display: block;
 }
 .hero_home.version_2:before {
-background: #3f4079 url(http://via.placeholder.com/1600x1067.jpg) no-repeat center center fixed;
+background: #3f4079;
 -webkit-background-size: cover;
 -moz-background-size: cover;
 -o-background-size: cover;

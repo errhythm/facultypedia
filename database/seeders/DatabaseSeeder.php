@@ -89,5 +89,6 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\User::factory(30)->create(['role' => 'student']);
         \App\Models\Faculties::factory(20)->create();
+        \App\Models\Reviews::factory(30)->create();
     }
 }

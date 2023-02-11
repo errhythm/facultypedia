@@ -82,142 +82,23 @@
                 <div id="reviews">
                     <div class="box_general_3">
                         <div class="reviews-container">
-                            <div class="row">
-                                <div class="col-lg-3">
-                                    <div id="review_summary">
-                                        <strong>4.7</strong>
-                                        <div class="rating">
-                                            <i class="icon_star voted"></i><i class="icon_star voted"></i><i
-                                                class="icon_star voted"></i><i class="icon_star voted"></i><i
-                                                class="icon_star"></i>
-                                        </div>
-                                        <small>Based on 4 reviews</small>
-                                    </div>
-                                </div>
-                                <div class="col-lg-9">
-                                    <div class="row">
-                                        <div class="col-lg-10 col-9">
-                                            <div class="progress">
-                                                <div class="progress-bar" role="progressbar" style="width: 90%"
-                                                    aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-2 col-3"><small><strong>5 stars</strong></small></div>
-                                    </div>
-                                    <!-- /row -->
-                                    <div class="row">
-                                        <div class="col-lg-10 col-9">
-                                            <div class="progress">
-                                                <div class="progress-bar" role="progressbar" style="width: 95%"
-                                                    aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-2 col-3"><small><strong>4 stars</strong></small></div>
-                                    </div>
-                                    <!-- /row -->
-                                    <div class="row">
-                                        <div class="col-lg-10 col-9">
-                                            <div class="progress">
-                                                <div class="progress-bar" role="progressbar" style="width: 60%"
-                                                    aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-2 col-3"><small><strong>3 stars</strong></small></div>
-                                    </div>
-                                    <!-- /row -->
-                                    <div class="row">
-                                        <div class="col-lg-10 col-9">
-                                            <div class="progress">
-                                                <div class="progress-bar" role="progressbar" style="width: 20%"
-                                                    aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-2 col-3"><small><strong>2 stars</strong></small></div>
-                                    </div>
-                                    <!-- /row -->
-                                    <div class="row">
-                                        <div class="col-lg-10 col-9">
-                                            <div class="progress">
-                                                <div class="progress-bar" role="progressbar" style="width: 0"
-                                                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-2 col-3"><small><strong>1 stars</strong></small></div>
-                                    </div>
-                                    <!-- /row -->
-                                </div>
-                            </div>
+
+                            @if ($user->role == 'faculty')
+                            {{-- Review Summary --}}
+                            <x-review-summary :faculty="$faculty" />
+                            @endif
                             <!-- /row -->
-
                             <hr>
+                            {{-- Review Box --}}
+                            @php
+                                // get the list of reviews of the user where faculty_id = user->id and isApproved=1
+                                $reviews = \App\Models\Reviews::where('faculty_id', $user->id)->where('isApproved', 1)->get();
+                            @endphp
+                            {{-- how to show only 5 reviews and ask to load more --}}
+                            @foreach ($reviews as $review)
+                                <x-review-box :review="$review" />
+                            @endforeach
 
-                            <div class="review-box clearfix">
-                                <figure class="rev-thumb"><img src="http://via.placeholder.com/150x150.jpg"
-                                        alt="">
-                                </figure>
-                                <div class="rev-content">
-                                    <div class="rating">
-                                        <i class="icon_star voted"></i><i class="icon_star voted"></i><i
-                                            class="icon_star voted"></i><i class="icon_star voted"></i><i
-                                            class="icon_star"></i>
-                                    </div>
-                                    <div class="rev-info">
-                                        Admin – April 03, 2016:
-                                    </div>
-                                    <div class="rev-text">
-                                        <p>
-                                            Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar
-                                            hendrerit. Cum sociis natoque penatibus et magnis dis
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End review-box -->
-
-                            <div class="review-box clearfix">
-                                <figure class="rev-thumb"><img src="http://via.placeholder.com/150x150.jpg"
-                                        alt="">
-                                </figure>
-                                <div class="rev-content">
-                                    <div class="rating">
-                                        <i class="icon-star voted"></i><i class="icon_star voted"></i><i
-                                            class="icon_star voted"></i><i class="icon_star voted"></i><i
-                                            class="icon_star"></i>
-                                    </div>
-                                    <div class="rev-info">
-                                        Ahsan – April 01, 2016
-                                    </div>
-                                    <div class="rev-text">
-                                        <p>
-                                            Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar
-                                            hendrerit. Cum sociis natoque penatibus et magnis dis
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End review-box -->
-
-                            <div class="review-box clearfix">
-                                <figure class="rev-thumb"><img src="http://via.placeholder.com/150x150.jpg"
-                                        alt="">
-                                </figure>
-                                <div class="rev-content">
-                                    <div class="rating">
-                                        <i class="icon-star voted"></i><i class="icon_star voted"></i><i
-                                            class="icon_star voted"></i><i class="icon_star voted"></i><i
-                                            class="icon_star"></i>
-                                    </div>
-                                    <div class="rev-info">
-                                        Sara – March 31, 2016
-                                    </div>
-                                    <div class="rev-text">
-                                        <p>
-                                            Sed eget turpis a pede tempor malesuada. Vivamus quis mi at leo pulvinar
-                                            hendrerit. Cum sociis natoque penatibus et magnis dis
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
                             <!-- End review-box -->
                         </div>
                         <!-- End review-container -->
