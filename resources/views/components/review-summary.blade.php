@@ -1,15 +1,16 @@
 @props(['faculty' => $faculty])
-{{-- get the average rating of the faculty from review model where isApproved is 1 --}}
 @php
-    $avgRating = \App\Models\Reviews::where('faculty_id', $faculty->user_id)->where('isApproved', 1)->avg('rating');
-    $avgRating = round($avgRating, 2);
-    $totalReviews = \App\Models\Reviews::where('faculty_id', $faculty->user_id)->where('isApproved', 1)->count();
-    $fiveStar = \App\Models\Reviews::where('faculty_id', $faculty->user_id)->where('rating', 5)->where('isApproved', 1)->count();
-    $fourStar = \App\Models\Reviews::where('faculty_id', $faculty->user_id)->where('rating', 4)->where('isApproved', 1)->count();
-    $threeStar = \App\Models\Reviews::where('faculty_id', $faculty->user_id)->where('rating', 3)->where('isApproved', 1)->count();
-    $twoStar = \App\Models\Reviews::where('faculty_id', $faculty->user_id)->where('rating', 2)->where('isApproved', 1)->count();
-    $oneStar = \App\Models\Reviews::where('faculty_id', $faculty->user_id)->where('rating', 1)->where('isApproved', 1)->count();
-    // get percentage of each rating
+// if the faculty has no reviews, then set the average rating to 0
+if (\App\Models\Reviews::where('faculty_id', $faculty->id)->where('isApproved', 1)->count() != 0) {
+    $avgRating = \App\Models\Reviews::where('faculty_id', $faculty->id)->where('isApproved', 1)->avg('rating');
+    // avgRating give 2 decimal values
+    $avgRating = number_format($avgRating, 2);
+    $totalReviews = \App\Models\Reviews::where('faculty_id', $faculty->id)->where('isApproved', 1)->count();
+    $fiveStar = \App\Models\Reviews::where('faculty_id', $faculty->id)->where('rating', 5)->where('isApproved', 1)->count();
+    $fourStar = \App\Models\Reviews::where('faculty_id', $faculty->id)->where('rating', 4)->where('isApproved', 1)->count();
+    $threeStar = \App\Models\Reviews::where('faculty_id', $faculty->id)->where('rating', 3)->where('isApproved', 1)->count();
+    $twoStar = \App\Models\Reviews::where('faculty_id', $faculty->id)->where('rating', 2)->where('isApproved', 1)->count();
+    $oneStar = \App\Models\Reviews::where('faculty_id', $faculty->id)->where('rating', 1)->where('isApproved', 1)->count();
     $fiveStarPercent = ($fiveStar / $totalReviews) * 100;
     $fourStarPercent = ($fourStar / $totalReviews) * 100;
     $threeStarPercent = ($threeStar / $totalReviews) * 100;
@@ -19,19 +20,36 @@
     $avgrating_substring = substr($avgRating, -2);
     $voted_star_count = $avgrating_floor;
     $avgrating_subthreshold = 50;
-    // if $avgrating_substring is less than 50 then $half_star_count = 0 else $half_star_count = 1
     $half_star_count = ($avgrating_substring < $avgrating_subthreshold) ? 0 : 1;
     $unvoted_star_count = 5 - $voted_star_count - $half_star_count;
+} else {
+    $noReviews = true;
+    $avgRating = 0;
+    $totalReviews = 0;
+    $fiveStar = 0;
+    $fourStar = 0;
+    $threeStar = 0;
+    $twoStar = 0;
+    $oneStar = 0;
+    $fiveStarPercent = 0;
+    $fourStarPercent = 0;
+    $threeStarPercent = 0;
+    $twoStarPercent = 0;
+    $oneStarPercent = 0;
+    $avgrating_floor = 0;
+    $avgrating_substring = 0;
+    $voted_star_count = 0;
+    $avgrating_subthreshold = 50;
+    $half_star_count = 0;
+    $unvoted_star_count = 5;
+}
 @endphp
-
 
 <div class="row">
     <div class="col-lg-3">
         <div id="review_summary">
             <strong>{{$avgRating}}</strong>
             <div class="rating">
-                {{-- if the average ratings last 2 digit are less than .50 then use icon_star if more than .50 then use icon_star-half_alt --}}
-                {{-- so if its 2.6, it would be, icon_star-voted icon_star-voted icon_star-half_alt icon_star icon_star --}}
                 @for ($i = 0; $i < floor($avgRating); $i++)
                     <i class="icon_star voted"></i>
                 @endfor

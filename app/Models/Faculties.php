@@ -26,15 +26,13 @@ class Faculties extends Model
             $search = User::where('name', 'like', '%' . $filters['search'] . '%')
                 ->orWhere('university_id', 'like', '%' . $filters['search'] . '%')
                 ->orWhere('email', 'like', '%' . $filters['search'] . '%')
+                ->orWhere('department', 'like', '%' . $filters['search'] . '%')
                 ->get();
             $search_ids = [];
             foreach ($search as $user) {
                 $search_ids[] = $user->id;
             }
             $query->whereIn('user_id', $search_ids);
-            if (count($search_ids) == 0) {
-                abort(404);
-            }
         }
     }
 }

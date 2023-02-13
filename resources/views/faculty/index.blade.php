@@ -1,12 +1,4 @@
 <x-layout>
-    @if (count($listings) == 0)
-        {{-- <script>
-            window.location = "/404";
-        </script> --}}
-        @php
-            abort(404);
-        @endphp
-    @endif
 
     {{-- get total page from pagination --}}
     @php
@@ -21,10 +13,8 @@
         $query = http_build_query($query);
         // check if query contains page
         if (strpos($query, 'page') !== false) {
-            // remove &page from query
             $query = preg_replace('/&page=\d+/', '', $query);
         }
-        // add an & to the query if it is not empty
         if ($query) {
             $query = $query . '&';
         }
@@ -41,6 +31,16 @@
     <div class="container margin_60_35">
         <div class="row">
             <div class="col-lg-12">
+                {{-- check if no result found --}}
+                @if ($total == 0)
+                    <div class="alert alert-danger" role="alert">
+                        @if (request('course'))
+                            No results found for {{ request('course') }}
+                        @else
+                            No results found for {{ request('search') }}
+                        @endif
+                    </div>
+                @endif
                 @foreach ($listings as $faculty)
                     <x-facultyCard :faculty="$faculty" :facultyCourses="$facultyCourses" />
                 @endforeach
@@ -72,10 +72,18 @@
                             </li>
                         @endif
                     </ul>
+                    {{-- if search result is 0 --}}
+                    @if ($total == 0)
+                        <p class="text-center">No Results Found</p>
+                        @else
+
                     <p class="text-center">Showing {{ max($page * $per_page - $per_page + 1, 1) }} to
                         {{ min($page * $per_page, $total) }} of
                         {{ $total }}
-                        results</p>
+                        results
+                    </p>
+                    @endif
+
                 </nav>
                 <!-- /pagination -->
             </div>

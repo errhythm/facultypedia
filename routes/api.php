@@ -19,3 +19,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// api to get reviews of a faculty with pagination of 5
+Route::get('/reviews/{user}', 'App\Http\Controllers\ReviewsController@show_faculty_api');

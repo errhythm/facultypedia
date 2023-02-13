@@ -5,10 +5,10 @@
 				<p>
 					{{$subheading}}
 				</p>
-				<form method="post" action="list.html">
+				<form method="GET" action="/faculties">
 					<div id="custom-search-input">
 						<div class="input-group">
-							<input type="text" class=" search-query" placeholder="Ex. Initial, Department, Name...">
+							<input type="text" class=" search-query" placeholder="Ex. Initial, Department, Name..." name="search">
 							<input type="submit" class="btn_search" value="Search">
 						</div>
 					</div>

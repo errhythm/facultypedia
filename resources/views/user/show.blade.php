@@ -3,6 +3,10 @@
     $courses = \App\Models\Courses::all();
     // get faculty model by user id
     $faculty = \App\Models\Faculties::where('user_id', $user->id)->first();
+    $page = request('page');
+        if (!$page) {
+            $page = 1;
+        }
 @endphp
 
 <x-layout>
@@ -91,13 +95,69 @@
                             <hr>
                             {{-- Review Box --}}
                             @php
-                                // get the list of reviews of the user where faculty_id = user->id and isApproved=1
-                                $reviews = \App\Models\Reviews::where('faculty_id', $user->id)->where('isApproved', 1)->get();
+                                // get the list of reviews of the user where faculty_id = faculties->id and isApproved=1
+                                $reviews = \App\Models\Reviews::where('faculty_id', $faculty->id)->where('isApproved', 1)->paginate(5);
                             @endphp
-                            {{-- how to show only 5 reviews and ask to load more --}}
+                            @if ($reviews->count() == 0)
+                                <div class="alert alert-info" role="alert">
+                                    No reviews yet! Be the first to review.
+                                </div>
+                            @else
                             @foreach ($reviews as $review)
                                 <x-review-box :review="$review" />
                             @endforeach
+                            @endif
+
+                            {{-- create a load more button which will fetch more reviews from /api/reviews/96?page=1 --}}
+                            <div class="text-center">
+                                <button class="btn_1" id="loadMore">Load more</button>
+                            </div>
+                            <script>
+                                let page = {{ $page }};
+                                let facultyId = {{ $faculty->user_id }};
+                                let loadMore = document.getElementById('loadMore');
+                                loadMore.addEventListener('click', function() {
+                                    page++;
+                                    fetch(`/api/reviews/${facultyId}?page=${page}`)
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if (data.length == 0) {
+                                                loadMore.style.display = 'none';
+                                            }
+                                            data.forEach(review => {
+                                                let reviewBox = document.createElement('div');
+                                                reviewBox.classList.add('review-box');
+                                                reviewBox.innerHTML = `
+                                                    <figure class="rev-thumb"><img src="https://api.dicebear.com/5.x/bottts-neutral/svg?seed=${review.user_id}&rotate=20&scale=110" alt="">
+                                                    </figure>
+                                                    <div class="rev-content">
+                                                        <div class="rating">
+                                                            <i class="icon_star voted"></i>
+                                                            <i class="icon_star voted"></i>
+                                                            <i class="icon_star voted"></i>
+                                                            <i class="icon_star voted"></i>
+                                                            <i class="icon_star"></i>
+                                                        </div>
+                                                        <div class="rev-info">
+                                                            ${review.name} – ${review.created_at}:
+                                                        </div>
+                                                        <div class="rev-text">
+                                                            <p>
+                                                                ${review.review}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                `;
+                                                document.querySelector('.reviews-container').appendChild(reviewBox);
+                                            });
+                                        });
+                                });
+
+                            </script>
+
+
+
+
 
                             <!-- End review-box -->
                         </div>
