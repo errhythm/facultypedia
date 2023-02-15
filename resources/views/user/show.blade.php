@@ -124,11 +124,12 @@
                                             if (data.length == 0) {
                                                 loadMore.style.display = 'none';
                                             }
-                                            data.forEach(review => {
+                                            console.log(data);
+                                            data.forEach(data => {
                                                 let reviewBox = document.createElement('div');
                                                 reviewBox.classList.add('review-box');
                                                 reviewBox.innerHTML = `
-                                                    <figure class="rev-thumb"><img src="https://api.dicebear.com/5.x/bottts-neutral/svg?seed=${review.user_id}&rotate=20&scale=110" alt="">
+                                                    <figure class="rev-thumb"><img src="https://api.dicebear.com/5.x/bottts-neutral/svg?seed=${data.user_id}&rotate=20&scale=110" alt="">
                                                     </figure>
                                                     <div class="rev-content">
                                                         <div class="rating">

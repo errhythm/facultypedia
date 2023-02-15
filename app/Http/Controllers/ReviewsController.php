@@ -27,12 +27,12 @@ class ReviewsController extends Controller
         return Reviews::where('faculty_id', $faculty->id)->where('isApproved', 1)->paginate(5);
     }
 
-    // make a load more function for reviews of an user (faculty)
-    public function loadMore(Request $request)
+    // make function to see reviews of a faculty by paginate and load more button
+    public function show_faculty_paginate($user)
     {
-        if ($request->ajax()) {
-            $data = Reviews::where('user_id', $request->user)->latest()->paginate(5);
-            return view('reviews.loadMore', compact('data'))->render();
-        }
+        return view('reviews.index', [
+            'reviews' => Reviews::where('user_id', $user)->latest()->paginate(5),
+            'user' => $user,
+        ]);
     }
 }
