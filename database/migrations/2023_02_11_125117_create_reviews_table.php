@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users');
-            $table->foreignId('faculty_id')->constrained('faculties');
+            // create a foreign key to the users table named faculty_id but also check if that user table role is faculty
+            $table->foreignId('faculty_id')->constrained('users')->where('role', 'faculty');
             $table->integer('rating');
             $table->text('review');
             $table->boolean('isAnonymous');

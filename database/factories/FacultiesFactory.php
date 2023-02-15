@@ -17,7 +17,7 @@ class FacultiesFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => \App\Models\User::factory()->create(['role' => 'faculty'])->id,
+            'id' => \App\Models\User::factory()->create(['role' => 'faculty'])->id,
             'courses' => \App\Models\Courses::all()
                 ->random(rand(1, 5))
                 ->pluck('id')

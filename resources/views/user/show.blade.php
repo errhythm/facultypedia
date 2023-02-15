@@ -4,9 +4,9 @@
     // get faculty model by user id
     $faculty = \App\Models\Faculties::where('user_id', $user->id)->first();
     $page = request('page');
-        if (!$page) {
-            $page = 1;
-        }
+    if (!$page) {
+        $page = 1;
+    }
 @endphp
 
 <x-layout>
@@ -88,80 +88,100 @@
                         <div class="reviews-container">
 
                             @if ($user->role == 'faculty')
-                            {{-- Review Summary --}}
-                            <x-review-summary :faculty="$faculty" />
+                                {{-- Review Summary --}}
+                                <x-review-summary :faculty="$faculty" />
                             @endif
                             <!-- /row -->
                             <hr>
                             {{-- Review Box --}}
                             @php
                                 // get the list of reviews of the user where faculty_id = faculties->id and isApproved=1
-                                $reviews = \App\Models\Reviews::where('faculty_id', $faculty->id)->where('isApproved', 1)->paginate(5);
+                                // /api/reviews/96?page= api to get the reviews
+
+                                $reviews = \App\Models\Reviews::where('faculty_id', $faculty->id)
+                                    ->where('isApproved', 1)
+                                    ->orderBy('created_at', 'desc')
+                                    ->paginate(5);
+
                             @endphp
+
+                            {{-- if total review is 0 show no review banner --}}
                             @if ($reviews->count() == 0)
                                 <div class="alert alert-info" role="alert">
                                     No reviews yet! Be the first to review.
                                 </div>
                             @else
-                            @foreach ($reviews as $review)
-                                <x-review-box :review="$review" />
-                            @endforeach
+                                @foreach ($reviews as $review)
+                                    <x-review-box :review="$review" />
+                                @endforeach
                             @endif
-
-                            {{-- create a load more button which will fetch more reviews from /api/reviews/96?page=1 --}}
-                            <div class="text-center">
-                                <button class="btn_1" id="loadMore">Load more</button>
-                            </div>
-                            <script>
-                                let page = {{ $page }};
-                                let facultyId = {{ $faculty->user_id }};
-                                let loadMore = document.getElementById('loadMore');
-                                loadMore.addEventListener('click', function() {
-                                    page++;
-                                    fetch(`/api/reviews/${facultyId}?page=${page}`)
-                                        .then(response => response.json())
-                                        .then(data => {
-                                            if (data.length == 0) {
-                                                loadMore.style.display = 'none';
-                                            }
-                                            console.log(data);
-                                            data.forEach(data => {
-                                                let reviewBox = document.createElement('div');
-                                                reviewBox.classList.add('review-box');
-                                                reviewBox.innerHTML = `
-                                                    <figure class="rev-thumb"><img src="https://api.dicebear.com/5.x/bottts-neutral/svg?seed=${data.user_id}&rotate=20&scale=110" alt="">
-                                                    </figure>
-                                                    <div class="rev-content">
-                                                        <div class="rating">
-                                                            <i class="icon_star voted"></i>
-                                                            <i class="icon_star voted"></i>
-                                                            <i class="icon_star voted"></i>
-                                                            <i class="icon_star voted"></i>
-                                                            <i class="icon_star"></i>
-                                                        </div>
-                                                        <div class="rev-info">
-                                                            ${review.name} – ${review.created_at}:
-                                                        </div>
-                                                        <div class="rev-text">
-                                                            <p>
-                                                                ${review.review}
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                `;
-                                                document.querySelector('.reviews-container').appendChild(reviewBox);
-                                            });
-                                        });
-                                });
-
-                            </script>
-
-
-
-
-
                             <!-- End review-box -->
                         </div>
+
+                        {{-- if total review is 5 or less than 5 dont show page number --}}
+                        @php
+                            $totalreviews = \App\Models\Reviews::where('faculty_id', $faculty->id)->where('isApproved', 1)->count();
+                        @endphp
+                        @if ($totalreviews > 5)
+                        <div class="d-flex justify-content-center">
+                            @php
+                                $page = request('page');
+                                    if (!$page) {
+                                        $page = 1;
+                                    }
+                            $page_count = $reviews->lastPage();
+                            $per_page = $reviews->perPage();
+                            $total = $reviews->total();
+                            $query = request()->query();
+                            $query = http_build_query($query);
+                            // check if query contains page
+                            if (strpos($query, 'page') !== false) {
+                                $query = preg_replace('/page=\d+/', '', $query);
+                            }
+                            if ($query) {
+                                $query = $query . '&';
+                            }
+                            @endphp
+                            <nav aria-label="" class="add_top_20">
+                                <ul class="pagination pagination-sm">
+                                    @if ($page != 1)
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                                href="?{{ $query }}page={{ $page - 1 }}">Previous</a>
+                                        </li>
+                                    @endif
+                                    @foreach (range(1, $page_count) as $pages)
+                                        @if ($page == $pages)
+                                            <li class="page-item active">
+                                                <a class="page-link"
+                                                    href="?{{ $query }}page={{ $pages }}">{{ $pages }}</a>
+                                            </li>
+                                        @else
+                                            <li class="page-item"><a class="page-link"
+                                                    href="?{{ $query }}page={{ $pages }}">{{ $pages }}</a>
+                                            </li>
+                                        @endif
+                                    @endforeach
+                                    @if ($page_count != $page)
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                                href="?{{ $query }}page={{ $page + 1 }}">Next</a>
+                                        </li>
+                                    @endif
+                                </ul>
+                                {{-- if search result is 0 --}}
+                                @if ($total == 0)
+                                    <p class="text-center">No Results Found</p>
+                                    @else
+                                <p class="text-center">Showing {{ max($page * $per_page - $per_page + 1, 1) }} to
+                                    {{ min($page * $per_page, $total) }} of
+                                    {{ $total }}
+                                    reviews
+                                </p>
+                                @endif
+                            </nav>
+                        </div>
+                        @endif
                         <!-- End review-container -->
                         <hr>
                         <div class="text-end"><a href="submit-review.html" class="btn_1">Submit review</a></div>
