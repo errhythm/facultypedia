@@ -198,7 +198,6 @@
 							</span>
 							</div>
 						</div>
-						<!-- /rating_submit -->
 						<div class="form-group">
 							<label>Your review</label>
 							<textarea class="form-control" style="height: 180px;" placeholder="Write your review here ..."></textarea>
