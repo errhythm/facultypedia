@@ -2,9 +2,9 @@
 {{-- add \App\Models\Faculties::all() --}}
 @php
     $courses = \App\Models\Courses::all();
-    $user = \App\Models\User::where('id', $faculty->user_id)->get();
+    $user = \App\Models\User::where('id', $faculty->id)->get();
     $faculty = $user[0];
-    $facultyCourses = \App\Models\Faculties::where('user_id', $faculty->id)->get();
+    $facultyCourses = \App\Models\Faculties::where('id', $faculty->id)->get();
 @endphp
 
 <div class="strip_list wow fadeIn">
@@ -32,8 +32,8 @@
         <i class="icon_star voted"></i>
         <i class="icon_star voted"></i>
         <i class="icon_star voted"></i>
-        <i class="icon_star"></i>
-        <i class="icon_star"></i>
+        <i class="icon_star voted"></i>
+        <i class="icon_star voted"></i>
         <small>(145)</small>
     </span>
     <ul>

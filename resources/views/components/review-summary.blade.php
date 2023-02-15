@@ -19,7 +19,7 @@ if (\App\Models\Reviews::where('faculty_id', $faculty->id)->where('isApproved', 
     $avgrating_floor = floor($avgRating);
     $avgrating_substring = substr($avgRating, -2);
     $voted_star_count = $avgrating_floor;
-    $avgrating_subthreshold = 50;
+    $avgrating_subthreshold = 40;
     $half_star_count = ($avgrating_substring < $avgrating_subthreshold) ? 0 : 1;
     $unvoted_star_count = 5 - $voted_star_count - $half_star_count;
 } else {
@@ -39,7 +39,7 @@ if (\App\Models\Reviews::where('faculty_id', $faculty->id)->where('isApproved', 
     $avgrating_floor = 0;
     $avgrating_substring = 0;
     $voted_star_count = 0;
-    $avgrating_subthreshold = 50;
+    $avgrating_subthreshold = 40;
     $half_star_count = 0;
     $unvoted_star_count = 5;
 }

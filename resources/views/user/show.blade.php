@@ -1,8 +1,8 @@
 @php
-    $facultyCourses = \App\Models\Faculties::where('user_id', $user->id)->get();
+    $facultyCourses = \App\Models\Faculties::where('id', $user->id)->get();
     $courses = \App\Models\Courses::all();
     // get faculty model by user id
-    $faculty = \App\Models\Faculties::where('user_id', $user->id)->first();
+    $faculty = \App\Models\Faculties::where('id', $user->id)->first();
     $page = request('page');
     if (!$page) {
         $page = 1;
@@ -183,9 +183,38 @@
                         </div>
                         @endif
                         <!-- End review-container -->
-                        <hr>
-                        <div class="text-end"><a href="submit-review.html" class="btn_1">Submit review</a></div>
                     </div>
+
+					<div class="box_general_3 write_review">
+						<h1>Write a review for {{ $user->name }}</h1>
+						<div class="rating_submit">
+							<div class="form-group">
+							<label class="d-block">Overall rating</label>
+							<span class="rating">
+								<input type="radio" class="rating-input" id="5_star" name="rating-input" value="5 Stars"><label for="5_star" class="rating-star"></label>
+								<input type="radio" class="rating-input" id="4_star" name="rating-input" value="4 Stars"><label for="4_star" class="rating-star"></label>
+								<input type="radio" class="rating-input" id="3_star" name="rating-input" value="3 Stars"><label for="3_star" class="rating-star"></label>
+								<input type="radio" class="rating-input" id="2_star" name="rating-input" value="2 Stars"><label for="2_star" class="rating-star"></label>
+								<input type="radio" class="rating-input" id="1_star" name="rating-input" value="1 Star"><label for="1_star" class="rating-star"></label>
+							</span>
+							</div>
+						</div>
+						<!-- /rating_submit -->
+						<div class="form-group">
+							<label>Your review</label>
+							<textarea class="form-control" style="height: 180px;" placeholder="Write your review here ..."></textarea>
+						</div>
+						<hr>
+						<div class="form-group">
+							<div class="checkboxes add_bottom_30 add_top_15">
+								<label class="container_check">I accept <a href="#0">terms and conditions and general policy</a>
+									<input type="checkbox">
+									<span class="checkmark"></span>
+								</label>
+							</div>
+						</div>
+						<a href="#0" class="btn_1">Submit review</a>
+					</div>
                 </div>
                 <!-- /section_2 -->
             </div>
