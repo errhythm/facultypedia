@@ -184,7 +184,6 @@
                         @endif
                         <!-- End review-container -->
                     </div>
-
 					<div class="box_general_3 write_review">
 						<h1>Write a review for {{ $user->name }}</h1>
 						<div class="rating_submit">
