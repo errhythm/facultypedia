@@ -32,7 +32,7 @@ class Faculties extends Model
             foreach ($search as $user) {
                 $search_ids[] = $user->id;
             }
-            $query->whereIn('user_id', $search_ids);
+            $query->whereIn('id', $search_ids);
         }
     }
 }
