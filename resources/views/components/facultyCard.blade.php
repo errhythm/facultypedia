@@ -10,7 +10,7 @@
 <div class="strip_list wow fadeIn">
     <figure>
         <a href="/profile/{{ $faculty->id }}">
-            <img src="https://api.dicebear.com/5.x/bottts-neutral/svg?seed={{ md5($faculty->id . $faculty->created_at) }}&rotate=20&scale=110"
+            <img src="https://api.dicebear.com/5.x/bottts-neutral/svg?seed={{ md5($faculty->id . $faculty->created_at) }}&scale=110"
                 alt="{{ $faculty->id . $faculty->created_at }}" />
         </a>
     </figure>
@@ -28,14 +28,7 @@
     </span>
 
     <span style="font-weight: 400; margin-left: 8px; margin-right: 8px; color: #ccc; user-select: none;">|</span>
-    <span class="rating">
-        <i class="icon_star voted"></i>
-        <i class="icon_star voted"></i>
-        <i class="icon_star voted"></i>
-        <i class="icon_star voted"></i>
-        <i class="icon_star voted"></i>
-        <small>(145)</small>
-    </span>
+    <x-average-stars :faculty="$faculty" />
     <ul>
         <li>
             <a href="#0" class="btn_listing">View Profile</a>

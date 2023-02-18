@@ -87,8 +87,18 @@ class DatabaseSeeder extends Seeder
             'course_credit' => 3,
         ]);
 
-        \App\Models\User::factory(30)->create(['role' => 'student']);
-        \App\Models\Faculties::factory(20)->create();
+        \App\Models\User::factory(30)->create();
+        $facultyCount = \App\Models\User::where('role', 'faculty')->count();
+        $facultyIds = \App\Models\User::where('role', 'faculty')->get()->pluck('id')->toArray();
+        foreach ($facultyIds as $facultyId) {
+            \App\Models\Faculties::create([
+                'id' => $facultyId,
+                'courses' => \App\Models\Courses::all()
+                    ->random(rand(1, 5))
+                    ->pluck('id')
+                    ->implode(', '),
+            ]);
+        }
         \App\Models\Reviews::factory(30)->create();
     }
 }

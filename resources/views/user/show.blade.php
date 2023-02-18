@@ -1,7 +1,6 @@
 @php
     $facultyCourses = \App\Models\Faculties::where('id', $user->id)->get();
     $courses = \App\Models\Courses::all();
-    // get faculty model by user id
     $faculty = \App\Models\Faculties::where('id', $user->id)->first();
     $page = request('page');
     if (!$page) {
@@ -41,7 +40,7 @@
                             <div class="row">
                                 <div class="col-lg-5 col-md-4">
                                     <figure>
-                                        <img src="https://api.dicebear.com/5.x/bottts-neutral/svg?seed={{ md5($user->id . $user->created_at) }}&rotate=20&scale=110"
+                                        <img src="https://api.dicebear.com/5.x/bottts-neutral/svg?seed={{ md5($user->id . $user->created_at) }}&scale=110"
                                             alt="{{ $user->name }}" class="img-fluid">
                                     </figure>
                                 </div>
@@ -50,18 +49,7 @@
                                     <h1>{{ $user->name }}</h1>
                                     {{-- if user role is faculty then show a div --}}
                                     @if ($user->role == 'faculty')
-                                        <span class="rating">
-                                            <i class="icon_star voted"></i>
-                                            <i class="icon_star voted"></i>
-                                            <i class="icon_star voted"></i>
-                                            <i class="icon_star voted"></i>
-                                            <i class="icon_star"></i>
-                                            <small>(145)</small>
-                                            <a href="badges.html" data-bs-toggle="tooltip" data-bs-placement="top"
-                                                title="Badge Level" class="badge_list_1"><img
-                                                    src="img/badges/badge_1.svg" width="15" height="15"
-                                                    alt=""></a>
-                                        </span>
+                                        <x-average-stars :faculty="$faculty" />
                                         <br>
                                         <x-faculty-courses :facultyCourses="$facultyCourses" :courses="$courses" />
                                     @endif
@@ -86,137 +74,158 @@
                 <div id="reviews">
                     <div class="box_general_3">
                         <div class="reviews-container">
-
                             @if ($user->role == 'faculty')
                                 {{-- Review Summary --}}
                                 <x-review-summary :faculty="$faculty" />
+                            <hr>
                             @endif
                             <!-- /row -->
-                            <hr>
                             {{-- Review Box --}}
                             @php
-                                // get the list of reviews of the user where faculty_id = faculties->id and isApproved=1
-                                // /api/reviews/96?page= api to get the reviews
-
-                                $reviews = \App\Models\Reviews::where('faculty_id', $faculty->id)
-                                    ->where('isApproved', 1)
-                                    ->orderBy('created_at', 'desc')
-                                    ->paginate(5);
-
+                                if ($user->role == 'faculty') {
+                                    $reviews = \App\Models\Reviews::where('faculty_id', $faculty->id)
+                                        ->where('isApproved', 1)
+                                        ->orderBy('created_at', 'desc')
+                                        ->paginate(5);
+                                    }
+                                    elseif ($user->role == 'student') {
+                                        $reviews = \App\Models\Reviews::where('user_id', $user->id)
+                                            ->where('isApproved', 1)
+                                            ->where('isAnonymous', 0)
+                                            ->orderBy('created_at', 'desc')
+                                            ->paginate(5);
+                                    }
                             @endphp
-
-                            {{-- if total review is 0 show no review banner --}}
-                            @if ($reviews->count() == 0)
-                                <div class="alert alert-info" role="alert">
-                                    No reviews yet! Be the first to review.
-                                </div>
-                            @else
-                                @foreach ($reviews as $review)
-                                    <x-review-box :review="$review" />
-                                @endforeach
+                            @if ($user->role == 'faculty')
+                                @if ($reviews->count() == 0)
+                                    <div class="alert alert-info" role="alert">
+                                        No reviews yet! Be the first to review.
+                                    </div>
+                                @else
+                                    @foreach ($reviews as $review)
+                                        <x-review-box :review="$review" />
+                                    @endforeach
+                                @endif
+                            @elseif ($user->role == 'student')
+                                    @if ($reviews->count() == 0)
+                                        <div class="alert alert-info" role="alert">
+                                            No reviews yet! Be the first to review.
+                                        </div>
+                                    @else
+                                        @foreach ($reviews as $review)
+                                            <x-review-box :review="$review" />
+                                        @endforeach
+                                    @endif
                             @endif
                             <!-- End review-box -->
                         </div>
-
-                        {{-- if total review is 5 or less than 5 dont show page number --}}
                         @php
-                            $totalreviews = \App\Models\Reviews::where('faculty_id', $faculty->id)->where('isApproved', 1)->count();
+                            if ($user->role == 'faculty') {
+                                $totalreviews = \App\Models\Reviews::where('faculty_id', $faculty->id)->where('isApproved', 1)->count();
+                            }
                         @endphp
-                        @if ($totalreviews > 5)
-                        <div class="d-flex justify-content-center">
-                            @php
-                                $page = request('page');
-                                    if (!$page) {
-                                        $page = 1;
-                                    }
-                            $page_count = $reviews->lastPage();
-                            $per_page = $reviews->perPage();
-                            $total = $reviews->total();
-                            $query = request()->query();
-                            $query = http_build_query($query);
-                            // check if query contains page
-                            if (strpos($query, 'page') !== false) {
-                                $query = preg_replace('/page=\d+/', '', $query);
-                            }
-                            if ($query) {
-                                $query = $query . '&';
-                            }
-                            @endphp
-                            <nav aria-label="" class="add_top_20">
-                                <ul class="pagination pagination-sm">
-                                    @if ($page != 1)
-                                        <li class="page-item">
-                                            <a class="page-link"
-                                                href="?{{ $query }}page={{ $page - 1 }}">Previous</a>
-                                        </li>
-                                    @endif
-                                    @foreach (range(1, $page_count) as $pages)
-                                        @if ($page == $pages)
-                                            <li class="page-item active">
+                        @if ($user->role == 'faculty')
+                            @if ($totalreviews > 5)
+                            <div class="d-flex justify-content-center">
+                                @php
+                                    $page = request('page');
+                                        if (!$page) {
+                                            $page = 1;
+                                        }
+                                $page_count = $reviews->lastPage();
+                                $per_page = $reviews->perPage();
+                                $total = $reviews->total();
+                                $query = request()->query();
+                                $query = http_build_query($query);
+                                // check if query contains page
+                                if (strpos($query, 'page') !== false) {
+                                    $query = preg_replace('/page=\d+/', '', $query);
+                                }
+                                if ($query) {
+                                    $query = $query . '&';
+                                }
+                                @endphp
+                                <nav aria-label="" class="add_top_20">
+                                    <ul class="pagination pagination-sm">
+                                        @if ($page != 1)
+                                            <li class="page-item">
                                                 <a class="page-link"
-                                                    href="?{{ $query }}page={{ $pages }}">{{ $pages }}</a>
-                                            </li>
-                                        @else
-                                            <li class="page-item"><a class="page-link"
-                                                    href="?{{ $query }}page={{ $pages }}">{{ $pages }}</a>
+                                                    href="?{{ $query }}page={{ $page - 1 }}">Previous</a>
                                             </li>
                                         @endif
-                                    @endforeach
-                                    @if ($page_count != $page)
-                                        <li class="page-item">
-                                            <a class="page-link"
-                                                href="?{{ $query }}page={{ $page + 1 }}">Next</a>
-                                        </li>
+                                        @foreach (range(1, $page_count) as $pages)
+                                            @if ($page == $pages)
+                                                <li class="page-item active">
+                                                    <a class="page-link"
+                                                        href="?{{ $query }}page={{ $pages }}">{{ $pages }}</a>
+                                                </li>
+                                            @else
+                                                <li class="page-item"><a class="page-link"
+                                                        href="?{{ $query }}page={{ $pages }}">{{ $pages }}</a>
+                                                </li>
+                                            @endif
+                                        @endforeach
+                                        @if ($page_count != $page)
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                    href="?{{ $query }}page={{ $page + 1 }}">Next</a>
+                                            </li>
+                                        @endif
+                                    </ul>
+                                    {{-- if search result is 0 --}}
+                                    @if ($total != 0)
+                                    <p class="text-center">Showing {{ max($page * $per_page - $per_page + 1, 1) }} to
+                                        {{ min($page * $per_page, $total) }} of
+                                        {{ $total }}
+                                        reviews
+                                    </p>
                                     @endif
-                                </ul>
-                                {{-- if search result is 0 --}}
-                                @if ($total == 0)
-                                    <p class="text-center">No Results Found</p>
-                                    @else
-                                <p class="text-center">Showing {{ max($page * $per_page - $per_page + 1, 1) }} to
-                                    {{ min($page * $per_page, $total) }} of
-                                    {{ $total }}
-                                    reviews
-                                </p>
-                                @endif
-                            </nav>
-                        </div>
+                                </nav>
+                            </div>
+                            @endif
                         @endif
                         <!-- End review-container -->
                     </div>
-					<div class="box_general_3 write_review">
-						<h1>Write a review for {{ $user->name }}</h1>
-						<div class="rating_submit">
-							<div class="form-group">
-							<label class="d-block">Overall rating</label>
-							<span class="rating">
-								<input type="radio" class="rating-input" id="5_star" name="rating-input" value="5 Stars"><label for="5_star" class="rating-star"></label>
-								<input type="radio" class="rating-input" id="4_star" name="rating-input" value="4 Stars"><label for="4_star" class="rating-star"></label>
-								<input type="radio" class="rating-input" id="3_star" name="rating-input" value="3 Stars"><label for="3_star" class="rating-star"></label>
-								<input type="radio" class="rating-input" id="2_star" name="rating-input" value="2 Stars"><label for="2_star" class="rating-star"></label>
-								<input type="radio" class="rating-input" id="1_star" name="rating-input" value="1 Star"><label for="1_star" class="rating-star"></label>
-							</span>
-							</div>
-						</div>
-						<div class="form-group">
-							<label>Your review</label>
-							<textarea class="form-control" style="height: 180px;" placeholder="Write your review here ..."></textarea>
-						</div>
-						<hr>
-						<div class="form-group">
-							<div class="checkboxes add_bottom_30 add_top_15">
-								<label class="container_check">I accept <a href="#0">terms and conditions and general policy</a>
-									<input type="checkbox">
-									<span class="checkmark"></span>
-								</label>
-							</div>
-						</div>
-						<a href="#0" class="btn_1">Submit review</a>
-					</div>
+                    {{-- if the user is logged in and a student role --}}
+
+                    @if ($user->role == 'faculty')
+                        @if (Auth::check() && Auth::user()->role == 'student')
+                        <div class="box_general_3 write_review">
+                            <h1>Write a review for {{ $user->name }}</h1>
+                            <div class="rating_submit">
+                                <div class="form-group">
+                                <label class="d-block">Overall rating</label>
+                                <span class="rating">
+                                    <input type="radio" class="rating-input" id="5_star" name="rating-input" value="5 Stars"><label for="5_star" class="rating-star"></label>
+                                    <input type="radio" class="rating-input" id="4_star" name="rating-input" value="4 Stars"><label for="4_star" class="rating-star"></label>
+                                    <input type="radio" class="rating-input" id="3_star" name="rating-input" value="3 Stars"><label for="3_star" class="rating-star"></label>
+                                    <input type="radio" class="rating-input" id="2_star" name="rating-input" value="2 Stars"><label for="2_star" class="rating-star"></label>
+                                    <input type="radio" class="rating-input" id="1_star" name="rating-input" value="1 Star"><label for="1_star" class="rating-star"></label>
+                                </span>
+                                </div>
+                            </div
+                            <div class="form-group">
+                                <label>Your review</label>
+                                <textarea class="form-control" style="height: 180px;" placeholder="Write your review here ..."></textarea>
+                            </div>
+                            <hr>
+                            <div class="form-group">
+                                <div class="checkboxes add_bottom_30 add_top_15">
+                                    <label class="container_check">I accept <a href="#0">terms and conditions and general policy</a>
+                                        <input type="checkbox">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <a href="#0" class="btn_1">Submit review</a>
+                        @endif
+                    @endif
                 </div>
                 <!-- /section_2 -->
             </div>
             <!-- /col -->
+
+            @if ($user->role == 'faculty')
             <aside class="col-xl-4 col-lg-4" id="sidebar">
                 <div class="box_general_3 booking">
                     <form>
@@ -274,6 +283,7 @@
                 </div>
                 <!-- /box_general -->
             </aside>
+            @endif
             <!-- /asdide -->
         </div>
         <!-- /row -->

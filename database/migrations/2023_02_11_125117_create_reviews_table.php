@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             // create a foreign key to the users table named faculty_id but also check if that user table role is faculty
             $table->foreignId('faculty_id')->constrained('users')->where('role', 'faculty');
+            $table->foreignId('course_id')->constrained('courses');
             $table->integer('rating');
             $table->text('review');
             $table->boolean('isAnonymous');

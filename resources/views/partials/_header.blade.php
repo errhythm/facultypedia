@@ -31,7 +31,7 @@
                                     {{ auth()->user()->name }}
                                 </a>
                                 {{-- create a submenu --}}
-                                <ul style="transform: translateY(12px);">
+                                <ul style="transform: translateY(12px)">
                                     <li><a href="/profile/{{ auth()->user()->id }}">Profile</a></li>
                                     <li><a href="/profile/{{ auth()->user()->id }}/edit">Edit Profile</a></li>
                                     <li><a href="/profile/{{ auth()->user()->id }}/edit/password">Change Password</a></li>
