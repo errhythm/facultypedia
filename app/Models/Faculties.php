@@ -22,7 +22,6 @@ class Faculties extends Model
             }
         }
         if (isset($filters['search'])) {
-            // search in users model, can be multiple users not one
             $search = User::where('name', 'like', '%' . $filters['search'] . '%')
                 ->orWhere('university_id', 'like', '%' . $filters['search'] . '%')
                 ->orWhere('email', 'like', '%' . $filters['search'] . '%')
