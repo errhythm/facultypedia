@@ -7,7 +7,7 @@ on:
       - '*.x'
   pull_request:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: '40 * * * *'
 
 permissions:
   contents: read
@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: ['8.0', 8.1, 8.2]
+        php: [8.2]
 
     name: PHP ${{ matrix.php }}
 
@@ -33,6 +33,9 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
           coverage: none
+          
+      - name: Composer Update
+        run: composer update
 
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
