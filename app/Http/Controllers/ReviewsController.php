@@ -33,4 +33,43 @@ class ReviewsController extends Controller
         $faculty = Faculties::where('user_id', $user)->first();
         return Reviews::where('faculty_id', $faculty->id)->where('isApproved', 1)->paginate(5, ['*'], 'page', $page);
     }
+
+    // create a new review
+    public function store()
+    {
+        // set user_id to the id of the logged in user
+        request()->request->add(['user_id' => auth()->user()->id]);
+        // get the data
+        $data = request()->all();
+
+        if (!isset($data['isAnonymous'])) {
+            $data['isAnonymous'] = 0;
+        }
+
+        if ($data['isAnonymous'] == 1) {
+            $data['isApproved'] = 0;
+        } else {
+            $data['isApproved'] = 1;
+        }
+
+
+        if (auth()->user()->role != 'student' && $data['course_id'] == 0) {
+            return redirect('/profile/' . $data['faculty_id']);
+        }
+
+        // check in reviews model already has a review of that faculty and course
+        $review_exist = Reviews::where('faculty_id', $data['faculty_id'])->where('user_id', $data['user_id'])->where('course_id', $data['course_id'])->first();
+        if ($review_exist) {
+            return redirect('/profile/' . $data['faculty_id']);
+        }
+
+
+        // create review in database
+        $review = Reviews::create($data);
+        if ($review) {
+            return redirect('/profile/' . $data['faculty_id']);
+        } else {
+            dd($review);
+        }
+    }
 }

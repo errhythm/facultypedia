@@ -1,7 +1,9 @@
-@props(['review' => $review])
+@props(['review', 'role'])
 
 @php
     $user = \App\Models\User::find($review->user_id);
+    $faculty = \App\Models\User::find($review->faculty_id);
+    // get current profile id f
     $date = date('F d, Y', strtotime($review->created_at));
     $userIdentifier = strtoupper(substr(md5($review->user_id), 0, 4));
     // get course name from course id
@@ -19,7 +21,11 @@
         <div class="rev-info">
             @auth
             @if ($review->isAnonymous == 0 && Auth::user()->role == 'student')
+            @if ($role == 'faculty')
                 <a href="/profile/{{ $user->id }}"><b style="font-size: 1rem;">{{ $user->name }}</b></a><br>
+            @elseif ($role == 'student')
+                <a href="/profile/{{ $faculty->id }}"><b style="font-size: 1rem;"><i class="icon-right-big"></i>{{ $faculty->name }}</b></a><br>
+            @endif
             @elseif (Auth::user()->role == 'faculty')
                 <b style="font-size: 1rem;">Anonymous {{$anonIdentifier}}</b>&nbsp;<i class="icon-info-circled-alt" data-bs-toggle="tooltip" data-bs-placement="top"
                     title="Anonymous {{$anonIdentifier}}#{{ $userIdentifier }}"></i><br>

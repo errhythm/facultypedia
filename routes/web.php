@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\FacultyController;
+use App\Http\Controllers\ReviewsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,3 +55,6 @@ Route::post('/loginuser', [UserController::class, 'loginUser']);
 
 // Log User Out
 Route::get('/logout', [UserController::class, 'logout']);
+
+// create review in ReviewsController
+Route::post('/createreview', [ReviewsController::class, 'store']);
