@@ -52,21 +52,25 @@ class ReviewsController extends Controller
             $data['isApproved'] = 1;
         }
 
-
-        if (auth()->user()->role != 'student' && $data['course_id'] == 0) {
+        if ($data['course_id'] == 0) {
+            session()->flash('message', 'You can\'t review a faculty without a course');
+            session()->flash('alert-type', 'danger');
             return redirect('/profile/' . $data['faculty_id']);
         }
 
         // check in reviews model already has a review of that faculty and course
         $review_exist = Reviews::where('faculty_id', $data['faculty_id'])->where('user_id', $data['user_id'])->where('course_id', $data['course_id'])->first();
         if ($review_exist) {
+            session()->flash('message', 'You have already reviewed this faculty for this course.');
+            session()->flash('alert-type', 'danger');
             return redirect('/profile/' . $data['faculty_id']);
         }
-
 
         // create review in database
         $review = Reviews::create($data);
         if ($review) {
+            session()->flash('message', 'You have successfully reviewed the faculty.');
+            session()->flash('alert-type', 'success');
             return redirect('/profile/' . $data['faculty_id']);
         } else {
             dd($review);

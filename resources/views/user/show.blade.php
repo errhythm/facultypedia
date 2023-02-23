@@ -31,7 +31,19 @@
 
     <div class="container margin_60">
         <div class="row">
-            <div class="col-xl-{{$rowSize}} col-lg-{{$rowSize}}">
+            {{-- check for any session variable message --}}
+            @if (session('message'))
+                {{-- check if alert type mentioned as well if not, default is success --}}
+                @if (session('alert-type'))
+                {{-- the alert must be dismissable --}}
+                    <div class="alert alert-{{ session('alert-type') }} alert-dismissible fade show" role="alert">
+                        {{ session('message') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+            @endif
+
+            <div class="col-xl-{{ $rowSize }} col-lg-{{ $rowSize }}">
                 <nav id="secondary_nav">
                     <div class="container">
                         <ul class="clearfix">
