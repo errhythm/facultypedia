@@ -30,9 +30,9 @@
 
 **Faculty Review System:**
 
-- [ ] Ability for students to leave feedback on faculty
-- [ ] Ability for students to mark the review as anonymous (Admin Approval needed before publishing)
-- [ ] Faculty usergroup will always see every review as anonymous
+- [x] Ability for students to leave feedback on faculty
+- [x] Ability for students to mark the review as anonymous (Admin Approval needed before publishing)
+- [x] Faculty usergroup will always see every review as anonymous
 
 #### Requirement 3
 
