@@ -6,6 +6,13 @@
     if (!$page) {
         $page = 1;
     }
+    // if the user loggedin is a student then row size is 8 otherwise 12
+
+    if (Auth::check() && Auth::user()->role == 'student') {
+        $rowSize = 8;
+    } else {
+        $rowSize = 12;
+    }
 @endphp
 
 <x-layout>
@@ -24,7 +31,7 @@
 
     <div class="container margin_60">
         <div class="row">
-            <div class="col-xl-8 col-lg-8">
+            <div class="col-xl-{{$rowSize}} col-lg-{{$rowSize}}">
                 <nav id="secondary_nav">
                     <div class="container">
                         <ul class="clearfix">
@@ -188,33 +195,38 @@
                         @endif
                         <!-- End review-container -->
                     </div>
-                    {{-- if the user is logged in and a student role --}}
-                    @if ($user->role == 'faculty')
-                        @if (Auth::check() && Auth::user()->role == 'student')
-                        <form method="POST" action="/createreview">
-                            @csrf
-                            <div class="box_general_3 write_review">
-                                <h1>Write a review for {{ $user->name }}</h1>
+                </div>
+                <!-- /section_2 -->
+            </div>
+            <!-- /col -->
+
+            <aside class="col-xl-4 col-lg-4" id="sidebar">
+
+
+                {{-- if the user is logged in and a student role --}}
+                @if ($user->role == 'faculty')
+                    @if (Auth::check() && Auth::user()->role == 'student')
+                        <div class="box_general_3 write_review">
+                            <form method="POST" action="/createreview">
+                                @csrf
+                                <div class="title">
+                                    <h3>Write a review for {{ $user->name }}</h3>
+                                </div>
                                 <div class="rating_submit">
                                     <input type="hidden" name="faculty_id" value={{ $faculty->id }}>
                                     <div class="form-group">
                                         <label class="d-block">Overall rating</label>
                                         <span class="rating">
-                                            <input type="radio" class="rating-input" id="5_star"
-                                                name="rating" value="5"><label for="5_star"
-                                                class="rating-star"></label>
-                                            <input type="radio" class="rating-input" id="4_star"
-                                                name="rating" value="4"><label for="4_star"
-                                                class="rating-star"></label>
-                                            <input type="radio" class="rating-input" id="3_star"
-                                                name="rating" value="3"><label for="3_star"
-                                                class="rating-star"></label>
-                                            <input type="radio" class="rating-input" id="2_star"
-                                                name="rating" value="2"><label for="2_star"
-                                                class="rating-star"></label>
-                                            <input type="radio" class="rating-input" id="1_star"
-                                                name="rating" value="1"><label for="1_star"
-                                                class="rating-star"></label>
+                                            <input type="radio" class="rating-input" id="5_star" name="rating"
+                                                value="5"><label for="5_star" class="rating-star"></label>
+                                            <input type="radio" class="rating-input" id="4_star" name="rating"
+                                                value="4"><label for="4_star" class="rating-star"></label>
+                                            <input type="radio" class="rating-input" id="3_star" name="rating"
+                                                value="3"><label for="3_star" class="rating-star"></label>
+                                            <input type="radio" class="rating-input" id="2_star" name="rating"
+                                                value="2"><label for="2_star" class="rating-star"></label>
+                                            <input type="radio" class="rating-input" id="1_star" name="rating"
+                                                value="1"><label for="1_star" class="rating-star"></label>
                                         </span>
                                     </div>
                                 </div>
@@ -230,7 +242,8 @@
                                             @foreach ($xcourses as $facultycoursex)
                                                 @foreach ($courses as $course)
                                                     @if ($course->id == $facultycoursex)
-                                                        <option value="{{ $course->id }}">{{ $course->course_code }}
+                                                        <option value="{{ $course->id }}">
+                                                            {{ $course->course_code }}
                                                         </option>
                                                     @endif
                                                 @endforeach
@@ -252,75 +265,74 @@
                                     </div>
                                 </div>
                                 <input class="btn_1" type="submit" value="Submit Review">
-                            </div>
+                        </div>
                         </form>
-                        @endif
-                    @endif
-                </div>
-                <!-- /section_2 -->
-            </div>
-            <!-- /col -->
 
-            @if ($user->role == 'faculty')
-                <aside class="col-xl-4 col-lg-4" id="sidebar">
-                    <div class="box_general_3 booking">
-                        <form>
-                            <div class="title">
-                                <h3>Book a Visit</h3>
-                                <small>Monday to Friday 09.00am-06.00pm</small>
-                            </div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <input class="form-control" type="text" id="booking_date" data-lang="en"
-                                            data-min-year="2020" data-max-year="2024"
-                                            data-disabled-days="10/17/2017,11/18/2017">
+                        {{-- consultation --}}
+                        <div class="box_general_3 booking">
+                            <form>
+                                <div class="title">
+                                    <h3>Book a Visit</h3>
+                                    <small>Monday to Friday 09.00am-06.00pm</small>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" id="booking_date"
+                                                data-lang="en" data-min-year="2020" data-max-year="2024"
+                                                data-disabled-days="10/17/2017,11/18/2017">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <input class="form-control" type="text" id="booking_time"
+                                                value="9:00 am">
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <input class="form-control" type="text" id="booking_time"
-                                            value="9:00 am">
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /row -->
-                            <ul class="treatments clearfix">
-                                <li>
-                                    <div class="checkbox">
-                                        <input type="checkbox" class="css-checkbox" id="visit1" name="visit1">
-                                        <label for="visit1" class="css-label">Back Pain visit
-                                            <strong>$55</strong></label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="checkbox">
-                                        <input type="checkbox" class="css-checkbox" id="visit2" name="visit2">
-                                        <label for="visit2" class="css-label">Cardiovascular screen
-                                            <strong>$55</strong></label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="checkbox">
-                                        <input type="checkbox" class="css-checkbox" id="visit3" name="visit3">
-                                        <label for="visit3" class="css-label">Diabetes consultation
-                                            <strong>$55</strong></label>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="checkbox">
-                                        <input type="checkbox" class="css-checkbox" id="visit4" name="visit4">
-                                        <label for="visit4" class="css-label">General visit
-                                            <strong>$55</strong></label>
-                                    </div>
-                                </li>
-                            </ul>
-                            <hr>
-                            <a href="booking-page.html" class="btn_1 full-width">Book Now</a>
-                        </form>
-                    </div>
-                    <!-- /box_general -->
-                </aside>
+                                <!-- /row -->
+                                <ul class="treatments clearfix">
+                                    <li>
+                                        <div class="checkbox">
+                                            <input type="checkbox" class="css-checkbox" id="visit1"
+                                                name="visit1">
+                                            <label for="visit1" class="css-label">Back Pain visit
+                                                <strong>$55</strong></label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="checkbox">
+                                            <input type="checkbox" class="css-checkbox" id="visit2"
+                                                name="visit2">
+                                            <label for="visit2" class="css-label">Cardiovascular screen
+                                                <strong>$55</strong></label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="checkbox">
+                                            <input type="checkbox" class="css-checkbox" id="visit3"
+                                                name="visit3">
+                                            <label for="visit3" class="css-label">Diabetes consultation
+                                                <strong>$55</strong></label>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="checkbox">
+                                            <input type="checkbox" class="css-checkbox" id="visit4"
+                                                name="visit4">
+                                            <label for="visit4" class="css-label">General visit
+                                                <strong>$55</strong></label>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <hr>
+                                <a href="booking-page.html" class="btn_1 full-width">Book Now</a>
+                            </form>
+                        </div>
+                        <!-- /box_general -->
+            </aside>
+
+            @endif
             @endif
             <!-- /asdide -->
         </div>
