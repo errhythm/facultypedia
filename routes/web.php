@@ -1,12 +1,14 @@
 <?php
 
 use App\Models\User;
+use App\Models\Courses;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\ReviewsController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,3 +60,6 @@ Route::get('/logout', [UserController::class, 'logout']);
 
 // create review in ReviewsController
 Route::post('/createreview', [ReviewsController::class, 'store']);
+
+// create a dashboard for admin, faculty and students
+Route::get('/dashboard', [AdminController::class, 'index']);

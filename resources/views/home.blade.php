@@ -53,49 +53,30 @@
 			<div class="container margin_120_95">
 				<div class="main_title">
 					<h2>Most Reviewed faculties</h2>
-					<p>Usu habeo equidem sanctus no. Suas summo id sed, erat erant oporteat cu pri.</p>
+					<p>Consult with the most reviewed faculties trusted by other students.
+                    </p>
 				</div>
 				<div id="reccomended" class="owl-carousel owl-theme">
+                    {{-- get most reviewed faculties from reviews model and use the faculty_id to get details from faculty model --}}
+                    <?php
+                    $reviews = DB::table('reviews')->select('faculty_id', DB::raw('count(*) as total'))->groupBy('faculty_id')->orderBy('total', 'desc')->take(5)->get();
+                    ?>
+                    @foreach ($reviews as $review)
+                    <?php
+                    $faculty = DB::table('faculties')->where('id', $review->faculty_id)->first();
+                    // use faculty->id to get info from users table
+                    $user = DB::table('users')->where('id', $faculty->id)->first();
+                    ?>
 					<div class="item">
+
 						<a href="detail-page.html">
-							<div class="views"><i class="icon-eye-7"></i>140</div>
+							<div class="views"><i class="icon-comment-6"></i>{{$review->total}}</div>
 							<div class="title">
-								<h4>Dr. Julia Holmes<em>Pediatrician - Cardiologist</em></h4>
-							</div><img src="http://via.placeholder.com/500x500.jpg" alt="">
+								<h4>{{$user->name}}<em>{{$user->department}}</em></h4>
+							</div><img src="https://api.dicebear.com/5.x/bottts-neutral/svg?seed={{ md5($user->id . $user->created_at) }}&scale=110" alt="">
 						</a>
 					</div>
-					<div class="item">
-						<a href="detail-page.html">
-							<div class="views"><i class="icon-eye-7"></i>120</div>
-							<div class="title">
-								<h4>Dr. Julia Holmes<em>Pediatrician</em></h4>
-							</div><img src="http://via.placeholder.com/500x500.jpg" alt="">
-						</a>
-					</div>
-					<div class="item">
-						<a href="detail-page.html">
-							<div class="views"><i class="icon-eye-7"></i>115</div>
-							<div class="title">
-								<h4>Dr. Julia Holmes<em>Pediatrician</em></h4>
-							</div><img src="http://via.placeholder.com/500x500.jpg" alt="">
-						</a>
-					</div>
-					<div class="item">
-						<a href="detail-page.html">
-							<div class="views"><i class="icon-eye-7"></i>98</div>
-							<div class="title">
-								<h4>Dr. Julia Holmes<em>Pediatrician</em></h4>
-							</div><img src="http://via.placeholder.com/500x500.jpg" alt="">
-						</a>
-					</div>
-					<div class="item">
-						<a href="detail-page.html">
-							<div class="views"><i class="icon-eye-7"></i>98</div>
-							<div class="title">
-								<h4>Dr. Julia Holmes<em>Pediatrician</em></h4>
-							</div><img src="http://via.placeholder.com/500x500.jpg" alt="">
-						</a>
-					</div>
+                    @endforeach
 				</div>
 				<!-- /carousel -->
 			</div>
@@ -107,95 +88,33 @@
 			<div class="main_title">
 				<h2>Find by Top Courses</h2>
 			</div>
+            {{-- get top reviewed courses from reviews table and then get the information of that course from courses table --}}
+            <?php
+            $reviews = DB::table('reviews')->select('course_id', DB::raw('count(*) as total'))->groupBy('course_id')->orderBy('total', 'desc')->take(8)->get();
+            ?>
 			<div class="row">
+                @foreach ($reviews as $review)
+                <?php
+                $course = DB::table('courses')->where('id', $review->course_id)->first();
+                ?>
 				<div class="col-lg-3 col-md-6">
 					<a href="list.html" class="box_cat_home">
 						<i class="icon-info-4"></i>
-						<img src="img/icon_cat_1.svg" width="60" height="60" alt="">
-						<h3>Primary Care</h3>
+                        <h1 style="color: #0072BC;padding: 0.25em;">{{$course->course_code}}</h1>
+                        <h3>{{$course->course_title}}</h3>
 						<ul class="clearfix">
-							<li><strong>124</strong>Doctors</li>
-							<li><strong>60</strong>Clinics</li>
+                            {{-- get how many faculties on this course and how many reviews --}}
+                            <?php
+                            // check for faculties where courses field contains the course id
+                            $faculties = DB::table('faculties')->where('courses', 'like', '%'.$course->id.'%')->get();
+                            $reviews = DB::table('reviews')->where('course_id', $course->id)->get();
+                            ?>
+                            <li><strong>{{count($faculties)}}</strong>Faculties</li>
+                            <li><strong>{{count($reviews)}}</strong>Reviews</li>
 						</ul>
 					</a>
 				</div>
-				<div class="col-lg-3 col-md-6">
-					<a href="list.html" class="box_cat_home">
-						<i class="icon-info-4"></i>
-						<img src="img/icon_cat_2.svg" width="60" height="60" alt="">
-						<h3>Cardiology</h3>
-						<ul class="clearfix">
-							<li><strong>124</strong>Doctors</li>
-							<li><strong>60</strong>Clinics</li>
-						</ul>
-					</a>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<a href="list.html" class="box_cat_home">
-						<i class="icon-info-4"></i>
-						<img src="img/icon_cat_3.svg" width="60" height="60" alt="">
-						<h3>MRI Resonance</h3>
-						<ul class="clearfix">
-							<li><strong>124</strong>Doctors</li>
-							<li><strong>60</strong>Clinics</li>
-						</ul>
-					</a>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<a href="list.html" class="box_cat_home">
-						<i class="icon-info-4"></i>
-						<img src="img/icon_cat_4.svg" width="60" height="60" alt="">
-						<h3>Blood test</h3>
-						<ul class="clearfix">
-							<li><strong>124</strong>Doctors</li>
-							<li><strong>60</strong>Clinics</li>
-						</ul>
-					</a>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<a href="list.html" class="box_cat_home">
-						<i class="icon-info-4"></i>
-						<img src="img/icon_cat_7.svg" width="60" height="60" alt="">
-						<h3>Laboratory</h3>
-						<ul class="clearfix">
-							<li><strong>124</strong>Doctors</li>
-							<li><strong>60</strong>Clinics</li>
-						</ul>
-					</a>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<a href="list.html" class="box_cat_home">
-						<i class="icon-info-4"></i>
-						<img src="img/icon_cat_5.svg" width="60" height="60" alt="">
-						<h3>Dentistry</h3>
-						<ul class="clearfix">
-							<li><strong>124</strong>Doctors</li>
-							<li><strong>60</strong>Clinics</li>
-						</ul>
-					</a>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<a href="list.html" class="box_cat_home">
-						<i class="icon-info-4"></i>
-						<img src="img/icon_cat_6.svg" width="60" height="60" alt="">
-						<h3>X - Ray</h3>
-						<ul class="clearfix">
-							<li><strong>124</strong>Doctors</li>
-							<li><strong>60</strong>Clinics</li>
-						</ul>
-					</a>
-				</div>
-				<div class="col-lg-3 col-md-6">
-					<a href="list.html" class="box_cat_home">
-						<i class="icon-info-4"></i>
-						<img src="img/icon_cat_8.svg" width="60" height="60" alt="">
-						<h3>Piscologist</h3>
-						<ul class="clearfix">
-							<li><strong>124</strong>Doctors</li>
-							<li><strong>60</strong>Clinics</li>
-						</ul>
-					</a>
-				</div>
+                @endforeach
 			</div>
 			<!-- /row -->
 		</div>
