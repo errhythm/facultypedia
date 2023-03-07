@@ -1,0 +1,1 @@
+window.addEventListener("app:mounted",(function(){new Popper("#top-hotels-menu",".popper-ref",".popper-root",{placement:"bottom-end",modifiers:[{name:"offset",options:{offset:[0,4]}}]}),new Popper("#my-plan-menu",".popper-ref",".popper-root",{placement:"bottom-end",modifiers:[{name:"offset",options:{offset:[0,4]}}]})}),{once:!0});

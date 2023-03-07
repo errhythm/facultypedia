@@ -1,0 +1,1 @@
+window.addEventListener("app:mounted",(function(){var e=document.querySelector("#cardNumber");e._mask=new Cleave(e,{creditCard:!0});var a=document.querySelector("#expireDate");a._mask=new Cleave(a,{date:!0,datePattern:["m","y"]});var r=document.querySelector("#cvv");r._mask=new Cleave(r,{numeral:!0})}),{once:!0});

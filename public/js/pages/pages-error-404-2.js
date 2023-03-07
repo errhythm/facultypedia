@@ -1,0 +1,1 @@
+window.addEventListener("app:mounted",(function(){var e=document.querySelector("#hero-image-dark"),d=document.querySelector("#hero-image-light");"dark"===$darkmode.currentMode?d.classList.add("hidden"):e.classList.add("hidden")}),{once:!0});

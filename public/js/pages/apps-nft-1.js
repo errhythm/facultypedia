@@ -1,0 +1,1 @@
+window.addEventListener("app:mounted",(function(){new Popper("#balance-menu",".popper-ref",".popper-root",{placement:"bottom-end",modifiers:[{name:"offset",options:{offset:[0,4]}}]}),new Popper("#featured-author-menu",".popper-ref",".popper-root",{placement:"bottom-end",modifiers:[{name:"offset",options:{offset:[0,4]}}]}),new Tab("#top-nft-tab")}),{once:!0});

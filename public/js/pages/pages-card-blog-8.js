@@ -1,0 +1,1 @@
+window.addEventListener("app:mounted",(function(){new Popper("#top-header-menu",".popper-ref",".popper-root",{placement:"bottom-start",modifiers:[{name:"offset",options:{offset:[0,4]}}]})}),{once:!0});

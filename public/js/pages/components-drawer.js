@@ -1,0 +1,1 @@
+window.addEventListener("app:mounted",(function(){var e={placement:"bottom-end",modifiers:[{name:"offset",options:{offset:[0,4]}}]};new Popper("#dropdown-wrapper1",".popper-ref",".popper-root",e),new Popper("#dropdown-wrapper2",".popper-ref",".popper-root",e),new Drawer("#drawer1"),new Drawer("#drawer2")}),{once:!0});
