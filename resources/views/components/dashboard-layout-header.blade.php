@@ -1,4 +1,5 @@
-<head>
+
+  <head>
     <!-- Meta tags  -->
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -7,7 +8,7 @@
       content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
     />
 
-    <title>FacultyPedia Dashboard</title>
+    <title>Lineone - Starter Page 5</title>
     <link rel="icon" type="image/png" href="images/favicon.png" />
 
     <!-- CSS Assets -->
@@ -15,6 +16,9 @@
 
     <!-- Javascript Assets -->
     <script src="js/app.js" defer></script>
+
+    <!-- Special script for Horizontal Navigation -->
+    <script src="js/pages/navigation-horizontal.js" defer></script>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -27,7 +31,7 @@
       /**
        * THIS SCRIPT REQUIRED FOR PREVENT FLICKERING IN SOME BROWSERS
        */
-      localStorage.getItem("_x_darkMode_on") === "true" &&
+      localStorage.getItem("dark-mode") === "dark" &&
         document.documentElement.classList.add("dark");
     </script>
   </head>
