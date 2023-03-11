@@ -10,7 +10,6 @@ use Illuminate\Http\Request;
 
 class FacultyController extends Controller
 {
-    // show all faculties
     public function index($page = 1)
     {
         $total = User::where('role', 'faculty')->count();

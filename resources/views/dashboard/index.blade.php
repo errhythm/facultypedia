@@ -1,5 +1,6 @@
 <x-dashboard-layout>
     <x-dashboard-layout-wrapper>
+
         <!-- Main Content Wrapper -->
         <main class="main-content w-full px-[var(--margin-x)] pb-8">
             <div class="mt-4 grid grid-cols-12 gap-4 sm:mt-5 sm:gap-5 lg:mt-6 lg:gap-6">
@@ -563,149 +564,69 @@
                             </div>
                         </div>
                         {{-- next consultation --}}
-
-                        <div class="sm:col-span-2 lg:col-span-1">
+                        <div class="mt-4 sm:mt-5 lg:mt-6">
                             <div class="flex h-8 items-center justify-between">
-                                <h2 class="font-medium tracking-wide text-slate-700 dark:text-navy-100">
-                                    Students
+                                <h2 class="text-base font-medium tracking-wide text-slate-700 dark:text-navy-100">
+                                    Consultation request
                                 </h2>
                                 <a href="#"
                                     class="border-b border-dotted border-current pb-0.5 text-xs+ font-medium text-primary outline-none transition-colors duration-300 hover:text-primary/70 focus:text-primary/70 dark:text-accent-light dark:hover:text-accent-light/70 dark:focus:text-accent-light/70">View
                                     All</a>
                             </div>
-                            <div class="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-x-5 lg:grid-cols-1">
-                                <div class="card p-3">
-                                    <div class="flex items-center justify-between space-x-2">
-                                        <div class="flex items-center space-x-3">
-                                            <div class="avatar h-10 w-10">
-                                                <img class="rounded-full" src="images/200x200.png" alt="avatar" />
-                                                <div
-                                                    class="absolute right-0 h-3 w-3 rounded-full border-2 border-white bg-primary dark:border-navy-700 dark:bg-accent">
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <p class="font-medium text-slate-700 line-clamp-1 dark:text-navy-100">
-                                                    Travis Fuller
-                                                </p>
-                                                <p
-                                                    class="mt-0.5 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
-                                                    65% completed
-                                                </p>
-                                            </div>
+                            <div class="mt-3 grid grid-cols-1 gap-4 sm:grid-cols-1 sm:gap-5">
+                                <div class="card space-y-4 p-5">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="avatar">
+                                            <img class="rounded-full" src="images/200x200.png" alt="image">
                                         </div>
-                                        <div class="relative cursor-pointer">
-                                            <button
-                                                class="btn h-8 w-8 rounded-full bg-slate-150 p-0 font-medium text-slate-700 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-100 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5"
-                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="1.5"
-                                                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                                                </svg>
-                                            </button>
-                                            <div
-                                                class="absolute top-0 right-0 -m-1 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-primary px-1 text-tiny font-medium leading-none text-white dark:bg-accent">
-                                                2
-                                            </div>
+                                        <div>
+                                            <h3 class="font-medium text-slate-700 line-clamp-1 dark:text-navy-100">
+                                                Travis Fuller
+                                            </h3>
+                                            <p class="mt-0.5 text-xs text-slate-400 dark:text-navy-300">
+                                                Scaling
+                                            </p>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="card p-3">
-                                    <div class="flex items-center justify-between space-x-2">
-                                        <div class="flex items-center space-x-3">
-                                            <div class="avatar h-10 w-10">
-                                                <img class="rounded-full" src="images/200x200.png" alt="avatar" />
-                                            </div>
-                                            <div>
-                                                <p class="font-medium text-slate-700 line-clamp-1 dark:text-navy-100">
-                                                    Konnor Guzman
-                                                </p>
-                                                <p
-                                                    class="mt-0.5 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
-                                                    78% completed
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="relative cursor-pointer">
-                                            <button
-                                                class="btn h-8 w-8 rounded-full bg-slate-150 p-0 font-medium text-slate-700 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-100 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5"
-                                                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="1.5"
-                                                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                                                </svg>
-                                            </button>
-                                        </div>
+                                    <div>
+                                        <p>Thu, 26 March</p>
+                                        <p class="text-xl font-medium text-slate-700 dark:text-navy-100">
+                                            08:00
+                                        </p>
                                     </div>
-                                </div>
-                                <div class="card p-3">
-                                    <div class="flex items-center justify-between space-x-2">
-                                        <div class="flex items-center space-x-3">
-                                            <div class="avatar h-10 w-10">
-                                                <img class="rounded-full" src="images/200x200.png" alt="avatar" />
-                                            </div>
-                                            <div>
-                                                <p class="font-medium text-slate-700 line-clamp-1 dark:text-navy-100">
-                                                    Alfredo Elliott
-                                                </p>
-                                                <p
-                                                    class="mt-0.5 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
-                                                    58% completed
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="relative cursor-pointer">
+                                    <div class="flex justify-between">
+                                        <div class="flex space-x-2">
                                             <button
-                                                class="btn h-8 w-8 rounded-full bg-slate-150 p-0 font-medium text-slate-700 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-100 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90">
+                                                class="btn h-7 w-7 rounded-full bg-success/10 p-0 text-success hover:bg-success/20 focus:bg-success/20 active:bg-success/25">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5"
                                                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="1.5"
-                                                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                                        stroke-width="2" d="M5 13l4 4L19 7"></path>
                                                 </svg>
                                             </button>
-                                            <div
-                                                class="absolute top-0 right-0 -m-1 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-primary px-1 text-tiny font-medium leading-none text-white dark:bg-accent">
-                                                3
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card p-3">
-                                    <div class="flex items-center justify-between space-x-2">
-                                        <div class="flex items-center space-x-3">
-                                            <div class="avatar h-10 w-10">
-                                                <img class="rounded-full" src="images/200x200.png" alt="avatar" />
-                                                <div
-                                                    class="absolute right-0 h-3 w-3 rounded-full border-2 border-white bg-primary dark:border-navy-700 dark:bg-accent">
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <p class="font-medium text-slate-700 line-clamp-1 dark:text-navy-100">
-                                                    Derrick Simmons
-                                                </p>
-                                                <p
-                                                    class="mt-0.5 text-xs text-slate-400 line-clamp-1 dark:text-navy-300">
-                                                    65% completed
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="relative cursor-pointer">
                                             <button
-                                                class="btn h-8 w-8 rounded-full bg-slate-150 p-0 font-medium text-slate-700 hover:bg-slate-200 focus:bg-slate-200 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-100 dark:hover:bg-navy-450 dark:focus:bg-navy-450 dark:active:bg-navy-450/90">
+                                                class="btn h-7 w-7 rounded-full bg-error/10 p-0 text-error hover:bg-error/20 focus:bg-error/20 active:bg-error/25">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4.5 w-4.5"
                                                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="1.5"
-                                                        d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                                        stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                                 </svg>
                                             </button>
                                         </div>
+                                        <button
+                                            class="btn h-7 w-7 rounded-full bg-slate-150 p-0 font-medium text-slate-800 hover:bg-slate-200 hover:shadow-lg hover:shadow-slate-200/50 focus:bg-slate-200 focus:shadow-lg focus:shadow-slate-200/50 active:bg-slate-200/80 dark:bg-navy-500 dark:text-navy-50 dark:hover:bg-navy-450 dark:hover:shadow-navy-450/50 dark:focus:bg-navy-450 dark:focus:shadow-navy-450/50 dark:active:bg-navy-450/90">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 rotate-45"
+                                                fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M7 11l5-5m0 0l5 5m-5-5v12"></path>
+                                            </svg>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        {{-- End of Next Consultation --}}
+
                     </div>
                 </div>
             </div>
