@@ -4,23 +4,14 @@
 @include('partials._head')
 
 <body>
-    <div id="preloader" class="Fixed">
-        <div data-loader="circle-side"></div>
-    </div>
-    <!-- /Preload-->
+    @include('partials._header')
+    <!-- /header -->
 
-    <div id="page">
-        @include('partials._header')
-        <!-- /header -->
-
-        <main>
-            {{ $slot }}
-        </main>
+        {{ $slot }}
 
 
-        @include('partials._footer')
-        <!--/footer-->
-    </div>
+    @include('partials._footer')
+    <!--/footer-->
     <!-- page -->
 
     <div id="toTop"></div>

@@ -10,11 +10,7 @@
 
     <!-- BASE CSS -->
     <link href="{{ asset('build.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/menu.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/vendors.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/icon_fonts/css/all_icons_min.css') }}" rel="stylesheet">
+
 
     <!-- SPECIFIC CSS -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
