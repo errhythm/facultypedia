@@ -18,7 +18,7 @@ class FacultyController extends Controller
         return view('faculty.index', [
             'listings' => Faculties::latest()
                 ->filter(request(['course', 'search']))
-                ->paginate(5),
+                ->paginate(10),
             'facultyCourses' => \App\Models\Faculties::all(),
         ]);
     }

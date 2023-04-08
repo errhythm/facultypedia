@@ -1,4 +1,4 @@
-<x-layout>
+<x-layout :header=true :footer=true>
     <!-- start of hero section -->
     <section class="bg-base-200 bg-opacity-30 py-10 sm:py-16 lg:py-24">
       <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">

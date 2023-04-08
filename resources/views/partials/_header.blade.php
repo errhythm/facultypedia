@@ -2,8 +2,8 @@
 $search = request('search');
 $course = request('course');
 ?>
-    <nav class="sticky top-0 z-50 border-b-base-content/5 border-b">
-      <div class="navbar bg-accent py-4 px-8 text-base-content">
+    <nav class="sticky top-0 z-50 border-b-base-content/5 border-b shadow-md">
+      <div class="navbar bg-base-100 py-4 px-8 text-base-content">
         <div class="navbar-start">
           <div class="dropdown">
             <label tabindex="0" class="btn btn-ghost lg:hidden">
@@ -24,32 +24,9 @@ $course = request('course');
             </label>
             <ul
               tabindex="0"
-              class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-300 rounded-box w-52"
+              class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
             >
-              <li><a href="/search.html">Search</a></li>
-              <li tabindex="0">
-                <a class="justify-between">
-                  Parent
-                  <svg
-                    class="fill-current"
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"
-                    />
-                  </svg>
-                </a>
-                <ul class="p-2">
-                  <li>
-                    <a>Submenu 1</a>
-                  </li>
-                  <li><a>Submenu 2</a></li>
-                </ul>
-              </li>
-              <li><a>Item 3</a></li>
+             <x-menumain :mode=0/>
             </ul>
           </div>
           <a
@@ -60,32 +37,10 @@ $course = request('course');
         </div>
         <div class="navbar-center hidden lg:flex">
           <ul class="menu menu-horizontal px-1 font-medium">
-            <li><a href="/search.html">Search</a></li>
-            <li tabindex="0">
-              <a>
-                Parent
-                <svg
-                  class="fill-current"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"
-                  />
-                </svg>
-              </a>
-              <ul class="p-2 bg-base-100">
-                <li><a>Submenu 1</a></li>
-                <li><a>Submenu 2</a></li>
-              </ul>
-            </li>
-            <li><a>Item 3</a></li>
+             <x-menumain :mode=1/>
           </ul>
         </div>
         <div class="navbar-end">
-          <!-- dont show this in mobile menu -->
           <div class="hidden lg:flex">
             <div
               class="form-control flex-1 block max-w-xs px-8 ml-auto text-base-content"
@@ -146,6 +101,10 @@ $course = request('course');
             </div>
           </div>
 
+          {{-- check if user is logged in --}}
+          @auth
+            @if (Auth::check())
+          @endauth
           <div class="dropdown dropdown-end">
             <label tabindex="0" class="btn btn-ghost btn-circle avatar">
               <div class="w-10 rounded-full">
@@ -174,6 +133,26 @@ $course = request('course');
               <li><a>Logout</a></li>
             </ul>
           </div>
+          @else
+          <ul class="hidden lg:menu lg:menu-horizontal px-1 font-medium">
+            <li>
+              <a
+                class="btn btn-ghost hover:bg-transparent"
+                href="/login"
+              >
+                Login
+              </a>
+            </li>
+            <li>
+              <a
+                class="btn btn-ghost hover:bg-transparent"
+                href="/register"
+              >
+                Register
+              </a>
+            </li>
+          </ul>
+            @endif
         </div>
       </div>
     </nav>

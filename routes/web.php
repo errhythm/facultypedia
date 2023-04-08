@@ -35,6 +35,15 @@ Route::get('/faculties/{page?}', [FacultyController::class, 'index']);
 // user profile
 Route::get('/profile/{user}', [UserController::class, 'show']);
 
+// /profile redirects to own profile if logged in else to login page
+Route::get('/profile', function () {
+    if (auth()->check()) {
+        return redirect('/profile/' . auth()->user()->id);
+    } else {
+        return redirect('/login');
+    }
+});
+
 // show all courses
 Route::get('/courses', function () {
     return view('courses', [

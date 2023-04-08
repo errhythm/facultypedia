@@ -10,6 +10,7 @@
 
     <!-- BASE CSS -->
     <link href="{{ asset('build.css') }}" rel="stylesheet">
+    @vite('resources/css/app.css')
 
 
     <!-- SPECIFIC CSS -->
@@ -17,6 +18,8 @@
 
     <!-- YOUR CUSTOM CSS -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    {{-- <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.5/dist/full.css" rel="stylesheet" type="text/css" /> --}}
+{{-- <script src="https://cdn.tailwindcss.com"></script> --}}
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>

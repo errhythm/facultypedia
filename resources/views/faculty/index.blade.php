@@ -1,4 +1,4 @@
-<x-layout>
+<x-layout :header=true :footer=true>
     {{-- get total page from pagination --}}
     @php
         $page = request('page');
@@ -80,7 +80,6 @@
                         <button class="btn btn-md"><a
                                 href="/faculties/?{{ $query }}page={{ $page + 1 }}">»</a></button>
                     @endif
-
                 </div>
             </div>
         </div>

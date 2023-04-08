@@ -1,16 +1,27 @@
+{{-- pass variable as props to check if header needed or not --}}
+@props(['header' => $header, 'footer' => $footer])
+
+
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  data-theme="cupcake">
 
 @include('partials._head')
 
 <body>
-    @include('partials._header')
+    {{-- if header value is not set --}}
+    @if ($header == true)
+        @include('partials._header')
+    @endif
     <!-- /header -->
 
         {{ $slot }}
 
 
-    @include('partials._footer')
+    <!--footer-->
+    @if ($footer == true)
+        @include('partials._footer')
+    @endif
     <!--/footer-->
     <!-- page -->
 
