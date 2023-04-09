@@ -1,9 +1,9 @@
 {{-- redirect if already logged in --}}
 @if (Auth::check())
-{{-- redirect to your profile --}}
-<script>
-    window.location = "/profile";
-</script>
+    {{-- redirect to your profile --}}
+    <script>
+        window.location = "/profile";
+    </script>
 @endif
 
 
@@ -12,17 +12,6 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
             <div class="flex items-center justify-center px-4 py-10 bg-base-100 sm:px-6 lg:px-8 sm:py-16 lg:py-24">
                 <div class="xl:w-full xl:max-w-sm 2xl:max-w-md xl:mx-auto">
-                    @if (session('message'))
-                    @endif
-                    @if ($errors->any())
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <div class="alert alert-danger" role="alert">
-                                    {{ $error }}
-                                </div>
-                            @endforeach
-                        </ul>
-                    @endif
                     <h2 class="text-3xl font-bold leading-tight text-base-content sm:text-4xl">
                         Sign in to FacultyPedia
                     </h2>
@@ -33,6 +22,14 @@
                             Create a free account
                         </a>
                     </p>
+
+                    <div>
+                        @if ($errors->any())
+                            @foreach ($errors->all() as $error)
+                                <x-alert type="alert" />
+                            @endforeach
+                        @endif
+                    </div>
 
                     <form method="POST" action="/loginuser" class="mt-8">
                         @csrf

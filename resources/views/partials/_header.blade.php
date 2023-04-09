@@ -108,29 +108,35 @@ $course = request('course');
           <div class="dropdown dropdown-end">
             <label tabindex="0" class="btn btn-ghost btn-circle avatar">
               <div class="w-10 rounded-full">
-                <img src="https://api.dicebear.com/5.x/bottts-neutral/png" />
+                <img src="https://api.dicebear.com/5.x/bottts-neutral/svg?seed={{ md5(Auth::user()->id . Auth::user()->created_at) }}&scale=110"
+                alt="{{Auth::user()->name}}">
               </div>
             </label>
             <ul
               tabindex="0"
-              class="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52 text-base-content"
+              class="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52 text-base-content overflow-auto"
             >
-              <li>
+              <li class="shadow-none">
                 <a class="justify-between">
-                  <div class="pr-4 py-3 text-sm">
-                    <div>Bonnie Green</div>
-                    <div class="font-medium truncate">name@flowbite.com</div>
+                    <label tabindex="0" class="btn btn-ghost btn-circle avatar">
+              <div class="w-10 rounded-full">
+                <img src="https://api.dicebear.com/5.x/bottts-neutral/svg?seed={{ md5(Auth::user()->id . Auth::user()->created_at) }}&scale=110"
+                alt="{{Auth::user()->name}}">
+              </div>
+            </label>
+                  <div class="pr-4 py-3 text-base font-bold">
+
+                    <div>{{Auth::user()->name}}</div>
                   </div>
                 </a>
               </li>
               <li>
-                <a class="justify-between">
+                <a href="/profile" class="justify-between">
                   Profile
-                  <span class="badge">New</span>
                 </a>
               </li>
               <li><a>Settings</a></li>
-              <li><a>Logout</a></li>
+              <li><a href="/logout">Logout</a></li>
             </ul>
           </div>
           @else

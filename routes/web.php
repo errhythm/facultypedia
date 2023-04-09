@@ -35,7 +35,7 @@ Route::get('/faculties/{page?}', [FacultyController::class, 'index']);
 // user profile
 Route::get('/profile/{user}', [UserController::class, 'show']);
 
-// /profile redirects to own profile if logged in else to login page
+// Profile Redirect
 Route::get('/profile', function () {
     if (auth()->check()) {
         return redirect('/profile/' . auth()->user()->id);
@@ -60,6 +60,15 @@ Route::get('/login', [UserController::class, 'login']);
 
 // create new user
 Route::post('/registeruser', [UserController::class, 'store']);
+
+// verify user email
+Route::post('/verifyOTP', [UserController::class, 'verifyOTP']);
+
+// resend OTP
+Route::get('/resendOTP', [UserController::class, 'sendOTP']);
+
+// verify user email page
+Route::get('/verify', [UserController::class, 'verifyPage']);
 
 // Log User In
 Route::post('/loginuser', [UserController::class, 'loginUser']);

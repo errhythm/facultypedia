@@ -1,9 +1,9 @@
-{{-- redirect if already logged in --}}
-@if (Auth::check())
-    {{-- redirect to your profile --}}
-    <script>
-        window.location = "/profile";
-    </script>
+@if (Auth::user()->email_verified_at != null)
+@php
+header("Location: /profile");
+exit();
+@endphp
+
 @endif
 
 <x-layout :header=false :footer=false>
@@ -12,117 +12,88 @@
             <div class="flex items-center justify-center px-4 py-10 bg-base-100 sm:px-6 lg:px-8 sm:py-16 lg:py-24">
                 <div class="xl:w-full xl:max-w-sm 2xl:max-w-md xl:mx-auto">
                     <div>
-                        @if ($errors->any())
-                            @foreach ($errors->all() as $error)
-                                <div class="alert alert-error shadow-lg my-4">
-                                    <div>
-                                        <svg xmlns="http://www.w3.org/2000/svg"
-                                            class="stroke-current flex-shrink-0 h-6 w-6" fill="none"
-                                            viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg>
-                                        <span>{{ $error }}</span>
-                                    </div>
-                                </div>
-                            @endforeach
-                        @endif
+                        <x-alert type="info" />
                     </div>
                     <h2 class="text-3xl font-bold leading-tight text-base-content sm:text-4xl">
-                        Sign up to FacultyPedia
+                        Verify your email
                     </h2>
-                    <p class="mt-2 text-base text-base-content/60">
-                        Already have an account?
-                        <a href="/login" title=""
-                            class="font-medium text-info/80 transition-all duration-200 hover:text-info hover:underline focus:text-info">
-                            Login
-                        </a>
-                    </p>
 
-                    <form method="POST" action="/registeruser" class="mt-8">
-                        @csrf
+                    <form method="POST" action="/verifyOTP" class="mt-8">
+                    @csrf
                         <div class="space-y-5">
                             <div>
-                                <label for="name" class="text-base font-medium text-base-content/90">
-                                    Fast & Last name
-                                </label>
-                                <div class="mt-2.5 relative text-base-content/40 focus-within:text-base-content/60">
-                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                        </svg>
-                                    </div>
+                                <div
+                                    class="flex flex-row mt-2.5 space-x-2 relative text-base-content/40 focus-within:text-base-content/60">
+                                    <input type="text" name="otp1" id="otp1" placeholder="X" minlength="1"
+                                        autocomplete="off" maxlength="1"
+                                        class="uppercase text-center block w-full py-4 px-2 h-40 text-8xl text-base-content placeholder-base-content/50 transition-all duration-200 border border-base-content/20 rounded-md bg-base-200 focus:outline-none focus:border-info/80 focus:bg-base-100 caret-info/80" />
+                                    <input type="text" name="otp2" id="otp2" placeholder="X" minlength="1"
+                                        autocomplete="off" maxlength="1"
+                                        class="uppercase text-center block w-full py-4 px-2 h-40 text-8xl text-base-content placeholder-base-content/50 transition-all duration-200 border border-base-content/20 rounded-md bg-base-200 focus:outline-none focus:border-info/80 focus:bg-base-100 caret-info/80" />
+                                    <input type="text" name="otp3" id="otp3" placeholder="X" minlength="1"
+                                        autocomplete="off" maxlength="1"
+                                        class="uppercase text-center block w-full py-4 px-2 h-40 text-8xl text-base-content placeholder-base-content/50 transition-all duration-200 border border-base-content/20 rounded-md bg-base-200 focus:outline-none focus:border-info/80 focus:bg-base-100 caret-info/80" />
+                                    <input type="text" name="otp4" id="otp4" placeholder="X" minlength="1"
+                                        autocomplete="off" maxlength="1"
+                                        class="uppercase text-center block w-full py-4 px-2 h-40 text-8xl text-base-content placeholder-base-content/50 transition-all duration-200 border border-base-content/20 rounded-md bg-base-200 focus:outline-none focus:border-info/80 focus:bg-base-100 caret-info/80" />
 
-                                    <input type="text" name="name" id="name" value="{{ old('name') }}"
-                                        placeholder="Enter your full name"
-                                        class="block w-full py-4 pl-10 pr-4 text-base-content placeholder-base-content/50 transition-all duration-200 border border-base-content/20 rounded-md bg-base-200 focus:outline-none focus:border-info/80 focus:bg-base-100 caret-info/80" />
+                                    <script>
+                                        function focusNext(id, nextId) {
+                                            var element = document.getElementById(id);
+                                            element.addEventListener('input', function() {
+                                                if (this.value.length >= 1) {
+                                                    document.getElementById(nextId).focus();
+                                                }
+                                            });
+                                        }
+                                        focusNext('otp1', 'otp2');
+                                        focusNext('otp2', 'otp3');
+                                        focusNext('otp3', 'otp4');
+
+                                        function clearInput(id, nextId) {
+                                            var element = document.getElementById(id);
+                                            element.addEventListener('keydown', function(e) {
+                                                if (e.keyCode === 8 && this.value.length === 0) {
+                                                    document.getElementById(nextId).value = '';
+                                                    document.getElementById(nextId).focus();
+                                                }
+                                            });
+                                        }
+                                        clearInput('otp2', 'otp1');
+                                        clearInput('otp3', 'otp2');
+                                        clearInput('otp4', 'otp3');
+
+                                        // paste in one input box will automatically paste the value in all input box
+                                        function pasteInOneInputBox(id) {
+                                            var element = document.getElementById(id);
+                                            element.addEventListener('paste', function(e) {
+                                                e.preventDefault();
+                                                var text = e.clipboardData.getData('text/plain');
+                                                document.getElementById('otp1').value = text[0];
+                                                document.getElementById('otp2').value = text[1];
+                                                document.getElementById('otp3').value = text[2];
+                                                document.getElementById('otp4').value = text[3];
+                                                document.getElementById('otp4').focus();
+                                            });
+                                        }
+                                        pasteInOneInputBox('otp1');
+                                    </script>
                                 </div>
                             </div>
 
-                            <div>
-                                <label for="email" class="text-base font-medium text-base-content/90">
-                                    Email address
-                                </label>
-                                <div class="mt-2.5 relative text-base-content/40 focus-within:text-base-content/60">
-                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
-                                        </svg>
-                                    </div>
+                            <input type="hidden" name="email" value="{{ Auth::user()->email }}">
 
-                                    <input type="email" name="email" id="email" value="{{ old('email') }}"
-                                        placeholder="Enter email to get started"
-                                        class="block w-full py-4 pl-10 pr-4 text-base-content placeholder-base-content/50 transition-all duration-200 border border-base-content/20 rounded-md bg-base-200 focus:outline-none focus:border-info/80 focus:bg-base-100 caret-info/80" />
-                                </div>
-                            </div>
-
-                            <div>
-                                <label for="password1" class="text-base font-medium text-base-content/90">
-                                    Password
-                                </label>
-                                <div class="mt-2.5 relative text-base-content/40 focus-within:text-base-content/60">
-                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
-                                        </svg>
-                                    </div>
-
-                                    <input type="password" name="password" id="password1"
-                                        placeholder="Enter your password"
-                                        class="block w-full py-4 pl-10 pr-4 text-base-content placeholder-base-content/50 transition-all duration-200 border border-base-content/20 rounded-md bg-base-200 focus:outline-none focus:border-info/80 focus:bg-base-100 caret-info/80" />
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="mt-2.5 relative text-base-content/40 focus-within:text-base-content/60">
-                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
-                                        </svg>
-                                    </div>
-
-                                    <input type="password" name="password_confirmation" id="password2"
-                                        placeholder="Confirm your password"
-                                        class="block w-full py-4 pl-10 pr-4 text-base-content placeholder-base-content/50 transition-all duration-200 border border-base-content/20 rounded-md bg-base-200 focus:outline-none focus:border-info/80 focus:bg-base-100 caret-info/80" />
-                                </div>
-                            </div>
 
                             <div>
                                 <button type="submit" value="Submit"
                                     class="inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-base-100 transition-all duration-200 border border-transparent rounded-md bg-gradient-to-r from-success-content to-info-content/80 focus:outline-none hover:opacity-80 focus:opacity-80">
-                                    Sign up
+                                    Verify Email
                                 </button>
                             </div>
                         </div>
                     </form>
+                    {{-- resend OTP --}}
+                    <a href="/resendOTP" class="inline-flex justify-center text-center w-full px-4 py-4 text-base font-semibold text-base-content/50">Resend OTP</a>
                 </div>
             </div>
 

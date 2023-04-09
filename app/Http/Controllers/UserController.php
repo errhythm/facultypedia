@@ -6,6 +6,10 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Route;
+use App\Mail\MyTestMail;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -26,6 +30,61 @@ class UserController extends Controller
         ]);
     }
 
+    // send user email with 4 digit OTP
+    public function sendOTP(Request $request)
+    {
+        // get the user logged in by auth middleware
+        $user = Auth::user();
+
+        // update user updated_at to current time
+        $user->updated_at = now();
+        $user->save();
+
+
+        // get first 4 digits from the md5 of created_at to make the OTP, make it capital
+        $otp = strtoupper(substr(md5($user->updated_at), 0, 4));
+
+        // send email
+        $details = [
+            'title' => 'Verify your email',
+            'body' => 'Your email is ' . $user->email . '. Your OTP is ' . $otp . '.',
+        ];
+
+        Mail::send('emails.myTestMail', array('user' => $user, 'details' => $details), function ($message) use ($user) {
+            $message->to($user->email, $user->name)->subject('Your OTP for FacultyPedia');
+        });
+
+        return redirect('/verify')->with('message', 'OTP sent to your email');
+    }
+    // verify user email with 4 digit OTP
+    public function verifyOTP(Request $request)
+    {
+        $otp_received = $request->otp1 . $request->otp2 . $request->otp3 . $request->otp4;
+        $user = User::where('email', $request->email)->first();
+
+        // get first 4 digits from the md5 of created_at to make the OTP, make it capital
+        $otp = strtoupper(substr(md5($user->updated_at), 0, 4));
+
+        // check the received OTP with $otp if it matches, then verify the user by inputting time in email_verified_at
+        if ($otp_received == $otp) {
+            $user->email_verified_at = now();
+            $user->save();
+            return redirect('/profile/' . $user->id);
+        } else {
+            return redirect('/verify')->with('message', 'Invalid OTP. Actual OTP is ' . $otp . '. Please try again.');
+        }
+    }
+
+    // verify user email page
+    public function verifyPage()
+    {
+        return view('user.verification', [
+            'heading' => 'Verify Email',
+        ]);
+    }
+
+
+
     // create new user
     public function store()
     {
@@ -44,12 +103,15 @@ class UserController extends Controller
         } else {
             $data['role'] = 'student';
         }
-        $user = User::create($data);
 
+        $user = User::create($data);
+        $this->sendOTP(request());
         auth()->login($user);
 
-        return redirect('/profile/' . $user->id);
+        return redirect('/verify')->with('message', 'OTP sent to your email');
     }
+
+
 
     // show Login form
     public function login()
