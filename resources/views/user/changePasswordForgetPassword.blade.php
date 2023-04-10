@@ -5,7 +5,12 @@
         window.location = "/profile";
     </script>
 @endif
-
+{{-- if email is not found in session redirect to /recover --}}
+@if (!session('email'))
+    <script>
+        window.location = "/recover";
+    </script>
+@endif
 
 
 <x-layout :header=false :footer=false>
@@ -14,15 +19,8 @@
             <div class="flex items-center justify-center px-4 py-10 bg-base-100 sm:px-6 lg:px-8 sm:py-16 lg:py-24">
                 <div class="xl:w-full xl:max-w-sm 2xl:max-w-md xl:mx-auto">
                     <h2 class="text-3xl font-bold leading-tight text-base-content sm:text-4xl">
-                        Sign in to FacultyPedia
+                        Change Password
                     </h2>
-                    <p class="mt-2 text-base text-base-content/60">
-                        Don't have an account?
-                        <a href="/register" title=""
-                            class="font-medium text-info/80 transition-all duration-200 hover:text-info hover:underline focus:text-info">
-                            Create a free account
-                        </a>
-                    </p>
 
                     <div>
                         @if ($errors->any())
@@ -32,39 +30,13 @@
                         @endif
                     </div>
 
-                    <form method="POST" action="/loginuser" class="mt-8">
+                    <form method="POST" action="/recover/4" class="mt-8">
                         @csrf
                         <div class="space-y-5">
                             <div>
-                                <label for="email" class="text-base font-medium text-base-content/90">
-                                    Email address
+                                <label for="password1" class="text-base font-medium text-base-content/90">
+                                    Password
                                 </label>
-                                <div class="mt-2.5 relative text-base-content/40 focus-within:text-base-content/60">
-                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
-                                        </svg>
-                                    </div>
-
-                                    <input type="email" name="email" id="email"
-                                        placeholder="Enter email to get started"
-                                        class="block w-full py-4 pl-10 pr-4 text-base-content placeholder-base-2000 transition-all duration-200 border border-base-content/20 rounded-md bg-base-200 focus:outline-none focus:border-info-content/80 focus:bg-base-100 caret-info-content/80" />
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="flex items-center justify-between">
-                                    <label for="password" class="text-base font-medium text-base-content/90">
-                                        Password
-                                    </label>
-
-                                    <a href="\recover" title=""
-                                        class="text-sm font-medium text-info/80 transition-all duration-200 hover:text-info focus:text-info hover:underline">
-                                        Forgot password?
-                                    </a>
-                                </div>
                                 <div class="mt-2.5 relative text-base-content/40 focus-within:text-base-content/60">
                                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                         <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -74,16 +46,18 @@
                                         </svg>
                                     </div>
 
-                                    <input type="password" name="password" id="password"
+                                    <input type="password" name="password" id="password1"
                                         placeholder="Enter your password"
-                                        class="block w-full py-4 pl-10 pr-4 text-base-content placeholder-base-2000 transition-all duration-200 border border-base-content/20 rounded-md bg-base-200 focus:outline-none focus:border-info-content/80 focus:bg-base-100 caret-info-content/80" />
+                                        class="block w-full py-4 pl-10 pr-4 text-base-content placeholder-base-content/50 transition-all duration-200 border border-base-content/20 rounded-md bg-base-200 focus:outline-none focus:border-info/80 focus:bg-base-100 caret-info/80" />
                                 </div>
                             </div>
 
+                                <input type="hidden" name="email" value="{{ session('email') }}">
+
                             <div>
-                                <button type="submit" value="login"
+                                <button type="submit" value="submit"
                                     class="inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-base-100 transition-all duration-200 border border-transparent rounded-md bg-gradient-to-r from-success-content to-info-content/80 focus:outline-none hover:opacity-80 focus:opacity-80">
-                                    Log in
+                                    Change Password
                                 </button>
                             </div>
                         </div>

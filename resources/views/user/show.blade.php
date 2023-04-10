@@ -10,8 +10,9 @@
 
 <x-layout :header=true :footer=true>
     {{-- check for any session variable message --}}
-    <x-alert type="info" />
     <div class="flex flex-wrap justify-center">
+        {{-- get session alert-type --}}
+        <x-alert type="{{ session('alert-type') }}" />
         <div class="w-5/6 xl:w-4/6 py-4">
             <section class="lg:pt-6">
                 <div class="lg:px-8 sm:px-6 px-4 max-w-7xl mx-auto">
@@ -47,24 +48,45 @@
                                         {{ $user->department }}
                                     </p>
                                 </div>
-                                <div class="ml-auto mr-4">
-                                    <label for="my-modal-4"
-                                        class="box-border relative z-30 inline-flex items-center justify-center w-auto px-3 py-2 overflow-hidden font-bold text-base-100 transition-all duration-300 bg-primary rounded-md cursor-pointer group ring-offset-2 ring-1 ring-primary/30 ring-offset-primary/20 hover:ring-offset-primary/50 ease focus:outline-none">
-                                        <span
-                                            class="absolute bottom-0 right-0 w-8 h-20 -mb-8 -mr-5 transition-all duration-300 ease-out transform rotate-45 translate-x-1 bg-base-100 opacity-10 group-hover:translate-x-0"></span>
-                                        <span
-                                            class="absolute top-0 left-0 w-20 h-8 -mt-1 -ml-12 transition-all duration-300 ease-out transform -rotate-45 -translate-x-1 bg-base-100 opacity-10 group-hover:translate-x-0"></span>
-                                        <span class="relative z-20 flex items-center text-sm">
-                                            <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                stroke-width="1.5" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z">
-                                                </path>
-                                            </svg>
-                                            <span class="ml-2 hidden md:block">Consult</span>
-                                        </span>
-                                    </label>
-                                </div>
+                                {{-- if the user is faculty --}}
+                                @if ($user->role == 'faculty')
+                                    <div class="ml-auto">
+                                        <label for="my-modal-4"
+                                            class="box-border relative z-30 inline-flex items-center justify-center w-auto px-3 py-2 overflow-hidden font-bold text-base-100 transition-all duration-300 bg-primary rounded-md cursor-pointer group ring-offset-2 ring-1 ring-primary/30 ring-offset-primary/20 hover:ring-offset-primary/50 ease focus:outline-none">
+                                            <span
+                                                class="absolute bottom-0 right-0 w-8 h-20 -mb-8 -mr-5 transition-all duration-300 ease-out transform rotate-45 translate-x-1 bg-base-100 opacity-10 group-hover:translate-x-0"></span>
+                                            <span
+                                                class="absolute top-0 left-0 w-20 h-8 -mt-1 -ml-12 transition-all duration-300 ease-out transform -rotate-45 -translate-x-1 bg-base-100 opacity-10 group-hover:translate-x-0"></span>
+                                            <span class="relative z-20 flex items-center text-sm">
+                                                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    stroke-width="1.5" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z">
+                                                    </path>
+                                                </svg>
+                                                <span class="ml-2 hidden md:block">Consult</span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                    <div class="ml-4">
+                                        <label for="my-modal-5"
+                                            class="box-border relative z-30 inline-flex items-center justify-center w-auto px-3 py-2 overflow-hidden font-bold text-base-100 transition-all duration-300 bg-primary rounded-md cursor-pointer group ring-offset-2 ring-1 ring-primary/30 ring-offset-primary/20 hover:ring-offset-primary/50 ease focus:outline-none">
+                                            <span
+                                                class="absolute bottom-0 right-0 w-8 h-20 -mb-8 -mr-5 transition-all duration-300 ease-out transform rotate-45 translate-x-1 bg-base-100 opacity-10 group-hover:translate-x-0"></span>
+                                            <span
+                                                class="absolute top-0 left-0 w-20 h-8 -mt-1 -ml-12 transition-all duration-300 ease-out transform -rotate-45 -translate-x-1 bg-base-100 opacity-10 group-hover:translate-x-0"></span>
+                                            <span class="relative z-20 flex items-center text-sm">
+                                                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
+                                                    id="star">
+                                                    <path fill="currentColor"
+                                                        d="M22,9.67A1,1,0,0,0,21.14,9l-5.69-.83L12.9,3a1,1,0,0,0-1.8,0L8.55,8.16,2.86,9a1,1,0,0,0-.81.68,1,1,0,0,0,.25,1l4.13,4-1,5.68a1,1,0,0,0,.4,1,1,1,0,0,0,1.05.07L12,18.76l5.1,2.68a.93.93,0,0,0,.46.12,1,1,0,0,0,.59-.19,1,1,0,0,0,.4-1l-1-5.68,4.13-4A1,1,0,0,0,22,9.67Zm-6.15,4a1,1,0,0,0-.29.89l.72,4.19-3.76-2a1,1,0,0,0-.94,0l-3.76,2,.72-4.19a1,1,0,0,0-.29-.89l-3-3,4.21-.61a1,1,0,0,0,.76-.55L12,5.7l1.88,3.82a1,1,0,0,0,.76.55l4.21.61Z">
+                                                    </path>
+                                                </svg>
+                                                <span class="ml-2 hidden md:block">Review</span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -130,99 +152,8 @@
             </section>
             <!-- end of review content -->
         </div>
-        {{-- if the user role is faculty --}}
-        @if ($user->role == 'faculty')
-            <div class="w-5/6 xl:w-2/6 py-4">
-                <!-- Start of Give Review -->
-                <section class="lg:pt-6">
-                    <div class="lg:px-8 sm:px-6 px-4 max-w-7xl mx-auto">
-                        <div
-                            class="px-3 sm:px-6 py-12 md:mt-12 shadow-xl bg-base-100 rounded-xl overflow-hidden max-w-6xl mt-8 mx-auto">
-                            <div class="px-3 pt-4 sm:pt-2">
-                                <h3 class="text-2xl font-semibold text-center text-base-content">
-                                    Drop a Review
-                                </h3>
-
-                                <form action="/" method="GET" class="mt-10">
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
-                                        <div class="lg:col-span-2 2xl:col-span-1">
-                                            <label for="" class="text-base font-medium text-base-content">
-                                                Course Name
-                                            </label>
-                                            <div class="mt-2.5 relative">
-                                                <!-- course dropdown 1,23,34 -->
-                                                <select name="course" id="course"
-                                                    class="block w-full px-4 py-4 text-base-content placeholder-base-content/40 transition-all duration-200 bg-base-100 border border-base-300 rounded-md focus:outline-none focus:border-primary caret-primary">
-                                                    {{-- get the courses of faculty --}}
-                                                    <option value="0" selected disabled>Select a course</option>
-                                                    @foreach ($facultyCourses as $facultycourse)
-                                                        @php
-                                                            $xcourses = explode(',', $facultycourse->courses);
-                                                        @endphp
-                                                        @foreach ($xcourses as $facultycoursex)
-                                                            @foreach ($courses as $course)
-                                                                @if ($course->id == $facultycoursex)
-                                                                    <option value="{{ $course->id }}">
-                                                                        {{ $course->course_code }}
-                                                                    </option>
-                                                                @endif
-                                                            @endforeach
-                                                        @endforeach
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="lg:col-span-2 2xl:col-span-1">
-                                            <label for="" class="text-base font-medium text-base-content">
-                                                Rating
-                                            </label>
-                                            <div class="mt-2.5 relative">
-                                                <!-- half star rating radio input  -->
-
-                                                <div class="rating rating-lg">
-                                                    <input type="radio" name="rating" value="0"
-                                                        class="bg-warning mask mask-star-2" checked disabled hidden />
-                                                    <input type="radio" name="rating" value="1"
-                                                        class="bg-warning mask mask-star-2" />
-                                                    <input type="radio" name="rating" value="2"
-                                                        class="bg-warning mask mask-star-2" />
-                                                    <input type="radio" name="rating" value="3"
-                                                        class="bg-warning mask mask-star-2" />
-                                                    <input type="radio" name="rating" value="4"
-                                                        class="bg-warning mask mask-star-2" />
-                                                    <input type="radio" name="rating" value="5"
-                                                        class="bg-warning mask mask-star-2" />
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="sm:col-span-2">
-                                            <label for="" class="text-base font-medium text-base-content">
-                                                Review
-                                            </label>
-                                            <div class="mt-2.5 relative">
-                                                <textarea name="review" id="review" placeholder=""
-                                                    class="block w-full px-4 py-4 text-base-content placeholder-base-content/40 transition-all duration-200 bg-base-100 border border-base-300 rounded-md resize-y focus:outline-none focus:border-primary caret-primary"
-                                                    rows="4"></textarea>
-                                            </div>
-                                        </div>
-
-                                        <div class="sm:col-span-2">
-                                            <button type="submit"
-                                                class="inline-flex items-center justify-center w-full px-4 py-4 mt-2 text-base font-semibold text-base-100 transition-all duration-200 bg-primary border border-transparent rounded-md focus:outline-none hover:bg-primary focus:bg-primary">
-                                                Submit
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <!-- End of Give Review -->
-            </div>
-        @endif
     </div>
+    @if ($user->role == 'faculty')
     <input type="checkbox" id="my-modal-4" class="modal-toggle" />
     <label for="my-modal-4" class="modal cursor-pointer">
         <label class="modal-box px-4 mx-auto sm:px-6 lg:px-8 max-w-5xl" for="">
@@ -254,7 +185,8 @@
                                                             <p class="text-sm font-bold text-base-content">
                                                                 {{ $user->name }}
                                                             </p>
-                                                            <p class="mt-1.5 text-sm font-medium text-base-content/50 lowercase">
+                                                            <p
+                                                                class="mt-1.5 text-sm font-medium text-base-content/50 lowercase">
                                                                 {{ $user->email }}
                                                             </p>
                                                         </div>
@@ -296,7 +228,8 @@
                                                             Student Name
                                                         </label>
                                                         <div class="mt-1">
-                                                            <input type="text" name="studentName" id="studentName" value="{{ Auth::user()->name }}" readonly
+                                                            <input type="text" name="studentName" id="studentName"
+                                                                value="{{ Auth::user()->name }}" readonly
                                                                 class="block w-full px-4 py-3 text-sm font-normal text-base-content placeholder-base-content/50 border border-base-200 rounded-md bg-base-100/50 caret-base-content focus:ring-base-content focus:border-base-content" />
                                                         </div>
                                                     </div>
@@ -307,7 +240,8 @@
                                                             Student ID
                                                         </label>
                                                         <div class="mt-1">
-                                                            <input type="text" name="studentId" id="studentId" value="{{ Auth::user()->university_id }}" readonly
+                                                            <input type="text" name="studentId" id="studentId"
+                                                                value="{{ Auth::user()->university_id }}" readonly
                                                                 class="block w-full px-4 py-3 text-sm font-normal text-base-content placeholder-base-content/50 border border-base-200 rounded-md bg-base-100/50 caret-base-content focus:ring-base-content focus:border-base-content" />
                                                         </div>
                                                     </div>
@@ -395,4 +329,104 @@
             {{-- </section> --}}
         </label>
     </label>
+    <input type="checkbox" id="my-modal-5" class="modal-toggle" />
+    <label for="my-modal-5" class="modal cursor-pointer">
+        <label class="modal-box px-4 sm:px-6 lg:px-8 max-w-4xl" for="">
+                    <div class="lg:px-8 sm:px-6 px-4 max-w-7xl ">
+                        <div
+                            class="bg-base-100 rounded-xl overflow-hidden max-w-6xl">
+                            <div class="px-3 pt-4 sm:pt-2">
+                                <h3 class="text-2xl font-semibold text-center text-base-content">
+                                    Drop a Review
+                                </h3>
+
+                                <form action="/createreview" method="POST" class="mt-10">
+                                    @csrf
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+                                        <div class="lg:col-span-2 2xl:col-span-1">
+                                            <input type="hidden" name="faculty_id" value={{ $faculty->id }}>
+                                            <label for="" class="text-base font-medium text-base-content">
+                                                Course Name
+                                            </label>
+                                            <div class="mt-2.5 relative">
+                                                <!-- course dropdown 1,23,34 -->
+                                                <select name="course_id" id="course_id"
+                                                    class="block w-full px-4 py-4 text-base-content placeholder-base-content/40 transition-all duration-200 bg-base-100 border border-base-300 rounded-md focus:outline-none focus:border-primary caret-primary">
+                                                    {{-- get the courses of faculty --}}
+                                                    <option value="0" selected disabled>Select a course</option>
+                                                    @foreach ($facultyCourses as $facultycourse)
+                                                        @php
+                                                            $xcourses = explode(',', $facultycourse->courses);
+                                                        @endphp
+                                                        @foreach ($xcourses as $facultycoursex)
+                                                            @foreach ($courses as $course)
+                                                                @if ($course->id == $facultycoursex)
+                                                                    <option value="{{ $course->id }}">
+                                                                        {{ $course->course_code }}
+                                                                    </option>
+                                                                @endif
+                                                            @endforeach
+                                                        @endforeach
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="lg:col-span-2 2xl:col-span-1">
+                                            <label for="" class="text-base font-medium text-base-content">
+                                                Rating
+                                            </label>
+                                            <div class="mt-2.5 relative">
+                                                <!-- half star rating radio input  -->
+
+                                                <div class="rating rating-lg">
+                                                    <input type="radio" name="rating" value="0"
+                                                        class="bg-warning mask mask-star-2" checked disabled hidden />
+                                                    <input type="radio" name="rating" value="1"
+                                                        class="bg-warning mask mask-star-2" />
+                                                    <input type="radio" name="rating" value="2"
+                                                        class="bg-warning mask mask-star-2" />
+                                                    <input type="radio" name="rating" value="3"
+                                                        class="bg-warning mask mask-star-2" />
+                                                    <input type="radio" name="rating" value="4"
+                                                        class="bg-warning mask mask-star-2" />
+                                                    <input type="radio" name="rating" value="5"
+                                                        class="bg-warning mask mask-star-2" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="sm:col-span-2">
+                                            <label for="" class="text-base font-medium text-base-content">
+                                                Review
+                                            </label>
+                                            <div class="mt-2.5 relative">
+                                                <textarea name="review" id="review" placeholder=""
+                                                    class="block w-full px-4 py-4 text-base-content placeholder-base-content/40 transition-all duration-200 bg-base-100 border border-base-300 rounded-md resize-y focus:outline-none focus:border-primary caret-primary"
+                                                    rows="4"></textarea>
+                                            </div>
+                                        </div>
+
+                                        <div class="sm:col-span-2">
+                                            <label class="label cursor-pointer">
+                                                <span class="label-text">Anonymous</span>
+                                                <input name="isAnonymous" type="checkbox" class="toggle"
+                                                    value="1" />
+                                            </label>
+                                        </div>
+
+                                        <div class="sm:col-span-2">
+                                            <button type="submit"
+                                                class="inline-flex items-center justify-center w-full px-4 py-4 mt-2 text-base font-semibold text-base-100 transition-all duration-200 bg-primary border border-transparent rounded-md focus:outline-none hover:bg-primary focus:bg-primary">
+                                                Submit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+            {{-- </section> --}}
+        </label>
+    </label>
+    @endif
 </x-layout>

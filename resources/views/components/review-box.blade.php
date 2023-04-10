@@ -271,6 +271,8 @@
                             @endif
                         @elseif (Auth::user()->role == 'faculty')
                             Anonymous {{ $anonIdentifier }}
+                            @elseif ($review->isAnonymous == 1)
+                                Anonymous {{ $anonIdentifier }}
                         @endauth
                     @else
                         Anonymous {{ $anonIdentifier }}

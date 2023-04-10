@@ -8,6 +8,7 @@ use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use App\Mail\MyTestMail;
+use App\Models\Reviews;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
@@ -38,6 +39,7 @@ class UserController extends Controller
 
         // update user updated_at to current time
         $user->updated_at = now();
+        /** @var \App\Models\User $user **/
         $user->save();
 
 
@@ -53,8 +55,6 @@ class UserController extends Controller
         Mail::send('emails.myTestMail', array('user' => $user, 'details' => $details), function ($message) use ($user) {
             $message->to($user->email, $user->name)->subject('Your OTP for FacultyPedia');
         });
-
-        return redirect('/verify')->with('message', 'OTP sent to your email');
     }
     // verify user email with 4 digit OTP
     public function verifyOTP(Request $request)
@@ -83,6 +83,101 @@ class UserController extends Controller
         ]);
     }
 
+    // forget password page
+    public function forgetPassword()
+    {
+        return view('user.forgetPassword', [
+            'heading' => 'Forget Password',
+        ]);
+    }
+
+    // send otp for forget password
+    public function sendOTPForgetPassword(Request $request)
+    {
+        // get user from form email
+        $user = User::where('email', $request->email)->first();
+
+        // if user is not found, return back with error
+        if (!$user) {
+            return back()->withErrors([
+                'message' => 'The provided email is not registered.',
+            ]);
+        }
+
+        // update user updated_at to current time
+        $user->updated_at = now();
+        /** @var \App\Models\User $user **/
+        $user->save();
+
+        // get first 4 digits from the md5 of created_at to make the OTP, make it capital
+        $otp = strtoupper(substr(md5($user->updated_at), 0, 4));
+
+        // send email
+        $details = [
+            'title' => 'Verify your email',
+            'body' => 'Your email is ' . $user->email . '. Your OTP is ' . $otp . '.',
+        ];
+
+        Mail::send('emails.myTestMail', array('user' => $user, 'details' => $details), function ($message) use ($user) {
+            $message->to($user->email, $user->name)->subject('Your OTP for FacultyPedia');
+        });
+
+        // send the email by request to /recover/2 page with email
+        return redirect('/recover/2')->with('email', $user->email);
+    }
+
+    // verify otp for forget password
+    public function checkOTPForgetPassword(Request $request)
+    {
+        $otp_received = $request->otp1 . $request->otp2 . $request->otp3 . $request->otp4;
+        $user = User::where('email', $request->email)->first();
+
+        // get first 4 digits from the md5 of created_at to make the OTP, make it capital
+        $otp = strtoupper(substr(md5($user->updated_at), 0, 4));
+
+        // check the received OTP with $otp if it matches, then verify the user by inputting time in email_verified_at
+        if ($otp_received == $otp) {
+            $user->email_verified_at = now();
+            $user->save();
+            return redirect('/recover/3')->with('email', $user->email);
+        } else {
+            return redirect('/recover/2')->with('message', 'Invalid OTP. Actual OTP is ' . $otp . '. Please try again.');
+        }
+    }
+
+    // change password page for recover
+    public function changePasswordForgetPassword()
+    {
+        return view('user.changePasswordForgetPassword', [
+            'heading' => 'Change Password',
+        ]);
+    }
+
+    // change password for recover
+    public function changePasswordForgetPasswordStore(Request $request)
+    {
+        // validate data
+        $data = request()->validate([
+            'password' => 'required|min:8|max:255',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+        // get password from request and bcrypt
+        $user->password = bcrypt($data['password']);
+        $user->save();
+
+        return redirect('/login');
+    }
+
+
+    // verifyOTPForgetPassword page
+    public function verifyOTPForgetPassword()
+    {
+        return view('user.verifyOTPForgetPassword', [
+            'heading' => 'Verify OTP',
+        ]);
+    }
+
 
 
     // create new user
@@ -91,9 +186,23 @@ class UserController extends Controller
         // validate data
         $data = request()->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,email|ends_with:@bracu.ac.bd,@g.bracu.ac.bd',
+            'email' => 'required|email|ends_with:@bracu.ac.bd,@g.bracu.ac.bd',
             'password' => 'required|confirmed|min:8|max:255',
         ]);
+
+        // if user is found in that same email check if the email is verified or not
+        $user = User::where('email', $data['email'])->first();
+        if ($user) {
+            if ($user->email_verified_at) {
+                return back()->withErrors([
+                    'message' => 'The provided email is already registered.',
+                ]);
+            } else {
+                // delete user reviews given by that user from reviews table where user_id is user id of that user
+                Reviews::where('user_id', $user->id)->delete();
+                $user->delete();
+            }
+        }
 
         $data['password'] = bcrypt($data['password']);
 
@@ -105,8 +214,8 @@ class UserController extends Controller
         }
 
         $user = User::create($data);
-        $this->sendOTP(request());
         auth()->login($user);
+        $this->sendOTP(request());
 
         return redirect('/verify')->with('message', 'OTP sent to your email');
     }

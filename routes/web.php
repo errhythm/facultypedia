@@ -70,6 +70,24 @@ Route::get('/resendOTP', [UserController::class, 'sendOTP']);
 // verify user email page
 Route::get('/verify', [UserController::class, 'verifyPage']);
 
+// forgot password page
+Route::get('/recover', [UserController::class, 'forgetPassword']);
+
+// forgot password page OTP
+Route::post('/recover/1', [UserController::class, 'sendOTPForgetPassword']);
+
+// verify otp for forgot password
+Route::get('/recover/2', [UserController::class, 'verifyOTPForgetPassword']);
+
+// check if otp is correct
+Route::post('/recover/2', [UserController::class, 'checkOTPForgetPassword']);
+
+// set recover password page
+Route::get('/recover/3', [UserController::class, 'changePasswordForgetPassword']);
+
+// set recover password
+Route::post('/recover/4', [UserController::class, 'changePasswordForgetPasswordStore']);
+
 // Log User In
 Route::post('/loginuser', [UserController::class, 'loginUser']);
 

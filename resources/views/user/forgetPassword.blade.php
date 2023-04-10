@@ -7,20 +7,26 @@
 @endif
 
 
-
 <x-layout :header=false :footer=false>
     <section class="bg-base-100">
         <div class="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
             <div class="flex items-center justify-center px-4 py-10 bg-base-100 sm:px-6 lg:px-8 sm:py-16 lg:py-24">
                 <div class="xl:w-full xl:max-w-sm 2xl:max-w-md xl:mx-auto">
                     <h2 class="text-3xl font-bold leading-tight text-base-content sm:text-4xl">
-                        Sign in to FacultyPedia
+                        Recover your password
                     </h2>
                     <p class="mt-2 text-base text-base-content/60">
                         Don't have an account?
                         <a href="/register" title=""
                             class="font-medium text-info/80 transition-all duration-200 hover:text-info hover:underline focus:text-info">
                             Create a free account
+                        </a>
+                    </p>
+                    <p class="mt-2 text-base text-base-content/60">
+                        Remembered your password?
+                        <a href="/login" title=""
+                            class="font-medium text-info/80 transition-all duration-200 hover:text-info hover:underline focus:text-info">
+                            Login
                         </a>
                     </p>
 
@@ -32,7 +38,7 @@
                         @endif
                     </div>
 
-                    <form method="POST" action="/loginuser" class="mt-8">
+                    <form method="POST" action="/recover/1" class="mt-8">
                         @csrf
                         <div class="space-y-5">
                             <div>
@@ -49,41 +55,15 @@
                                     </div>
 
                                     <input type="email" name="email" id="email"
-                                        placeholder="Enter email to get started"
+                                        placeholder="Enter the email address you used to register"
                                         class="block w-full py-4 pl-10 pr-4 text-base-content placeholder-base-2000 transition-all duration-200 border border-base-content/20 rounded-md bg-base-200 focus:outline-none focus:border-info-content/80 focus:bg-base-100 caret-info-content/80" />
                                 </div>
                             </div>
 
                             <div>
-                                <div class="flex items-center justify-between">
-                                    <label for="password" class="text-base font-medium text-base-content/90">
-                                        Password
-                                    </label>
-
-                                    <a href="\recover" title=""
-                                        class="text-sm font-medium text-info/80 transition-all duration-200 hover:text-info focus:text-info hover:underline">
-                                        Forgot password?
-                                    </a>
-                                </div>
-                                <div class="mt-2.5 relative text-base-content/40 focus-within:text-base-content/60">
-                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4" />
-                                        </svg>
-                                    </div>
-
-                                    <input type="password" name="password" id="password"
-                                        placeholder="Enter your password"
-                                        class="block w-full py-4 pl-10 pr-4 text-base-content placeholder-base-2000 transition-all duration-200 border border-base-content/20 rounded-md bg-base-200 focus:outline-none focus:border-info-content/80 focus:bg-base-100 caret-info-content/80" />
-                                </div>
-                            </div>
-
-                            <div>
-                                <button type="submit" value="login"
+                                <button type="submit" value="submit"
                                     class="inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-base-100 transition-all duration-200 border border-transparent rounded-md bg-gradient-to-r from-success-content to-info-content/80 focus:outline-none hover:opacity-80 focus:opacity-80">
-                                    Log in
+                                    Recover Password
                                 </button>
                             </div>
                         </div>

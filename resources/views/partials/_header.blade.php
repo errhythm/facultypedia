@@ -2,163 +2,316 @@
 $search = request('search');
 $course = request('course');
 ?>
-    <nav class="sticky top-0 z-50 border-b-base-content/5 border-b shadow-md">
-      <div class="navbar bg-base-100 py-4 px-8 text-base-content">
+<nav class="sticky top-0 z-50 border-b-base-content/5 border-b shadow-md">
+    <div class="navbar bg-base-100 py-4 px-8 text-base-content">
         <div class="navbar-start">
-          <div class="dropdown">
-            <label tabindex="0" class="btn btn-ghost lg:hidden">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M4 6h16M4 12h8m-8 6h16"
-                />
-              </svg>
-            </label>
-            <ul
-              tabindex="0"
-              class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
-            >
-             <x-menumain :mode=0/>
-            </ul>
-          </div>
-          <a
-            class="btn btn-ghost normal-case text-xl text-base-content hover:bg-transparent" href="/"
-          >
-            FacultyPedia
-          </a>
+            <div class="dropdown">
+                <label tabindex="0" class="btn btn-ghost lg:hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h8m-8 6h16" />
+                    </svg>
+                </label>
+                <ul tabindex="0"
+                    class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+                    <x-menumain :mode=0 />
+                </ul>
+            </div>
+
+
+
+            <a class="btn btn-ghost normal-case text-xl text-base-content hover:bg-transparent" href="/">
+                <svg class="h-12" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                zoomAndPan="magnify" viewBox="0 0 450 112.499997" preserveAspectRatio="xMidYMid meet" version="1.0">
+                <defs>
+                    <g />
+                    <clipPath id="31b3b278bf">
+                        <path d="M 7 18 L 60 18 L 60 39 L 7 39 Z M 7 18 " clip-rule="nonzero" />
+                    </clipPath>
+                    <clipPath id="e83f2ee243">
+                        <path
+                            d="M 3.472656 27.378906 L 57.800781 8.566406 L 66.351562 33.261719 L 12.023438 52.074219 Z M 3.472656 27.378906 "
+                            clip-rule="nonzero" />
+                    </clipPath>
+                    <clipPath id="e5d35cc263">
+                        <path
+                            d="M 3.472656 27.378906 L 57.800781 8.566406 L 66.351562 33.261719 L 12.023438 52.074219 Z M 3.472656 27.378906 "
+                            clip-rule="nonzero" />
+                    </clipPath>
+                    <clipPath id="0b87792b5f">
+                        <path d="M 57 27 L 66 27 L 66 36 L 57 36 Z M 57 27 " clip-rule="nonzero" />
+                    </clipPath>
+                    <clipPath id="bb5c83facd">
+                        <path
+                            d="M 3.472656 27.378906 L 57.800781 8.566406 L 66.351562 33.261719 L 12.023438 52.074219 Z M 3.472656 27.378906 "
+                            clip-rule="nonzero" />
+                    </clipPath>
+                    <clipPath id="f757bd2707">
+                        <path
+                            d="M 3.472656 27.378906 L 57.800781 8.566406 L 66.351562 33.261719 L 12.023438 52.074219 Z M 3.472656 27.378906 "
+                            clip-rule="nonzero" />
+                    </clipPath>
+                    <clipPath id="1b70efb032">
+                        <path d="M 55 23 L 60 23 L 60 28 L 55 28 Z M 55 23 " clip-rule="nonzero" />
+                    </clipPath>
+                    <clipPath id="0ebf7ca4b9">
+                        <path
+                            d="M 3.472656 27.378906 L 57.800781 8.566406 L 66.351562 33.261719 L 12.023438 52.074219 Z M 3.472656 27.378906 "
+                            clip-rule="nonzero" />
+                    </clipPath>
+                    <clipPath id="4257eda6ae">
+                        <path
+                            d="M 3.472656 27.378906 L 57.800781 8.566406 L 66.351562 33.261719 L 12.023438 52.074219 Z M 3.472656 27.378906 "
+                            clip-rule="nonzero" />
+                    </clipPath>
+                    <clipPath id="497c2d6a0e">
+                        <path d="M 19 27 L 53 27 L 53 48 L 19 48 Z M 19 27 " clip-rule="nonzero" />
+                    </clipPath>
+                    <clipPath id="b09d46cdcf">
+                        <path
+                            d="M 3.472656 27.378906 L 57.800781 8.566406 L 66.351562 33.261719 L 12.023438 52.074219 Z M 3.472656 27.378906 "
+                            clip-rule="nonzero" />
+                    </clipPath>
+                    <clipPath id="82ca71a71d">
+                        <path
+                            d="M 3.472656 27.378906 L 57.800781 8.566406 L 66.351562 33.261719 L 12.023438 52.074219 Z M 3.472656 27.378906 "
+                            clip-rule="nonzero" />
+                    </clipPath>
+                </defs>
+                <g class="fill-base-content" fill-opacity="1">
+                    <g transform="translate(17.875621, 85.607613)">
+                        <g>
+                            <path
+                                d="M 6.210938 -48.921875 C 5.589844 -48.921875 4.816406 -48.457031 4.816406 -47.523438 L 4.816406 -1.398438 C 4.816406 -0.464844 5.589844 0 6.210938 0 L 13.433594 0 C 14.054688 0 14.832031 -0.464844 14.832031 -1.398438 L 14.832031 -18.015625 L 30.050781 -18.015625 C 30.984375 -18.015625 31.449219 -18.792969 31.449219 -19.414062 L 31.449219 -25.78125 C 31.449219 -26.402344 30.984375 -27.179688 30.050781 -27.179688 L 14.832031 -27.179688 L 14.832031 -39.757812 L 33.625 -39.757812 C 34.554688 -39.757812 35.023438 -40.535156 35.023438 -41.15625 L 35.023438 -47.523438 C 35.023438 -48.144531 34.554688 -48.921875 33.625 -48.921875 Z M 6.210938 -48.921875 " />
+                        </g>
+                    </g>
+                </g>
+                <g class="fill-base-content" fill-opacity="1">
+                    <g transform="translate(55.382949, 85.607613)">
+                        <g>
+                            <path
+                                d="M 23.605469 -9.550781 C 23.605469 -8.230469 21.042969 -7.6875 18.558594 -7.6875 C 15.21875 -7.6875 13.667969 -8.542969 13.667969 -11.726562 C 13.667969 -14.910156 17.394531 -15.453125 20.34375 -15.453125 L 23.605469 -15.453125 Z M 8.074219 -28.730469 C 11.105469 -29.429688 13.589844 -29.742188 15.996094 -29.742188 C 20.734375 -29.742188 22.984375 -28.265625 22.984375 -23.839844 L 22.984375 -23.375 L 17.007812 -23.375 C 9.707031 -23.375 3.648438 -21.121094 3.648438 -10.949219 C 3.648438 -1.007812 10.949219 0.621094 18.714844 0.621094 C 22.832031 0.621094 33.625 -0.855469 33.625 -2.71875 L 33.625 -23.375 C 33.625 -33.46875 27.644531 -38.515625 18.015625 -38.515625 C 14.054688 -38.515625 10.25 -38.207031 6.601562 -37.042969 C 6.132812 -36.808594 5.824219 -36.421875 5.824219 -35.875 L 6.988281 -29.429688 C 7.222656 -28.886719 7.6875 -28.730469 8.074219 -28.730469 Z M 8.074219 -28.730469 " />
+                        </g>
+                    </g>
+                </g>
+                <g class="fill-base-content" fill-opacity="1">
+                    <g transform="translate(93.43387, 85.607613)">
+                        <g>
+                            <path
+                                d="M 20.65625 -38.515625 C 10.484375 -38.515625 4.039062 -30.984375 4.039062 -20.890625 L 4.039062 -17.007812 C 4.039062 -6.910156 10.484375 0.621094 20.65625 0.621094 C 22.363281 0.621094 32.070312 0.234375 32.070312 -2.019531 L 30.90625 -8.308594 C 30.671875 -8.851562 30.285156 -9.007812 29.898438 -9.007812 C 27.800781 -8.542969 25.160156 -8.152344 23.21875 -8.152344 C 14.988281 -8.152344 14.054688 -13.125 14.054688 -17.628906 L 14.054688 -20.269531 C 14.054688 -24.773438 14.988281 -29.742188 23.21875 -29.742188 C 25.160156 -29.742188 27.800781 -29.355469 29.898438 -28.886719 C 30.285156 -28.886719 30.671875 -29.042969 30.90625 -29.585938 L 32.070312 -35.875 C 32.070312 -38.128906 22.363281 -38.515625 20.65625 -38.515625 Z M 20.65625 -38.515625 " />
+                        </g>
+                    </g>
+                </g>
+                <g class="fill-base-content" fill-opacity="1">
+                    <g transform="translate(128.766861, 85.607613)">
+                        <g>
+                            <path
+                                d="M 14.445312 -36.496094 C 14.445312 -37.429688 13.667969 -37.894531 13.046875 -37.894531 L 5.824219 -37.894531 C 5.203125 -37.894531 4.425781 -37.429688 4.425781 -36.496094 L 4.425781 -19.101562 C 4.425781 -3.105469 10.949219 0.621094 20.421875 0.621094 C 25.003906 0.621094 36.808594 -1.320312 36.808594 -3.105469 L 36.808594 -36.496094 C 36.808594 -37.429688 36.03125 -37.894531 35.410156 -37.894531 L 28.1875 -37.894531 C 27.566406 -37.894531 26.789062 -37.429688 26.789062 -36.496094 L 26.789062 -9.085938 C 26.789062 -9.085938 23.761719 -8.152344 21.433594 -8.152344 C 18.171875 -8.152344 14.445312 -9.320312 14.445312 -14.132812 Z M 14.445312 -36.496094 " />
+                        </g>
+                    </g>
+                </g>
+                <g class="fill-base-content" fill-opacity="1">
+                    <g transform="translate(170.389903, 85.607613)">
+                        <g>
+                            <path
+                                d="M 14.832031 -47.523438 C 14.832031 -48.457031 14.054688 -48.921875 13.433594 -48.921875 L 6.210938 -48.921875 C 5.589844 -48.921875 4.816406 -48.457031 4.816406 -47.523438 L 4.816406 -1.398438 C 4.816406 -0.464844 5.589844 0 6.210938 0 L 13.433594 0 C 14.054688 0 14.832031 -0.464844 14.832031 -1.398438 Z M 14.832031 -47.523438 " />
+                        </g>
+                    </g>
+                </g>
+                <g class="fill-base-content" fill-opacity="1">
+                    <g transform="translate(190.036603, 85.607613)">
+                        <g>
+                            <path
+                                d="M 24.539062 0.234375 C 25.472656 0.078125 25.9375 -0.621094 25.9375 -1.242188 L 25.9375 -6.910156 C 25.9375 -7.53125 25.472656 -8.308594 24.539062 -8.308594 C 24.304688 -8.308594 22.753906 -8.152344 22.441406 -8.152344 C 18.558594 -8.152344 17.707031 -10.871094 17.707031 -13.125 L 17.707031 -29.121094 L 23.761719 -29.121094 C 24.695312 -29.121094 25.160156 -29.898438 25.160156 -30.519531 L 25.160156 -36.496094 C 25.160156 -37.117188 24.695312 -37.894531 23.761719 -37.894531 L 17.707031 -37.894531 L 17.707031 -47.523438 C 17.707031 -48.457031 16.929688 -48.921875 16.308594 -48.921875 L 10.25 -48.921875 C 9.628906 -48.921875 9.007812 -48.378906 8.773438 -47.445312 L 7.6875 -42.554688 L 7.6875 -37.894531 L 3.882812 -37.894531 C 2.949219 -37.894531 2.484375 -37.117188 2.484375 -36.496094 L 2.484375 -30.519531 C 2.484375 -29.898438 2.949219 -29.121094 3.882812 -29.121094 L 7.6875 -29.121094 L 7.6875 -12.96875 C 7.6875 -2.5625 13.277344 0.621094 20.035156 0.621094 C 21.742188 0.621094 23.296875 0.386719 24.539062 0.234375 Z M 24.539062 0.234375 " />
+                        </g>
+                    </g>
+                </g>
+                <g class="fill-base-content" fill-opacity="1">
+                    <g transform="translate(219.623146, 85.607613)">
+                        <g>
+                            <path
+                                d="M 1.242188 11.570312 C 2.71875 12.425781 5.511719 12.582031 8.386719 12.582031 C 14.210938 12.582031 21.433594 12.113281 26.09375 -2.097656 L 37.429688 -36.496094 C 37.429688 -37.429688 36.652344 -37.894531 36.03125 -37.894531 L 28.886719 -37.894531 C 28.265625 -37.894531 27.566406 -37.585938 27.335938 -36.652344 L 20.113281 -11.414062 L 12.734375 -36.652344 C 12.503906 -37.585938 11.804688 -37.894531 11.183594 -37.894531 L 3.960938 -37.894531 C 3.339844 -37.894531 2.5625 -37.429688 2.5625 -36.496094 L 13.898438 -3.105469 C 13.898438 2.253906 13.511719 4.503906 6.757812 4.503906 C 4.96875 4.503906 3.804688 4.269531 2.484375 3.882812 C 2.097656 3.882812 1.628906 4.039062 1.476562 4.582031 L 0.542969 10.015625 C 0.542969 11.027344 0.855469 11.261719 1.242188 11.570312 Z M 1.242188 11.570312 " />
+                        </g>
+                    </g>
+                </g>
+                <g class="fill-primary" fill-opacity="1">
+                    <g transform="translate(258.750362, 85.607613)">
+                        <g>
+                            <path
+                                d="M 14.832031 -28.886719 C 14.832031 -28.886719 18.09375 -29.742188 20.269531 -29.742188 C 23.296875 -29.742188 26.867188 -28.421875 27.101562 -23.761719 C 27.101562 -23.761719 27.257812 -21.042969 27.257812 -18.714844 C 27.257812 -16.386719 27.101562 -14.054688 27.101562 -14.054688 C 26.867188 -9.394531 23.375 -8.152344 20.269531 -8.152344 C 18.09375 -8.152344 14.832031 -9.085938 14.832031 -9.085938 Z M 4.816406 10.171875 C 4.816406 11.105469 5.589844 11.570312 6.210938 11.570312 L 13.433594 11.570312 C 14.054688 11.570312 14.832031 11.105469 14.832031 10.171875 L 14.832031 -0.777344 C 18.328125 0.621094 21.589844 0.621094 23.21875 0.621094 C 29.121094 0.621094 37.273438 -3.339844 37.273438 -17.472656 C 37.273438 -33.703125 30.828125 -38.515625 21.277344 -38.515625 C 16.308594 -38.515625 4.816406 -36.574219 4.816406 -34.789062 Z M 4.816406 10.171875 " />
+                        </g>
+                    </g>
+                </g>
+                <g class="fill-primary" fill-opacity="1">
+                    <g transform="translate(299.674507, 85.607613)">
+                        <g>
+                            <path
+                                d="M 14.054688 -23.21875 C 14.054688 -29.742188 18.714844 -29.742188 20.113281 -29.742188 C 21.355469 -29.742188 26.015625 -29.742188 26.015625 -23.21875 Z M 36.03125 -22.832031 C 36.03125 -27.101562 34.710938 -38.515625 19.800781 -38.515625 C 5.046875 -38.515625 4.039062 -27.101562 4.039062 -22.832031 L 4.039062 -17.007812 C 4.039062 -4.117188 11.570312 0.621094 21.511719 0.621094 C 25.625 0.621094 29.585938 0.621094 32.769531 -0.3125 C 33.3125 -0.464844 33.46875 -1.085938 33.46875 -1.320312 L 32.460938 -8 C 32.226562 -8.542969 31.761719 -8.699219 31.371094 -8.699219 C 29.121094 -8.386719 26.714844 -8.152344 24.226562 -8.152344 C 18.949219 -8.152344 14.132812 -8.308594 14.132812 -14.832031 L 34.632812 -14.832031 C 35.253906 -14.832031 36.03125 -15.296875 36.03125 -16.230469 Z M 36.03125 -22.832031 " />
+                        </g>
+                    </g>
+                </g>
+                <g class="fill-primary" fill-opacity="1">
+                    <g transform="translate(339.744451, 85.607613)">
+                        <g>
+                            <path
+                                d="M 26.09375 -9.007812 C 26.09375 -9.007812 22.832031 -8.152344 20.65625 -8.152344 C 17.628906 -8.152344 14.054688 -9.472656 13.824219 -14.132812 C 13.824219 -14.132812 13.667969 -16.851562 13.667969 -19.179688 C 13.667969 -21.511719 13.824219 -23.839844 13.824219 -23.839844 C 14.054688 -28.5 17.550781 -29.742188 20.65625 -29.742188 C 22.832031 -29.742188 26.09375 -28.808594 26.09375 -28.808594 Z M 36.109375 -47.523438 C 36.109375 -48.457031 35.332031 -48.921875 34.710938 -48.921875 L 27.488281 -48.921875 C 26.867188 -48.921875 26.09375 -48.457031 26.09375 -47.523438 L 26.09375 -36.574219 C 22.597656 -38.515625 19.335938 -38.515625 17.707031 -38.515625 C 11.804688 -38.515625 3.648438 -34.554688 3.648438 -20.421875 C 3.648438 -4.195312 10.09375 0.621094 19.648438 0.621094 C 24.617188 0.621094 36.109375 -0.855469 36.109375 -2.640625 Z M 36.109375 -47.523438 " />
+                        </g>
+                    </g>
+                </g>
+                <g class="fill-primary" fill-opacity="1">
+                    <g transform="translate(380.668596, 85.607613)">
+                        <g>
+                            <path
+                                d="M 9.785156 -40.847656 C 12.734375 -40.847656 15.21875 -42.089844 15.21875 -45.660156 C 15.21875 -49.542969 12.734375 -50.554688 9.785156 -50.554688 C 6.832031 -50.554688 4.503906 -49.542969 4.503906 -45.660156 C 4.503906 -42.089844 6.832031 -40.847656 9.785156 -40.847656 Z M 14.832031 -36.496094 C 14.832031 -37.429688 14.054688 -37.894531 13.433594 -37.894531 L 6.210938 -37.894531 C 5.589844 -37.894531 4.816406 -37.429688 4.816406 -36.496094 L 4.816406 -1.398438 C 4.816406 -0.464844 5.589844 0 6.210938 0 L 13.433594 0 C 14.054688 0 14.832031 -0.464844 14.832031 -1.398438 Z M 14.832031 -36.496094 " />
+                        </g>
+                    </g>
+                </g>
+                <g class="fill-primary" fill-opacity="1">
+                    <g transform="translate(400.315296, 85.607613)">
+                        <g>
+                            <path
+                                d="M 23.605469 -9.550781 C 23.605469 -8.230469 21.042969 -7.6875 18.558594 -7.6875 C 15.21875 -7.6875 13.667969 -8.542969 13.667969 -11.726562 C 13.667969 -14.910156 17.394531 -15.453125 20.34375 -15.453125 L 23.605469 -15.453125 Z M 8.074219 -28.730469 C 11.105469 -29.429688 13.589844 -29.742188 15.996094 -29.742188 C 20.734375 -29.742188 22.984375 -28.265625 22.984375 -23.839844 L 22.984375 -23.375 L 17.007812 -23.375 C 9.707031 -23.375 3.648438 -21.121094 3.648438 -10.949219 C 3.648438 -1.007812 10.949219 0.621094 18.714844 0.621094 C 22.832031 0.621094 33.625 -0.855469 33.625 -2.71875 L 33.625 -23.375 C 33.625 -33.46875 27.644531 -38.515625 18.015625 -38.515625 C 14.054688 -38.515625 10.25 -38.207031 6.601562 -37.042969 C 6.132812 -36.808594 5.824219 -36.421875 5.824219 -35.875 L 6.988281 -29.429688 C 7.222656 -28.886719 7.6875 -28.730469 8.074219 -28.730469 Z M 8.074219 -28.730469 " />
+                        </g>
+                    </g>
+                </g>
+                <g clip-path="url(#31b3b278bf)">
+                    <g clip-path="url(#e83f2ee243)">
+                        <g clip-path="url(#e5d35cc263)">
+                            <path class="fill-base-content"
+                                d="M 58.773438 20.632812 C 59.027344 20.417969 59.121094 20.105469 59.015625 19.800781 C 58.949219 19.613281 58.820312 19.460938 58.648438 19.378906 C 58.550781 19.328125 58.4375 19.296875 58.3125 19.292969 L 57.359375 19.257812 L 35.195312 18.394531 L 34.757812 18.378906 L 34.316406 18.359375 L 30.632812 18.21875 C 30.21875 18.203125 29.804688 18.261719 29.414062 18.394531 C 29.035156 18.527344 28.667969 18.730469 28.351562 19 L 25.25 21.636719 L 24.914062 21.921875 L 24.582031 22.207031 L 7.90625 36.339844 L 7.285156 36.867188 C 7.148438 36.984375 7.0625 37.125 7.023438 37.273438 C 6.988281 37.414062 6.996094 37.554688 7.046875 37.699219 C 7.148438 38 7.414062 38.1875 7.75 38.207031 L 18.855469 38.644531 L 18.960938 38.496094 C 22.53125 33.828125 27.335938 30.347656 32.835938 28.445312 C 32.84375 28.441406 32.84375 28.441406 32.851562 28.4375 C 38.351562 26.535156 44.285156 26.292969 50.007812 27.746094 L 50.257812 27.8125 L 50.269531 27.847656 Z M 58.773438 20.632812 "
+                                fill-opacity="1" fill-rule="nonzero" />
+                        </g>
+                    </g>
+                </g>
+                <g clip-path="url(#0b87792b5f)">
+                    <g clip-path="url(#bb5c83facd)">
+                        <g clip-path="url(#f757bd2707)">
+                            <path class="fill-base-content"
+                                d="M 65 30.394531 C 62.738281 30.238281 60.933594 28.800781 59.976562 27.199219 C 59.695312 27.585938 59.300781 27.902344 58.824219 28.101562 C 58.769531 28.128906 58.707031 28.148438 58.65625 28.167969 C 58.148438 28.34375 57.613281 28.367188 57.101562 28.238281 C 56.867188 30.730469 57.96875 33.507812 59.308594 34.648438 C 59.621094 34.914062 60.027344 35.050781 60.449219 35.058594 C 60.960938 35.058594 61.496094 34.941406 62.011719 34.738281 C 61.867188 34.660156 61.734375 34.570312 61.605469 34.480469 C 61.289062 34.25 61.007812 33.992188 60.75 33.707031 C 60.242188 33.136719 59.847656 32.476562 59.59375 31.769531 C 59.558594 31.667969 59.609375 31.566406 59.703125 31.535156 C 59.792969 31.503906 59.894531 31.546875 59.933594 31.632812 C 60.21875 32.269531 60.632812 32.859375 61.125 33.339844 C 61.375 33.574219 61.652344 33.792969 61.9375 33.964844 C 62.222656 34.136719 62.53125 34.277344 62.820312 34.320312 L 62.832031 34.324219 C 62.832031 34.324219 62.839844 34.332031 62.839844 34.332031 C 63.464844 33.960938 64.039062 33.492188 64.484375 32.964844 C 64.273438 32.9375 64.066406 32.890625 63.867188 32.824219 C 63.480469 32.703125 63.132812 32.535156 62.792969 32.328125 C 62.125 31.925781 61.546875 31.371094 61.121094 30.722656 C 61.066406 30.636719 61.085938 30.523438 61.175781 30.464844 C 61.257812 30.410156 61.367188 30.433594 61.425781 30.507812 C 61.863281 31.074219 62.425781 31.535156 63.046875 31.859375 C 63.363281 32.023438 63.691406 32.144531 64.015625 32.21875 C 64.335938 32.296875 64.664062 32.316406 64.960938 32.289062 C 65.25 31.808594 65.421875 31.316406 65.421875 30.84375 C 65.433594 30.609375 65.25 30.410156 65 30.394531 Z M 65 30.394531 "
+                                fill-opacity="1" fill-rule="nonzero" />
+                        </g>
+                    </g>
+                </g>
+                <g clip-path="url(#1b70efb032)">
+                    <g clip-path="url(#0ebf7ca4b9)">
+                        <g clip-path="url(#4257eda6ae)">
+                            <path class="fill-base-content"
+                                d="M 58.546875 23.40625 C 58.046875 23.199219 57.5 23.183594 57 23.359375 C 56.953125 23.375 56.910156 23.386719 56.867188 23.410156 C 56.828125 23.425781 56.796875 23.445312 56.757812 23.457031 C 56.425781 23.613281 56.144531 23.859375 55.9375 24.15625 C 55.835938 24.296875 55.753906 24.449219 55.6875 24.617188 C 55.46875 25.167969 55.472656 25.769531 55.699219 26.316406 C 55.929688 26.863281 56.355469 27.292969 56.902344 27.519531 C 56.996094 27.554688 57.09375 27.589844 57.183594 27.617188 C 57.648438 27.746094 58.136719 27.710938 58.582031 27.523438 C 59.035156 27.332031 59.40625 27 59.644531 26.570312 C 59.6875 26.488281 59.726562 26.40625 59.765625 26.316406 C 59.984375 25.765625 59.976562 25.167969 59.753906 24.617188 C 59.519531 24.0625 59.09375 23.632812 58.546875 23.40625 Z M 58.546875 23.40625 "
+                                fill-opacity="1" fill-rule="nonzero" />
+                        </g>
+                    </g>
+                </g>
+                <g clip-path="url(#497c2d6a0e)">
+                    <g clip-path="url(#b09d46cdcf)">
+                        <g clip-path="url(#82ca71a71d)">
+                            <path class="fill-base-content"
+                                d="M 20.019531 38.679688 C 19.96875 38.75 19.914062 38.808594 19.871094 38.875 L 19.96875 39.15625 L 20.136719 39.640625 L 22.972656 47.832031 C 26.554688 44.496094 30.488281 41.941406 34.707031 40.207031 C 35.105469 40.042969 35.503906 39.890625 35.902344 39.742188 C 36.125 39.65625 36.347656 39.578125 36.574219 39.503906 C 36.617188 39.488281 36.65625 39.472656 36.699219 39.457031 C 37 39.355469 37.300781 39.257812 37.601562 39.164062 C 38.003906 39.039062 38.40625 38.917969 38.8125 38.8125 C 43.121094 37.632812 47.761719 37.210938 52.65625 37.5625 L 49.847656 29.453125 L 49.679688 28.96875 L 49.550781 28.597656 C 49.503906 28.589844 49.460938 28.578125 49.421875 28.566406 C 38.429688 25.945312 26.992188 29.890625 20.019531 38.679688 Z M 20.019531 38.679688 "
+                                fill-opacity="1" fill-rule="nonzero" />
+                        </g>
+                    </g>
+                </g>
+            </svg>
+            </a>
+
         </div>
         <div class="navbar-center hidden lg:flex">
-          <ul class="menu menu-horizontal px-1 font-medium">
-             <x-menumain :mode=1/>
-          </ul>
+            <ul class="menu menu-horizontal px-1 font-medium">
+                <x-menumain :mode=1 />
+            </ul>
         </div>
         <div class="navbar-end">
-          <div class="hidden lg:flex">
-            <div
-              class="form-control flex-1 block max-w-xs px-8 ml-auto text-base-content"
-            >
-            <form action="/faculties">
-              <label for class="sr-only">Search</label>
-              <div class="relative">
-                <div
-                  id="search-icon"
-                  class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
-                >
-                  <svg
-                    class="w-5 h-5 text-zinc-400"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                    ></path>
-                  </svg>
+            <div class="hidden lg:flex">
+                <div class="form-control flex-1 block max-w-xs px-8 ml-auto text-base-content">
+                    <form action="/faculties">
+                        <label for class="sr-only">Search</label>
+                        <div class="relative">
+                            <div id="search-icon"
+                                class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg class="w-5 h-5 text-zinc-400" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                            @if ($search)
+                                <input id="search-bar" name="search" type="search"
+                                    class="block w-full py-2 pl-10 appearance-none text-base-content placeholder-neutral bg-base-200 border-info-content rounded-lg focus:ring-info focus:border-primary-content text-sm"
+                                    placeholder="Search" value="{{ $search }}" />
+                            @else
+                                <input id="search-bar" name="search" type="search"
+                                    class="block w-full py-2 pl-10 appearance-none text-base-content placeholder-neutral bg-base-200 border-info-content rounded-lg focus:ring-info focus:border-primary-content text-sm"
+                                    placeholder="Search" />
+                            @endif
+                            @if ($course)
+                                <input type="hidden" id="search-bar" name="course" type="search"
+                                    class="block w-full py-2 pl-10 appearance-none text-base-content placeholder-neutral bg-base-200 border-info-content rounded-lg focus:ring-info focus:border-primary-content text-sm"
+                                    placeholder="Search" value="{{ $course }}" />
+                            @endif
+                        </div>
+                    </form>
                 </div>
-                @if ($search)
-                <input
-                  id="search-bar"
-                  name="search"
-                  type="search"
-                  class="block w-full py-2 pl-10 text-base-content placeholder-neutral bg-base-200 border-info-content rounded-lg focus:ring-info focus:border-primary-content text-sm"
-                  placeholder="Search"
-                    value="{{ $search }}"
-                />
-                  @else
-                <input
-                  id="search-bar"
-                  name="search"
-                  type="search"
-                  class="block w-full py-2 pl-10 text-base-content placeholder-neutral bg-base-200 border-info-content rounded-lg focus:ring-info focus:border-primary-content text-sm"
-                  placeholder="Search"
-                />
-                  @endif
-                   @if ($course)
-                <input
-                    type="hidden"
-                  id="search-bar"
-                  name="course"
-                  type="search"
-                  class="block w-full py-2 pl-10 text-base-content placeholder-neutral bg-base-200 border-info-content rounded-lg focus:ring-info focus:border-primary-content text-sm"
-                  placeholder="Search"
-                    value="{{ $course }}"
-                />
-                        @endif
-              </div>
-              </form>
             </div>
-          </div>
 
-          {{-- check if user is logged in --}}
-          @auth
-            @if (Auth::check())
-          @endauth
-          <div class="dropdown dropdown-end">
-            <label tabindex="0" class="btn btn-ghost btn-circle avatar">
-              <div class="w-10 rounded-full">
-                <img src="https://api.dicebear.com/5.x/bottts-neutral/svg?seed={{ md5(Auth::user()->id . Auth::user()->created_at) }}&scale=110"
-                alt="{{Auth::user()->name}}">
-              </div>
-            </label>
-            <ul
-              tabindex="0"
-              class="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52 text-base-content overflow-auto"
-            >
-              <li class="shadow-none">
-                <a class="justify-between">
+            <script>
+                document.addEventListener('keydown', function(event) {
+    if (event.ctrlKey && event.key === 'k') {
+        event.preventDefault();
+        document.getElementById('search-bar').focus();
+    }
+});
+            </script>
+
+            {{-- check if user is logged in --}}
+            @auth
+                @if (Auth::check())
+                @endauth
+                <div class="dropdown dropdown-end">
                     <label tabindex="0" class="btn btn-ghost btn-circle avatar">
-              <div class="w-10 rounded-full">
-                <img src="https://api.dicebear.com/5.x/bottts-neutral/svg?seed={{ md5(Auth::user()->id . Auth::user()->created_at) }}&scale=110"
-                alt="{{Auth::user()->name}}">
-              </div>
-            </label>
-                  <div class="pr-4 py-3 text-base font-bold">
+                        <div class="w-10 rounded-full">
+                            <img src="https://api.dicebear.com/5.x/bottts-neutral/svg?seed={{ md5(Auth::user()->id . Auth::user()->created_at) }}&scale=110"
+                                alt="{{ Auth::user()->name }}">
+                        </div>
+                    </label>
+                    <ul tabindex="0"
+                        class="mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52 text-base-content overflow-auto">
+                        <li class="shadow-none">
+                            <a class="justify-between">
+                                <label tabindex="0" class="btn btn-ghost btn-circle avatar">
+                                    <div class="w-10 rounded-full">
+                                        <img src="https://api.dicebear.com/5.x/bottts-neutral/svg?seed={{ md5(Auth::user()->id . Auth::user()->created_at) }}&scale=110"
+                                            alt="{{ Auth::user()->name }}">
+                                    </div>
+                                </label>
+                                <div class="pr-4 py-3 text-base font-bold">
 
-                    <div>{{Auth::user()->name}}</div>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a href="/profile" class="justify-between">
-                  Profile
-                </a>
-              </li>
-              <li><a>Settings</a></li>
-              <li><a href="/logout">Logout</a></li>
-            </ul>
-          </div>
-          @else
-          <ul class="hidden lg:menu lg:menu-horizontal px-1 font-medium">
-            <li>
-              <a
-                class="btn btn-ghost hover:bg-transparent"
-                href="/login"
-              >
-                Login
-              </a>
-            </li>
-            <li>
-              <a
-                class="btn btn-ghost hover:bg-transparent"
-                href="/register"
-              >
-                Register
-              </a>
-            </li>
-          </ul>
+                                    <div>{{ Auth::user()->name }}</div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/profile" class="justify-between">
+                                Profile
+                            </a>
+                        </li>
+                        <li><a>Settings</a></li>
+                        <li><a href="/logout">Logout</a></li>
+                    </ul>
+                </div>
+            @else
+                <ul class="hidden lg:menu lg:menu-horizontal px-1 font-medium">
+                    <li>
+                        <a class="btn btn-ghost hover:bg-transparent" href="/login">
+                            Login
+                        </a>
+                    </li>
+                    <li>
+                        <a class="btn btn-ghost hover:bg-transparent" href="/register">
+                            Register
+                        </a>
+                    </li>
+                </ul>
             @endif
         </div>
-      </div>
-    </nav>
+    </div>
+</nav>
