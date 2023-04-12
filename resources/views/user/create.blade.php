@@ -44,7 +44,7 @@
                         <div class="space-y-5">
                             <div>
                                 <label for="name" class="text-base font-medium text-base-content/90">
-                                    Fast & Last name
+                                    First & Last name
                                 </label>
                                 <div class="mt-2.5 relative text-base-content/40 focus-within:text-base-content/60">
                                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">

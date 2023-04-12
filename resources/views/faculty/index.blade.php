@@ -8,15 +8,27 @@
         $page_count = $listings->lastPage();
         $per_page = $listings->perPage();
         $total = $listings->total();
-        $query = request()->query();
-        $query = http_build_query($query);
-        // check if query contains page
-        if (strpos($query, 'page') !== false) {
-            $query = preg_replace('/&page=\d+/', '', $query);
+
+        // create a query array for pagination dont add course, search if they are not in request
+        $query = '';
+        if (request('course')) {
+            $query = http_build_query([
+                'course' => request('course'),
+            ]);
         }
-        if ($query) {
-            $query = $query . '&';
+        if (request('search')) {
+            $query = http_build_query([
+                'search' => request('search'),
+            ]);
         }
+        if (request('course') && request('search')) {
+            $query = http_build_query([
+                'course' => request('course'),
+                'search' => request('search'),
+            ]);
+        }
+
+
 
         $heading = 'All Faculties';
 
@@ -79,6 +91,82 @@
                     @if ($page_count != $page)
                         <button class="btn btn-md"><a
                                 href="/faculties/?{{ $query }}page={{ $page + 1 }}">»</a></button>
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <div class="py-12 bg-base-100 sm:py-16">
+            <div class="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
+                <div class="flex items-center justify-center space-x-2">
+
+                    @php
+                    // break the query string into array
+                    $query = explode('&', $query);
+                    // remove page from query string
+                    $query = array_filter($query, function ($item) {
+                    return !str_contains($item, 'page');
+                    });
+                    // convert array to string
+                    $query = implode('&', $query);
+                    // add & to the end of the string if it is not empty
+                    if ($query) {
+                    $query = $query . '&';
+                    }
+
+                    @endphp
+
+                    @if ($page != 1)
+                    <a href="/faculties/?{{$query }}page={{ $page - 1 }}"
+                        class="inline-flex items-center justify-center text-base-content transition-all duration-200 bg-base-100 border border-neutral-content rounded-md w-9 h-9 hover:bg-base-300">
+                        <span class="sr-only">Previous</span>
+                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </a>
+                    @endif
+
+
+                    @foreach (range(1, $page_count) as $pages)
+                        @if ($page == $pages)
+
+                    <a href="/faculties/?{{ $query }}page={{ $pages }}"
+                        class="inline-flex items-center justify-center text-base font-semibold ik transition-all duration-200 mh border gh rounded-md sm:text-sm w-9 h-9">
+                        {{ $pages }}
+                    </a>
+                    @else
+
+                    <a href="/faculties/?{{ $query }}page={{ $pages }}"
+                        class="inline-flex items-center justify-center text-base font-semibold text-base-content transition-all duration-200 bg-base-100 border border-neutral-content rounded-md sm:text-sm w-9 h-9 hover:bg-base-300">
+                        {{ $pages }}
+                    </a>
+                        @endif
+                    @endforeach
+
+                    @if ($page_count != $page)
+                    <a href="/faculties/?{{ $query }}page={{ $page + 1 }}"
+                        class="inline-flex items-center justify-center text-base-content transition-all duration-200 bg-base-100 border border-neutral-content rounded-md w-9 h-9 hover:bg-base-300">
+                        <span class="sr-only">Next</span>
+                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+
+                    @endif
+
+                    {{-- if page is more than 1 then show last page button but dont show if you are already on last page --}}
+
+                    @if ($page_count > 1 && $page != $page_count)
+                    <a href="/faculties/?{{ $query }}page={{ $page_count }}"
+                        class="inline-flex items-center justify-center text-base-content transition-all duration-200 bg-base-100 border border-neutral-content rounded-md w-9 h-9 hover:bg-base-300">
+                        <span class="sr-only">Last</span>
+                        <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
                     @endif
                 </div>
             </div>

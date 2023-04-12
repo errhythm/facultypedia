@@ -36,13 +36,7 @@ Route::get('/faculties/{page?}', [FacultyController::class, 'index']);
 Route::get('/profile/{user}', [UserController::class, 'show']);
 
 // Profile Redirect
-Route::get('/profile', function () {
-    if (auth()->check()) {
-        return redirect('/profile/' . auth()->user()->id);
-    } else {
-        return redirect('/login');
-    }
-});
+Route::get('/profile', [UserController::class, 'profileRedirect']);
 
 // show all courses
 Route::get('/courses', function () {

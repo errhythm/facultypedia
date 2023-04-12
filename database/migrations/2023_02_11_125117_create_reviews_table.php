@@ -23,6 +23,7 @@ return new class extends Migration
             $table->text('review');
             $table->boolean('isAnonymous');
             $table->boolean('isApproved');
+            $table->boolean('isDeleted')->default(0);
             $table->timestamps();
         });
     }

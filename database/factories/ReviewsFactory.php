@@ -33,6 +33,7 @@ class ReviewsFactory extends Factory
             'review' => $this->faker->text(100),
             'isAnonymous' => $this->faker->boolean(),
             'isApproved' => 1,
+            'isDeleted' => 0,
         ];
     }
 }

@@ -23,6 +23,17 @@ class UserController extends Controller
         ]);
     }
 
+    // profile redirect
+    public function profileRedirect()
+    {
+        if (auth()->check()) {
+            return redirect('/profile/' . auth()->user()->id);
+        } else {
+            return redirect('/login');
+        }
+    }
+
+
     // show user profile registration form
     public function create()
     {
