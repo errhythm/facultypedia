@@ -46,44 +46,52 @@ Route::get('/courses', function () {
     ]);
 });
 
-// show Register/Sign Up form
-Route::get('/register', [UserController::class, 'create']);
+// create route group for login register
+Route::group(['middleware' => 'guest'], function () {
 
-// show Login form
-Route::get('/login', [UserController::class, 'login']);
+    // show Register/Sign Up form
+    Route::get('/register', [UserController::class, 'create'])->name('register');
 
-// create new user
-Route::post('/registeruser', [UserController::class, 'store']);
+    // show Login form
+    Route::get('/login', [UserController::class, 'login'])->name('login');
 
-// verify user email
-Route::post('/verifyOTP', [UserController::class, 'verifyOTP']);
+    // create new user
+    Route::post('/registeruser', [UserController::class, 'store']);
 
-// resend OTP
-Route::get('/resendOTP', [UserController::class, 'sendOTP']);
+    // verify user email
+    Route::post('/verifyOTP', [UserController::class, 'verifyOTP']);
 
-// verify user email page
-Route::get('/verify', [UserController::class, 'verifyPage']);
+    // resend OTP
+    Route::get(
+        '/resendOTP',
+        [UserController::class, 'sendOTP']
+    );
 
-// forgot password page
-Route::get('/recover', [UserController::class, 'forgetPassword']);
+    // verify user email page
+    Route::get('/verify', [UserController::class, 'verifyPage']);
 
-// forgot password page OTP
-Route::post('/recover/1', [UserController::class, 'sendOTPForgetPassword']);
+    // forgot password page
+    Route::get('/recover', [UserController::class, 'forgetPassword']);
 
-// verify otp for forgot password
-Route::get('/recover/2', [UserController::class, 'verifyOTPForgetPassword']);
+    // forgot password page OTP
+    Route::post('/recover/1', [UserController::class, 'sendOTPForgetPassword']);
 
-// check if otp is correct
-Route::post('/recover/2', [UserController::class, 'checkOTPForgetPassword']);
+    // verify otp for forgot password
+    Route::get('/recover/2', [UserController::class, 'verifyOTPForgetPassword']);
 
-// set recover password page
-Route::get('/recover/3', [UserController::class, 'changePasswordForgetPassword']);
+    // check if otp is correct
+    Route::post('/recover/2', [UserController::class, 'checkOTPForgetPassword']);
 
-// set recover password
-Route::post('/recover/4', [UserController::class, 'changePasswordForgetPasswordStore']);
+    // set recover password page
+    Route::get('/recover/3', [UserController::class, 'changePasswordForgetPassword']);
 
-// Log User In
-Route::post('/loginuser', [UserController::class, 'loginUser']);
+    // set recover password
+    Route::post('/recover/4', [UserController::class, 'changePasswordForgetPasswordStore']);
+
+    // Log User In
+    Route::post('/loginuser', [UserController::class, 'loginUser']);
+});
+
 
 // Log User Out
 Route::get('/logout', [UserController::class, 'logout']);
@@ -91,5 +99,21 @@ Route::get('/logout', [UserController::class, 'logout']);
 // create review in ReviewsController
 Route::post('/createreview', [ReviewsController::class, 'store']);
 
-// create a dashboard for admin, faculty and students
-Route::get('/dashboard', [AdminController::class, 'index']);
+// create a route group named dashboard
+Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
+
+    // show admin dashboard
+    Route::get('/', [AdminController::class, 'index'])->name('dashboard');
+
+    // show all reviews
+    Route::get('/reviews', [AdminController::class, 'reviews'])->name('reviews');
+
+    // show pending reviews
+    Route::get('/reviews/pending/{page?}', [AdminController::class, 'pendingReviews'])->name('pendingReviews');
+
+    // approve pending reviews
+    Route::post('/reviews/approve/{id}', [AdminController::class, 'approveReview']);
+
+    // delete pending reviews
+    Route::post('/reviews/delete/{id}', [AdminController::class, 'deleteReview']);
+});

@@ -71,30 +71,6 @@
             <!--end grid-->
         </div>
         <!--end container-->
-        <div class="grid md:grid-cols-12 grid-cols-1 mt-8">
-            <div class="md:col-span-12 text-center">
-                <div class="btn-group">
-                    @if ($page != 1)
-                        <button class="btn btn-md"><a href="/faculties/?{{ $query }}page={{ $page - 1 }}">
-                                «
-                            </a></button>
-                    @endif
-                    @foreach (range(1, $page_count) as $pages)
-                        @if ($page == $pages)
-                            <button class="btn btn-md"><a
-                                    href="/faculties/?{{ $query }}page={{ $pages }}">{{ $pages }}</a></button>
-                        @else
-                            <button class="btn btn-md"><a
-                                    href="/faculties/?{{ $query }}page={{ $pages }}">{{ $pages }}</a></button>
-                        @endif
-                    @endforeach
-                    @if ($page_count != $page)
-                        <button class="btn btn-md"><a
-                                href="/faculties/?{{ $query }}page={{ $page + 1 }}">»</a></button>
-                    @endif
-                </div>
-            </div>
-        </div>
 
         <div class="py-12 bg-base-100 sm:py-16">
             <div class="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">

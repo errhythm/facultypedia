@@ -9,6 +9,7 @@
     if ($user->role == 'faculty') {
         $totalreviews = \App\Models\Reviews::where('faculty_id', $faculty->id)
             ->where('isApproved', 1)
+            ->where('isDeleted', 0)
             ->count();
     }
 @endphp
@@ -114,13 +115,15 @@
                                     if ($user->role == 'faculty') {
                                         $reviews = \App\Models\Reviews::where('faculty_id', $faculty->id)
                                             ->where('isApproved', 1)
-                                            ->orderBy('created_at', 'desc')
+                                            ->where('isDeleted', 0)
+                                            ->orderBy('updated_at', 'desc')
                                             ->paginate(5);
                                     } elseif ($user->role == 'student') {
                                         $reviews = \App\Models\Reviews::where('user_id', $user->id)
                                             ->where('isApproved', 1)
                                             ->where('isAnonymous', 0)
-                                            ->orderBy('created_at', 'desc')
+                                            ->where('isDeleted', 0)
+                                            ->orderBy('updated_at', 'desc')
                                             ->paginate(5);
                                     }
                                 @endphp
@@ -139,7 +142,7 @@
                                 @elseif ($user->role == 'student')
                                     @if ($reviews->count() == 0)
                                         <div class="alert alert-info" role="alert">
-                                            No reviews yet! Be the first to review.
+                                            The user haven't reviewed any faculty yet.
                                         </div>
                                     @else
                                         <ul class="divide-y divide-base-300 -my-9 gap-x-16">
