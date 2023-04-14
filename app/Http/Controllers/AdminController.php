@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Reviews;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -54,5 +55,65 @@ class AdminController extends Controller
         $review->updated_at = now();
         $review->save();
         return redirect()->back()->with('success', 'Review Deleted');
+    }
+
+    // show all users
+    public function users()
+    {
+        return view('dashboard.users.index', [
+            'heading' => 'All Users',
+            'users' => User::paginate(10),
+            'usersCount' => User::count(),
+            'unit' => 'user'
+        ]);
+    }
+
+    // show all faculty
+    public function faculties()
+    {
+        return view('dashboard.users.index', [
+            'heading' => 'All Faculties',
+            'users' => User::where('role', 'faculty')->paginate(10),
+            'usersCount' => User::where('role', 'faculty')->count(),
+            'unit' => 'faculty'
+        ]);
+    }
+
+    // show all students
+    public function students()
+    {
+        return view('dashboard.users.index', [
+            'heading' => 'All Students',
+            'users' => User::where('role', 'student')->paginate(10),
+            'usersCount' => User::where('role', 'student')->count(),
+            'unit' => 'student'
+        ]);
+    }
+
+    // edit a user
+    public function editUser($id)
+    {
+        return view('dashboard.users.edit', [
+            'heading' => 'Edit User',
+            'user' => User::find($id),
+        ]);
+    }
+
+    // editUserStore
+    public function editUserStore(Request $request)
+    {
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'role' => 'required',
+        ]);
+
+        $user = User::find($request->id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->role = $request->role;
+        $user->updated_at = now();
+        $user->save();
+        return redirect()->back()->with('success', 'User Updated');
     }
 }

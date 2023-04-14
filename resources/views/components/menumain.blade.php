@@ -13,7 +13,7 @@
 @endphp
 
 
-<li><a href="/faculties">Search Faculties</a></li>
+<li><a href="{{ route('faculties') }}">Search Faculties</a></li>
 <li tabindex="0">
     <a class="justify-between">
         Parent
@@ -28,7 +28,7 @@
         <li><a>Submenu 2</a></li>
     </ul>
 </li>
-<li><a>Item 3</a></li>
+<li><a href="{{ route('dashboard') }}" >Dashboard</a></li>
 @if ($mode == 0)
 <li><a href="/login">Login</a></li>
 <li><a href="/register">Register</a></li>

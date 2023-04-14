@@ -30,7 +30,7 @@ Route::get('/', function () {
 });
 
 //  faculty index
-Route::get('/faculties/{page?}', [FacultyController::class, 'index']);
+Route::get('/faculties/{page?}', [FacultyController::class, 'index'])->name('faculties');
 
 // user profile
 Route::get('/profile/{user}', [UserController::class, 'show']);
@@ -116,4 +116,17 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
 
     // delete pending reviews
     Route::post('/reviews/delete/{id}', [AdminController::class, 'deleteReview']);
+
+    // show all users
+    Route::get('/users', [AdminController::class, 'users'])->name('allUsers');
+
+    // show all faculties
+    Route::get('/faculties', [AdminController::class, 'faculties'])->name('allFaculties');
+
+    // show all students
+    Route::get('/students', [AdminController::class, 'students'])->name('allStudents');
+
+    // edit a user
+    Route::get('/users/edit/{id}', [AdminController::class, 'editUser'])->name('editUser');
+    Route::post('/users/edit/{id}', [AdminController::class, 'editUserStore'])->name('editUserStore');
 });
