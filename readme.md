@@ -38,8 +38,8 @@
 
 **Review Approval System:**
 
-- [ ] Admin dashboard to approve or reject anonymous reviews before they are visible to students
-- [ ] Ability for admin to view and manage all reviews for all faculties
+- [x] Admin dashboard to approve or reject anonymous reviews before they are visible to students
+- [x] Ability for admin to view and manage all reviews for all faculties
 
 #### Requirement 4
 
