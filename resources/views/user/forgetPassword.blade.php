@@ -30,14 +30,6 @@
                         </a>
                     </p>
 
-                    <div>
-                        @if ($errors->any())
-                            @foreach ($errors->all() as $error)
-                                <x-alert type="alert" />
-                            @endforeach
-                        @endif
-                    </div>
-
                     <form method="POST" action="/recover/1" class="mt-8">
                         @csrf
                         <div class="space-y-5">

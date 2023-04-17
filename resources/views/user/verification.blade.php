@@ -18,9 +18,6 @@ exit();
                             <li class="step">User Onboarding</li>
                         </ul>
                     </div>
-                    <div>
-                        <x-alert type="info" />
-                    </div>
                     <h2 class="text-3xl font-bold leading-tight text-base-content sm:text-4xl">
                         {{ $heading }}
                     </h2>

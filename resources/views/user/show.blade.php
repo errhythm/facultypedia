@@ -24,8 +24,6 @@
 <x-layout :header=true :footer=true>
     {{-- check for any session variable message --}}
     <div class="flex flex-wrap justify-center">
-        {{-- get session alert-type --}}
-        <x-alert type="{{ session('alert-type') }}" />
         <div class="w-5/6 xl:w-4/6 py-4">
             <section class="lg:pt-6">
                 <div class="lg:px-8 sm:px-6 px-4 max-w-7xl mx-auto">

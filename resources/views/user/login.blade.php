@@ -21,14 +21,6 @@
                             Create a free account
                         </a>
                     </p>
-
-                    <div>
-                        {{-- check for any message --}}
-                        @if (session('message'))
-                            <x-alert type="error" />
-                        @endif
-                    </div>
-
                     <form method="POST" action="/loginuser" class="mt-8">
                         @csrf
                         <div class="space-y-5">

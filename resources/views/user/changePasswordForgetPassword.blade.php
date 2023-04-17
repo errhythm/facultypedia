@@ -21,15 +21,6 @@
                     <h2 class="text-3xl font-bold leading-tight text-base-content sm:text-4xl">
                         Change Password
                     </h2>
-
-                    <div>
-                        @if ($errors->any())
-                            @foreach ($errors->all() as $error)
-                                <x-alert type="alert" />
-                            @endforeach
-                        @endif
-                    </div>
-
                     <form method="POST" action="/recover/4" class="mt-8">
                         @csrf
                         <div class="space-y-5">

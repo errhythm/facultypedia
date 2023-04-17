@@ -302,7 +302,7 @@ class UserController extends Controller
         if ($review->user_id != auth()->user()->id) {
             return redirect('/profile/' . auth()->user()->id)->with('message', 'You are not authorized to delete this review');
         }
-        $review->is_deleted = 1;
+        $review->isDeleted = 1;
         $review->save();
         return redirect(route('dashboard'))->with('message', 'Review deleted successfully');
     }
