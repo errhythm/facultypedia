@@ -58,11 +58,19 @@ class ReviewsController extends Controller
             return redirect('/profile/' . $data['faculty_id']);
         }
 
-        // check in reviews model already has a review of that faculty and course
-        $review_exist = Reviews::where('faculty_id', $data['faculty_id'])->where('user_id', $data['user_id'])->where('course_id', $data['course_id'])->first();
+        // check in reviews model already has a review of that faculty and course and is not deleted
+        $review_exist = Reviews::where('user_id', $data['user_id'])->where('faculty_id', $data['faculty_id'])->where('course_id', $data['course_id'])->where('isDeleted', 0)->first();
         if ($review_exist) {
-            session()->flash('message', 'You have already reviewed this faculty for this course.');
-            session()->flash('alert-type', 'error');
+            // check if the review is isAnonymous 1 and isApproved 0 and isDeleted 0
+            if ($review_exist->isAnonymous == 1 && $review_exist->isApproved == 0) {
+                session()->flash('message', 'Your review is under approval. Please wait until you review again.');
+                session()->flash('alert-type', 'error');
+            }
+            // check if the review is isAnonymous 0 and isApproved 1 and isDeleted 0
+            if ($review_exist->isAnonymous == 0 && $review_exist->isApproved == 1) {
+                session()->flash('message', 'You have already reviewed this faculty for this course.');
+                session()->flash('alert-type', 'error');
+            }
             return redirect('/profile/' . $data['faculty_id']);
         }
 

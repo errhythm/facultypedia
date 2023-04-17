@@ -1,19 +1,17 @@
 @php
     $page = request()->query('page') ?? 1;
 
-    $page_count = $users->lastPage();
-    $per_page = $users->perPage();
-    $total = $users->total();
+    $page_count = $courses->lastPage();
+    $per_page = $courses->perPage();
+    $total = $courses->total();
     $query = '';
     // get current route
     $route = Route::currentRouteName();
-    if (request('usearch')) {
+    if (request('csearch')) {
         $query = http_build_query([
-            'usearch' => request('usearch'),
+            'csearch' => request('csearch'),
         ]);
     }
-    // get current route
-    $route = Route::currentRouteName();
     // break the query string into array
     $query = explode('&', $query);
     // remove page from query string
@@ -24,9 +22,9 @@
     $query = implode('&', $query);
     $query = $query ? $query . '&' : $query;
 @endphp
-@if ($page != 1 && $users->isEmpty())
+@if ($page != 1 && $courses->isEmpty())
     @php
-        header('Location: ' . route($route, '' . $query . 'page=' . $page_count));
+        header('Location: ' . route($route, $query . 'page=' . $page_count));
         exit();
     @endphp
 @endif
@@ -38,8 +36,13 @@
 
             <section class="px-4 py-5 sm:p-6">
                 <div class="flex sm:items-center justify-between items-center">
-                    <h2 class="text-xl font-bold text-base-content/80">{{ $heading }}</h2>
+                    <div>
+                        <h2 class="text-xl font-bold text-base-content/80">{{ $heading }} - <span>
+                                <label for="addCourses" class="text-primary hover:text-primary-focus cursor-pointer">Add
+                                    New Course</label>
+                            </span></h2>
 
+                    </div>
                     <div
                         class="relative flex items-center lg:w-1/6 w-64 h-12 rounded-lg focus-within:shadow-lg bg-base-200 focus-within:border-primary border overflow-hidden">
                         <div class="grid place-items-center h-full w-12 text-base-content/30">
@@ -51,7 +54,7 @@
                         </div>
                         <form action="{{ route($route) }}" method="get">
                             <input class="peer h-full w-full outline-none text-sm text-base-content/70 bg-base-200 pr-2"
-                                type="text" id="rsearch" name="usearch" value="{{ request('usearch') }}"
+                                type="text" id="rsearch" name="csearch" value="{{ request('csearch') }}"
                                 placeholder="Search something.." />
                         </form>
                     </div>
@@ -62,7 +65,7 @@
                     <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                             <div class="overflow-hidden border border-base-content/20  md:rounded-lg">
-                                <table id="pending-review" class="min-w-full divide-y divide-base-content/20">
+                                <table id="pending-course" class="min-w-full divide-y divide-base-content/20">
                                     <thead class="bg-base-300">
                                         <tr>
                                             {{-- table header for id --}}
@@ -75,31 +78,22 @@
                                             <th scope="col"
                                                 class="py-3.5 px-3 text-sm font-normal text-left rtl:text-right text-base-content/50">
                                                 <div class="flex items-center gap-x-3">
-                                                    <span>User Name</span>
+                                                    <span>Course Code</span>
                                                 </div>
                                             </th>
 
                                             <th scope="col"
                                                 class="px-3 py-3.5 text-sm font-normal text-left rtl:text-right text-base-content/50 whitespace-nowrap">
                                                 <div class="flex items-center gap-x-2">
-                                                    <span>Email</span>
+                                                    <span>Course Title</span>
                                                 </div>
                                             </th>
 
                                             <th scope="col"
                                                 class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-base-content/50">
                                                 <div class="flex items-center gap-x-2">
-                                                    <span>Role</span>
+                                                    <span>Course Credit</span>
                                                 </div>
-                                            </th>
-
-                                            <th scope="col"
-                                                class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-base-content/50">
-                                                ID
-                                            </th>
-                                            <th scope="col"
-                                                class="px-4 py-3.5 text-sm font-normal text-left rtl:text-right text-base-content/50">
-                                                Department
                                             </th>
 
                                             <th scope="col" class="relative py-3.5 px-4">
@@ -108,11 +102,7 @@
                                         </tr>
                                     </thead>
                                     <tbody class="bg-base-100/50 divide-y divide-base-content/20 ">
-
-                                        {{-- print in pending reviews in each row --}}
-
-                                        {{-- if reviews is 0, then show a big table row with a check sign in middle and next line You have no pending reviews --}}
-                                        @if (count($users) == 0)
+                                        @if (count($courses) == 0)
                                             <tr>
                                                 <td colspan="4"
                                                     class="px-4 py-20 mx-auto text-sm font-medium text-base-content/70">
@@ -125,49 +115,40 @@
                                                                 clip-rule="evenodd" />
                                                         </svg>
                                                         <div class="py-2 text-sm font-medium text-base-content/70">
-                                                            No users found!
+                                                            No courses found!
                                                         </div>
                                                     </div>
                                                 </td>
                                             </tr>
                                         @else
-                                            @foreach ($users as $user)
+                                            @foreach ($courses as $course)
                                                 <tr>
                                                     <td class="pl-4 py-2 text-sm font-medium text-base-content/70">
-                                                        {{ $user->id }}
+                                                        {{ $course->id }}
                                                     </td>
-                                                    <td class="pr-2 pl-1 py-2 text-sm font-medium text-base-content/70">
+                                                    <td class="pr-2 pl-6 py-2 text-sm font-medium text-base-content/70">
                                                         <div class="inline-flex items-center gap-x-3">
                                                             <div class="flex items-center gap-x-2">
-                                                                <img class="object-cover w-10 h-10 rounded-full"
-                                                                    src="https://api.dicebear.com/5.x/bottts-neutral/svg?seed={{ md5($user->id . $user->created_at) }}&scale=110"
-                                                                    alt="{{ $user->name }}>
-                                                                                <div
-                                                                                    class="py-2
-                                                                    text-sm font-medium text-base-content/70">
                                                                 <h2 class="font-medium text-base-content/80">
-                                                                    <a href="/profile/{{ $user->id }}">
-                                                                        {{ $user->name }}
+                                                                    <a id="course-code-{{ $course->id }}"
+                                                                        href="{{ route('faculties') }}?course={{ $course->course_code }}">
+                                                                        {{ $course->course_code }}
                                                                 </h2></a>
                                                             </div>
                                                         </div>
                                                     </td>
-                                                    <td
-                                                        class="px-3 py-2 text-sm font-medium text-base-content/70 lowercase">
-                                                        {{ $user->email }}
+                                                    <td id="course-title-{{ $course->id }}"
+                                                        class="px-3 py-2 text-sm font-medium text-base-content/70 uppercase">
+                                                        {{ $course->course_title }}
                                                     </td>
-                                                    <td class="px-2 py-2 text-sm text-base-content/50">
-                                                        {{ $user->role }}
-                                                    </td>
-                                                    <td class="px-4 py-2 text-sm text-base-content/50 ">
-                                                        {{ $user->university_id }}
-                                                    </td>
-                                                    <td class="px-4 py-2 text-sm text-base-content/50 ">
-                                                        {{ $user->department }}
+                                                    <td id="course-credit-{{ $course->id }}"
+                                                        class="px-10 py-2 text-sm text-base-content/50">
+                                                        {{ $course->course_credit }}
                                                     </td>
                                                     <td class="px-4 py-2 text-sm">
                                                         <div class="flex items-center gap-x-6">
-                                                            <a href="{{ route('editUser', $user->id) }}"
+                                                            <label for="edit-course-{{ $course->id }}"
+                                                                data-course-id="{{ $course->id }}" id="edit-course"
                                                                 class="pb-1.5 text-base-content/50 transition-colors duration-200 cursor-pointer hover:text-warning focus:outline-none">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                     viewBox="0 0 24 24" stroke="currentColor"
@@ -176,7 +157,7 @@
                                                                         d="M21,12a1,1,0,0,0-1,1v6a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V5A1,1,0,0,1,5,4h6a1,1,0,0,0,0-2H5A3,3,0,0,0,2,5V19a3,3,0,0,0,3,3H19a3,3,0,0,0,3-3V13A1,1,0,0,0,21,12ZM6,12.76V17a1,1,0,0,0,1,1h4.24a1,1,0,0,0,.71-.29l6.92-6.93h0L21.71,8a1,1,0,0,0,0-1.42L17.47,2.29a1,1,0,0,0-1.42,0L13.23,5.12h0L6.29,12.05A1,1,0,0,0,6,12.76ZM16.76,4.41l2.83,2.83L18.17,8.66,15.34,5.83ZM8,13.17l5.93-5.93,2.83,2.83L10.83,16H8Z">
                                                                     </path>
                                                                 </svg>
-                                                            </a>
+                                                            </label>
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -202,7 +183,6 @@
                                 </svg>
                             </a>
                         @endif
-
 
                         @foreach (range(1, $page_count) as $pages)
                             @if ($page == $pages)
@@ -247,5 +227,155 @@
             </div>
         </div>
     </div>
+
+
+    <input type="checkbox" id="addCourses" class="modal-toggle" />
+    <label for="addCourses" class="modal cursor-pointer">
+        <label class="modal-box px-4 sm:px-6 lg:px-8 max-w-4xl" for="">
+            <div class="lg:px-8 sm:px-6 px-4 max-w-7xl ">
+                <div class="bg-base-100 rounded-xl overflow-hidden max-w-6xl">
+                    <div class="px-3 pt-4 sm:pt-2">
+                        <h3 class="text-2xl font-semibold text-center text-base-content">
+                            Add Courses
+                        </h3>
+
+                        <form action="{{ route('addCourse') }}" method="POST" class="mt-10">
+                            @csrf
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+                                <div class="lg:col-span-2 2xl:col-span-1">
+                                    <label for="" class="text-base font-medium text-base-content">
+                                        Course Code
+                                    </label>
+                                    <div class="mt-2.5 relative">
+                                        <input name="course_code" id="course_code" required
+                                            class="block w-full px-4 py-4 text-base-content placeholder-base-content/40 transition-all duration-200 bg-base-100 border border-base-300 rounded-md focus:outline-none focus:border-primary caret-primary">
+                                        </input>
+                                    </div>
+                                </div>
+
+                                <div class="lg:col-span-2 2xl:col-span-1">
+                                    <label for="" class="text-base font-medium text-base-content">
+                                        Course Credit
+                                    </label>
+                                    <div class="mt-2.5 relative">
+                                        <input name="course_credit" id="course_credit" required type="number"
+                                            min="1"
+                                            class="block w-full px-4 py-4 text-base-content placeholder-base-content/40 transition-all duration-200 bg-base-100 border border-base-300 rounded-md focus:outline-none focus:border-primary caret-primary">
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="sm:col-span-2">
+                                    <label for="" class="text-base font-medium text-base-content">
+                                        Course Title
+                                    </label>
+                                    <div class="mt-2.5 relative">
+                                        <input name="course_title" id="course_title" required
+                                            class="block w-full px-4 py-4 text-base-content placeholder-base-content/40 transition-all duration-200 bg-base-100 border border-base-300 rounded-md focus:outline-none focus:border-primary caret-primary">
+                                        </input>
+                                    </div>
+                                </div>
+
+                                <div class="sm:col-span-2">
+                                    <button type="submit"
+                                        class="inline-flex items-center justify-center w-full px-4 py-4 mt-2 text-base font-semibold text-base-100 transition-all duration-200 bg-primary border border-transparent rounded-md focus:outline-none hover:bg-primary focus:bg-primary">
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {{-- </section> --}}
+        </label>
+    </label>
+
+    {{-- modal to edit course --}}
+    <script>
+        const editCourse = document.querySelectorAll('#edit-course');
+        editCourse.forEach((course) => {
+            course.addEventListener('click', () => {
+                const courseId = course.getAttribute('data-course-id');
+                const modal = createModal(courseId);
+                document.body.appendChild(modal);
+            });
+        });
+
+        function createModal(courseId) {
+            const modal = document.createElement('div');
+            const courseCode = document.querySelector(`#course-code-${courseId}`).innerText;
+            const courseTitle = document.querySelector(`#course-title-${courseId}`).innerText;
+            const courseCredit = document.querySelector(`#course-credit-${courseId}`).innerText;
+            modal.innerHTML = `<input type="checkbox" id="edit-course-${courseId}" class="modal-toggle" />
+    <label for="edit-course-${courseId}" class="modal cursor-pointer">
+        <label class="modal-box px-4 sm:px-6 lg:px-8 max-w-4xl" for="">
+            <div class="lg:px-8 sm:px-6 px-4 max-w-7xl ">
+                <div class="bg-base-100 rounded-xl overflow-hidden max-w-6xl">
+                    <div class="px-3 pt-4 sm:pt-2">
+                        <h3 class="text-2xl font-semibold text-center text-base-content">
+                            Edit Course
+                        </h3>
+                        <form action="{{ route('allCourses') }}/edit/${courseId}" method="POST" class="mt-10">
+                            @csrf
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+                                <div class="lg:col-span-2 2xl:col-span-1">
+                                    <label for="" class="text-base font-medium text-base-content">
+                                        Course Code
+                                    </label>
+                                    <div class="mt-2.5 relative">
+                                        <input name="course_code" id="course_code" required value="${courseCode}"
+                                            class="block w-full px-4 py-4 text-base-content placeholder-base-content/40 transition-all duration-200 bg-base-100 border border-base-300 rounded-md focus:outline-none focus:border-primary caret-primary">
+                                        </input>
+                                    </div>
+                                </div>
+
+                                <div class="lg:col-span-2 2xl:col-span-1">
+                                    <label for="" class="text-base font-medium text-base-content">
+                                        Course Credit
+                                    </label>
+                                    <div class="mt-2.5 relative">
+                                        <input name="course_credit" id="course_credit" required type="number" value="${courseCredit}"
+                                            min="1"
+                                            class="block w-full px-4 py-4 text-base-content placeholder-base-content/40 transition-all duration-200 bg-base-100 border border-base-300 rounded-md focus:outline-none focus:border-primary caret-primary">
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="sm:col-span-2">
+                                    <label for="" class="text-base font-medium text-base-content">
+                                        Course Title
+                                    </label>
+                                    <div class="mt-2.5 relative">
+                                        <input name="course_title" id="course_title" required value="${courseTitle}"
+                                            class="block w-full px-4 py-4 text-base-content placeholder-base-content/40 transition-all duration-200 bg-base-100 border border-base-300 rounded-md focus:outline-none focus:border-primary caret-primary">
+                                        </input>
+                                    </div>
+                                </div>
+
+                                <div class="sm:col-span-2">
+                                    <button type="submit"
+                                        class="inline-flex items-center justify-center w-full px-4 py-4 mt-2 text-base font-semibold text-base-100 transition-all duration-200 bg-primary border border-transparent rounded-md focus:outline-none hover:bg-primary focus:bg-primary">
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </label>
+    </label>`;
+            modal.addEventListener('click', (e) => {
+                if (e.target.hasAttribute('data-close-modal')) {
+                    modal.remove();
+                }
+            });
+            return modal;
+        }
+    </script>
+
 
 </x-dashboard>

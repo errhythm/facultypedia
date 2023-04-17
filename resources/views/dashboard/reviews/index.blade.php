@@ -1,13 +1,32 @@
 @php
-                $page = request()->query('page') ?? 1;
-                $page_count = $reviews->lastPage();
-                $per_page = $reviews->perPage();
-                $total = $reviews->total();
-            @endphp
+    $page = request()->query('page') ?? 1;
+    $page_count = $reviews->lastPage();
+    $per_page = $reviews->perPage();
+    $total = $reviews->total();
+    $query = '';
+    if (request('rsearch')) {
+        $query = http_build_query([
+            'rsearch' => request('rsearch'),
+        ]);
+    }
+    // get current route
+    $route = Route::currentRouteName();
+    // break the query string into array
+    $query = explode('&', $query);
+    // remove page from query string
+    $query = array_filter($query, function ($item) {
+        return !str_contains($item, 'page');
+    });
+    // convert array to string
+    $query = implode('&', $query);
+
+    $query = $query ? $query . '&' : $query;
+@endphp
 @if ($page != 1 && $reviews->isEmpty())
-    <script>
-        window.location.href = "?page={{$page_count}}";
-    </script>
+    @php
+        header('Location: ' . route($route, $query . 'page=' . $page_count));
+        exit();
+    @endphp
 @endif
 
 <x-dashboard>
@@ -16,11 +35,23 @@
             {{-- Table --}}
 
             <section class="px-4 py-5 sm:p-6">
-                <div class="sm:flex sm:items-center sm:justify-between items-center">
+                <div class="flex sm:items-center justify-between items-center">
                     <h2 class="text-xl font-bold text-base-content/80">{{ $heading }}</h2>
-                    <a href="#"><span class="px-3 py-1 text-xs text-warning-content bg-warning rounded-full">
-                            {{ $reviewsCount }} {{ __('Reviews') }}
-                        </span></a>
+                    <div
+                        class="relative flex items-center lg:w-1/6 w-64 h-12 rounded-lg focus-within:shadow-lg bg-base-200 focus-within:border-primary border overflow-hidden">
+                        <div class="grid place-items-center h-full w-12 text-base-content/30">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                        <form action="{{ route('reviews') }}" method="get">
+                            <input class="peer h-full w-full outline-none text-sm text-base-content/70 bg-base-200 pr-2"
+                                type="text" id="rsearch" name="rsearch" value="{{ request('rsearch') }}"
+                                placeholder="Search something.." />
+                        </form>
+                    </div>
                 </div>
 
                 <div class="flex flex-col mt-6">
@@ -92,18 +123,21 @@
                                                 <td colspan="4"
                                                     class="px-4 py-20 mx-auto text-sm font-medium text-base-content/70">
                                                     <div class="flex items-center justify-center gap-x-3">
+
                                                         <svg xmlns="http://www.w3.org/2000/svg"
-                                                            class="h-10 w-10 text-green-500" viewBox="0 0 20 20"
-                                                            fill="currentColor">
-                                                            <path fill-rule="evenodd"
-                                                                d="M5.172 10a5 5 0 1110 0 5 5 0 01-10 0zm1.768 0a3 3 0 105.656 0 3 3 0 00-5.656 0zM3.757 3.757a1 1 0 011.414 0L8 6.586l2.828-2.829a1 1 0 111.415 1.415L9.415 8l2.829 2.828a1 1 0 01-1.415 1.415L8 9.415l-2.828 2.829a1 1 0 01-1.415-1.415L6.585 8 3.757 5.172a1 1 0 010-1.415z"
-                                                                clip-rule="evenodd" />
+                                                            class="h-10 w-10 text-error" fill="none"
+                                                            viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                            class="w-6 h-6">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                         </svg>
+
+
                                                         <div
                                                             class="py-2
                                                                                 text-sm font-medium
                                                                                 text-base-content/70">
-                                                            You have no pending reviews
+                                                            No reviews found!
                                                         </div>
                                                     </div>
                                                 </td>
@@ -127,13 +161,15 @@
                                                                     text-sm font-medium text-base-content/70">
                                                                 <h2 class="font-medium text-base-content/80">
                                                                     <a href="/profile/{{ $student->id }}">
-                                                                    {{ $student->name }}</h2></a>
-                                                                    {{-- if the review is anonymous show a sign --}}
-                                                                    @if ($review->isAnonymous == 1)
-                                                                        <div class="text-base-content/50 tooltip" data-tip="Anonymous Review">
-                                                                            <i class="uil uil-shield-exclamation"></i>
-                                                                        </div>
-                                                                    @endif
+                                                                        {{ $student->name }}
+                                                                </h2></a>
+                                                                {{-- if the review is anonymous show a sign --}}
+                                                                @if ($review->isAnonymous == 1)
+                                                                    <div class="text-base-content/50 tooltip"
+                                                                        data-tip="Anonymous Review">
+                                                                        <i class="uil uil-shield-exclamation"></i>
+                                                                    </div>
+                                                                @endif
                                                             </div>
                                                         </div>
                                                     </td>
@@ -146,7 +182,9 @@
                                                         {{ $review->review }}</td>
                                                     <td class="px-4 py-2 text-sm">
                                                         <div class="flex items-center gap-x-6">
-                                                            <label for="delete-review-{{ $review->id }}" data-review-id="{{ $review->id }}" id="delete-review"
+                                                            <label for="delete-review-{{ $review->id }}"
+                                                                data-review-id="{{ $review->id }}"
+                                                                id="delete-review"
                                                                 class="pb-1.5 text-base-content/50 transition-colors duration-200 cursor-pointer hover:text-warning focus:outline-none">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                     viewBox="0 0 24 24" stroke="currentColor"
@@ -173,7 +211,7 @@
                 <div class="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
                     <div class="flex items-center justify-center space-x-2">
                         @if ($page != 1)
-                            <a href="?page={{ $page - 1 }}"
+                            <a href="?{{ $query }}page={{ $page - 1 }}"
                                 class="inline-flex items-center justify-center text-base-content transition-all duration-200 bg-base-100 border border-neutral-content rounded-md w-9 h-9 hover:bg-base-300">
                                 <span class="sr-only">Previous</span>
                                 <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -186,12 +224,12 @@
 
                         @foreach (range(1, $page_count) as $pages)
                             @if ($page == $pages)
-                                <a href="?page={{ $pages }}"
+                                <a href="?{{ $query }}page={{ $pages }}"
                                     class="inline-flex items-center justify-center text-base font-semibold ik transition-all duration-200 mh border gh rounded-md sm:text-sm w-9 h-9">
                                     {{ $pages }}
                                 </a>
                             @else
-                                <a href="?page={{ $pages }}"
+                                <a href="?{{ $query }}page={{ $pages }}"
                                     class="inline-flex items-center justify-center text-base font-semibold text-base-content transition-all duration-200 bg-base-100 border border-neutral-content rounded-md sm:text-sm w-9 h-9 hover:bg-base-300">
                                     {{ $pages }}
                                 </a>
@@ -199,7 +237,7 @@
                         @endforeach
 
                         @if ($page_count != $page)
-                            <a href="?page={{ $page + 1 }}"
+                            <a href="?{{ $query }}page={{ $page + 1 }}"
                                 class="inline-flex items-center justify-center text-base-content transition-all duration-200 bg-base-100 border border-neutral-content rounded-md w-9 h-9 hover:bg-base-300">
                                 <span class="sr-only">Next</span>
                                 <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -212,7 +250,7 @@
                         {{-- if page is more than 1 then show last page button but dont show if you are already on last page --}}
 
                         @if ($page_count > 1 && $page != $page_count)
-                            <a href="?page={{ $page_count }}"
+                            <a href="?{{ $query }}page={{ $page_count }}"
                                 class="inline-flex items-center justify-center text-base-content transition-all duration-200 bg-base-100 border border-neutral-content rounded-md w-9 h-9 hover:bg-base-300">
                                 <span class="sr-only">Last</span>
                                 <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none"

@@ -21,9 +21,6 @@
     $average = round($average, 2);
     $average = number_format($average, 1);
 @endphp
-
-
-
                 <div
                     class="group relative p-6 rounded-md shadow hover:shadow-md bg-base-300 transition duration-500 text-base-content text-center pb-20">
                     <div class="mt-8">
@@ -46,9 +43,7 @@
                             {{ $faculty->department }}
                         </span>
                     </div>
-
                     <x-faculty-courses :facultyCourses="$facultyCourses" :courses="$courses" />
-
                     <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2">
                         <a href="/profile/{{ $faculty->id }}"
                             class="btn bg-primary-content/5 hover:bg-primary-content border-primary-content/10 hover:border-primary-content text-primary-content hover:text-base-100 rounded-md w-full">
@@ -64,7 +59,7 @@
                     </div>
                     <div class="absolute top-6 right-6">
                         <a href=""
-                            class="btn btn-icon btn-sm text-info-content bg-base-200 hover:bg-base-300 hover:border-base-content rounded-full">
+                            class="btn btn-icon btn-sm text-primary-content bg-base-200 hover:bg-base-300 hover:border-base-content rounded-full">
                             <i class="uil uil-star text-primary-content"></i>&nbsp;
                         {{ $average }}
                         </a>

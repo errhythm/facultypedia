@@ -6,6 +6,7 @@ exit();
 
 @endif
 
+
 <x-layout :header=false :footer=false>
     <section class="bg-base-100">
         <div class="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
@@ -15,7 +16,7 @@ exit();
                         <ul class="steps">
                             <li class="step step-primary">Register</li>
                             <li class="step step-primary">{{ $heading }}</li>
-                            <li class="step">User Onboarding</li>
+                            <li class="step step-primary">User Onboarding</li>
                         </ul>
                     </div>
                     <div>
@@ -24,85 +25,76 @@ exit();
                     <h2 class="text-3xl font-bold leading-tight text-base-content sm:text-4xl">
                         {{ $heading }}
                     </h2>
+@php
+// if logged in user is a student
+if (Auth::user()->role == 'student') {
+    $idfield = "Student ID";
+    $idplaceholder = "Enter your university ID";
+} else {
+    $idfield = "ID";
+    $idplaceholder = "Enter your ID";
+}
+// if logged in user is a faculty
+if (Auth::user()->role == 'faculty') {
+    $idfield = "Initials";
+    $idplaceholder = "Enter your Initials";
+}
 
-                    <form method="POST" action="/verifyOTP" class="mt-8">
+@endphp
+                    <form method="POST" action="{{ route('onboardingSave') }}" class="mt-8">
                         @csrf
                         <div class="space-y-5">
+                            {{-- ID --}}
                             <div>
-                                <div
-                                    class="flex flex-row mt-2.5 space-x-2 relative text-base-content/40 focus-within:text-base-content/60">
-                                    <input type="text" name="otp1" id="otp1" placeholder="X" minlength="1"
-                                        autocomplete="off" maxlength="1"
-                                        class="uppercase text-center block w-full py-4 px-2 h-40 text-8xl text-base-content placeholder-base-content/50 transition-all duration-200 border border-base-content/20 rounded-md bg-base-200 focus:outline-none focus:border-info/80 focus:bg-base-100 caret-info/80" />
-                                    <input type="text" name="otp2" id="otp2" placeholder="X" minlength="1"
-                                        autocomplete="off" maxlength="1"
-                                        class="uppercase text-center block w-full py-4 px-2 h-40 text-8xl text-base-content placeholder-base-content/50 transition-all duration-200 border border-base-content/20 rounded-md bg-base-200 focus:outline-none focus:border-info/80 focus:bg-base-100 caret-info/80" />
-                                    <input type="text" name="otp3" id="otp3" placeholder="X" minlength="1"
-                                        autocomplete="off" maxlength="1"
-                                        class="uppercase text-center block w-full py-4 px-2 h-40 text-8xl text-base-content placeholder-base-content/50 transition-all duration-200 border border-base-content/20 rounded-md bg-base-200 focus:outline-none focus:border-info/80 focus:bg-base-100 caret-info/80" />
-                                    <input type="text" name="otp4" id="otp4" placeholder="X" minlength="1"
-                                        autocomplete="off" maxlength="1"
-                                        class="uppercase text-center block w-full py-4 px-2 h-40 text-8xl text-base-content placeholder-base-content/50 transition-all duration-200 border border-base-content/20 rounded-md bg-base-200 focus:outline-none focus:border-info/80 focus:bg-base-100 caret-info/80" />
+                                <label for="university_id" class="text-base font-medium text-base-content/90">
+                                    {{ $idfield }}
+                                </label>
+                                <div class="mt-2.5 relative text-base-content/40 focus-within:text-base-content/60">
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path
+                                                d="M15.71,12.71a6,6,0,1,0-7.42,0,10,10,0,0,0-6.22,8.18,1,1,0,0,0,2,.22,8,8,0,0,1,15.9,0,1,1,0,0,0,1,.89h.11a1,1,0,0,0,.88-1.1A10,10,0,0,0,15.71,12.71ZM12,12a4,4,0,1,1,4-4A4,4,0,0,1,12,12Z">
+                                              </svg>
+                                    </div>
 
-                                    <script>
-                                        function focusNext(id, nextId) {
-                                            var element = document.getElementById(id);
-                                            element.addEventListener('input', function() {
-                                                if (this.value.length >= 1) {
-                                                    document.getElementById(nextId).focus();
-                                                }
-                                            });
-                                        }
-                                        focusNext('otp1', 'otp2');
-                                        focusNext('otp2', 'otp3');
-                                        focusNext('otp3', 'otp4');
 
-                                        function clearInput(id, nextId) {
-                                            var element = document.getElementById(id);
-                                            element.addEventListener('keydown', function(e) {
-                                                if (e.keyCode === 8 && this.value.length === 0) {
-                                                    document.getElementById(nextId).value = '';
-                                                    document.getElementById(nextId).focus();
-                                                }
-                                            });
-                                        }
-                                        clearInput('otp2', 'otp1');
-                                        clearInput('otp3', 'otp2');
-                                        clearInput('otp4', 'otp3');
-
-                                        // paste in one input box will automatically paste the value in all input box
-                                        function pasteInOneInputBox(id) {
-                                            var element = document.getElementById(id);
-                                            element.addEventListener('paste', function(e) {
-                                                e.preventDefault();
-                                                var text = e.clipboardData.getData('text/plain');
-                                                document.getElementById('otp1').value = text[0];
-                                                document.getElementById('otp2').value = text[1];
-                                                document.getElementById('otp3').value = text[2];
-                                                document.getElementById('otp4').value = text[3];
-                                                document.getElementById('otp4').focus();
-                                            });
-                                        }
-                                        pasteInOneInputBox('otp1');
-                                    </script>
+                                    <input type="text" name="university_id" id="university_id"
+                                        placeholder="{{ $idplaceholder }}" value="{{ user->university_id }}"
+                                        class="block w-full py-4 pl-10 pr-4 text-base-content placeholder-base-2000 transition-all duration-200 border border-base-content/20 rounded-md bg-base-200 focus:outline-none focus:border-info-content/80 focus:bg-base-100 caret-info-content/80" />
                                 </div>
                             </div>
 
-                            {{-- <input type="hidden" name="email" value="{{ Auth::user()->email }}"> --}}
-
-
+                            {{-- department, select --}}
+                            <div>
+                                <label for="department" class="text-base font-medium text-base-content/90">
+                                    Department
+                                </label>
+                                <div class="mt-2.5 relative text-base-content/40 focus-within:text-base-content/60">
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path
+                                                d="M15.71,12.71a6,6,0,1,0-7.42,0,10,10,0,0,0-6.22,8.18,1,1,0,0,0,2,.22,8,8,0,0,1,15.9,0,1,1,0,0,0,1,.89h.11a1,1,0,0,0,.88-1.1A10,10,0,0,0,15.71,12.71ZM12,12a4,4,0,1,1,4-4A4,4,0,0,1,12,12Z"></svg>
+                                    </div>
+                                    <select name="department" id="department"
+                                        class="block w-full py-4 pl-10 pr-4 text-base-content placeholder-base-2000 transition-all duration-200 border border-base-content/20 rounded-md bg-base-200 focus:outline-none focus:border-info-content/80 focus:bg-base-100 caret-info-content/80">
+                                        <option value="CSE">CSE</option>
+                                        <option value="EEE">EEE</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <input type="hidden" name="email" value="{{ Auth::user()->email }}">
+                            </div>
                             <div>
                                 <button type="submit" value="Submit"
                                     class="inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-base-100 transition-all duration-200 border border-transparent rounded-md bg-gradient-to-r from-success-content to-info-content/80 focus:outline-none hover:opacity-80 focus:opacity-80">
-                                    Verify Email
+                                    Submit
                                 </button>
                             </div>
                         </div>
                     </form>
-                    {{-- resend OTP --}}
-                    <a href="/resendOTP"
-                        class="inline-flex justify-center text-center w-full px-4 py-4 text-base font-semibold text-base-content/50">Resend
-                        OTP</a>
                 </div>
             </div>
 

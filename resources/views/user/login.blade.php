@@ -6,8 +6,6 @@
     </script>
 @endif
 
-
-
 <x-layout :header=false :footer=false>
     <section class="bg-base-100">
         <div class="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
@@ -25,10 +23,9 @@
                     </p>
 
                     <div>
-                        @if ($errors->any())
-                            @foreach ($errors->all() as $error)
-                                <x-alert type="alert" />
-                            @endforeach
+                        {{-- check for any message --}}
+                        @if (session('message'))
+                            <x-alert type="error" />
                         @endif
                     </div>
 

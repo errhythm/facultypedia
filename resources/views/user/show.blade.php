@@ -12,6 +12,13 @@
             ->where('isDeleted', 0)
             ->count();
     }
+    // get total review done if he is a student
+    if ($user->role == 'student') {
+        $reviewsStudent = \App\Models\Reviews::where('user_id', $user->id)
+            ->where('isApproved', 1)
+            ->where('isDeleted', 0)
+            ->count();
+    }
 @endphp
 
 <x-layout :header=true :footer=true>
@@ -52,6 +59,14 @@
                                     </p>
                                     <p class="mt-1 text-xs font-medium uppercase tracking-wide text-base-content/70">
                                         {{ $user->department }}
+                                    </p>
+                                    <p class="mt-2 text-xs font-bold uppercase tracking-wide text-base-content/70">
+                                    @if ($user->role == 'faculty')
+                                        Reviewed by {{ $totalreviews }} {{ Str::plural('student', $totalreviews) }}.
+                                    @endif
+                                    @if ($user->role == 'student')
+                                        Reviewed {{ $reviewsStudent }} {{ Str::plural('faculty', $reviewsStudent) }}.
+                                    @endif
                                     </p>
                                 </div>
                                 {{-- if the user is faculty --}}

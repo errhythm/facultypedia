@@ -14,7 +14,7 @@
 
 
 <li><a href="{{ route('faculties') }}">Search Faculties</a></li>
-<li tabindex="0">
+{{-- <li tabindex="0">
     <a class="justify-between">
         Parent
         <svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -27,7 +27,7 @@
         </li>
         <li><a>Submenu 2</a></li>
     </ul>
-</li>
+</li> --}}
 <li><a href="{{ route('dashboard') }}" >Dashboard</a></li>
 @if ($mode == 0)
 <li><a href="/login">Login</a></li>

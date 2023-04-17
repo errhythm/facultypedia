@@ -234,21 +234,25 @@ $course = request('course');
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                                 </svg>
+
                             </div>
                             @if ($search)
                                 <input id="search-bar" name="search" type="search"
-                                    class="block w-full py-2 pl-10 appearance-none text-base-content placeholder-neutral bg-base-200 border-info-content rounded-lg focus:ring-info focus:border-primary-content text-sm"
-                                    placeholder="Search" value="{{ $search }}" />
+                                    class="peer w-full py-2 pl-10 appearance-none text-base-content placeholder-neutral bg-base-200 border-info-content rounded-lg focus:ring-info focus:border-primary-content text-sm placeholder:text-base-content"
+                                    placeholder="Search (CTRL+K) " value="{{ $search }}" />
                             @else
                                 <input id="search-bar" name="search" type="search"
-                                    class="block w-full py-2 pl-10 appearance-none text-base-content placeholder-neutral bg-base-200 border-info-content rounded-lg focus:ring-info focus:border-primary-content text-sm"
-                                    placeholder="Search" />
+                                    class="peer w-full py-2 pl-10 appearance-none text-base-content placeholder-neutral bg-base-200 border-info-content rounded-lg focus:ring-info focus:border-primary-content text-sm placeholder:text-base-content"
+                                    placeholder="Search (CTRL+K) " />
                             @endif
                             @if ($course)
                                 <input type="hidden" id="search-bar" name="course" type="search"
-                                    class="block w-full py-2 pl-10 appearance-none text-base-content placeholder-neutral bg-base-200 border-info-content rounded-lg focus:ring-info focus:border-primary-content text-sm"
-                                    placeholder="Search" value="{{ $course }}" />
+                                    class="peer w-full py-2 pl-10 appearance-none text-base-content placeholder-neutral bg-base-200 border-info-content rounded-lg focus:ring-info focus:border-primary-content text-sm placeholder:text-base-content"
+                                    placeholder="Search (CTRL+K) " value="{{ $course }}" />
                             @endif
+
+
+
                         </div>
                     </form>
                 </div>

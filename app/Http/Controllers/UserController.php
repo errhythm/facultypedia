@@ -71,7 +71,7 @@ class UserController extends Controller
     public function verifyOTP(Request $request)
     {
         $otp_received = $request->otp1 . $request->otp2 . $request->otp3 . $request->otp4;
-        $user = User::where('email', $request->email)->first();
+        $user = Auth::user();
 
         // get first 4 digits from the md5 of created_at to make the OTP, make it capital
         $otp = strtoupper(substr(md5($user->updated_at), 0, 4));
@@ -79,8 +79,9 @@ class UserController extends Controller
         // check the received OTP with $otp if it matches, then verify the user by inputting time in email_verified_at
         if ($otp_received == $otp) {
             $user->email_verified_at = now();
+            /** @var \App\Models\User $user **/
             $user->save();
-            return redirect('/profile/' . $user->id);
+            return redirect(route('onboarding'));
         } else {
             return redirect('/verify')->with('message', 'Invalid OTP. Actual OTP is ' . $otp . '. Please try again.');
         }
@@ -92,6 +93,26 @@ class UserController extends Controller
         return view('user.verification', [
             'heading' => 'Verify Email',
         ]);
+    }
+
+    // user onboarding page
+    public function onboardingPage()
+    {
+        return view('user.onboarding', [
+            'heading' => 'User Onboarding',
+        ]);
+    }
+
+    // store user onboarding data
+    public function onboardingStore(Request $request)
+    {
+        $user = Auth::user();
+        $user->university_id = $request->university_id;
+        $user->department = $request->department;
+        $user->updated_at = now();
+        /** @var \App\Models\User $user **/
+        $user->save();
+        return redirect('/profile/' . $user->id);
     }
 
     // forget password page
@@ -246,15 +267,20 @@ class UserController extends Controller
     {
         // validate data
         $data = request()->validate([
-            'email' => 'required|email|ends_with:@bracu.ac.bd,@g.bracu.ac.bd',
+            'email' => 'required|email',
             'password' => 'required',
         ]);
 
         if (auth()->attempt($data)) {
-            return redirect('/profile/' . auth()->user()->id);
+            if (auth()->user()->email_verified_at) {
+                return redirect('/profile/' . auth()->user()->id);
+            } else {
+                return redirect('/verify')->with('message', 'Please verify your email first');
+            }
         }
 
-        return back()->withErrors([
+        // if the user is not found, return back with error
+        return back()->with([
             'message' => 'The provided credentials do not match our records.',
         ]);
     }
@@ -267,5 +293,30 @@ class UserController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/')->with('message', 'Logged out successfully');
+    }
+
+    // delete own review
+    public function deleteReview($id)
+    {
+        $review = Reviews::find($id);
+        if ($review->user_id != auth()->user()->id) {
+            return redirect('/profile/' . auth()->user()->id)->with('message', 'You are not authorized to delete this review');
+        }
+        $review->is_deleted = 1;
+        $review->save();
+        return redirect(route('dashboard'))->with('message', 'Review deleted successfully');
+    }
+
+    // show all reviews
+    public function showAllReviews()
+    {
+        $reviews = Reviews::where('isDeleted', 0)
+            ->where('user_id', auth()->user()->id)
+            ->where('isApproved', 1)
+            ->orderBy('created_at', 'desc')->paginate(10);
+        return view('dashboard.student.showAllReviews', [
+            'heading' => 'All Reviews',
+            'reviews' => $reviews,
+        ]);
     }
 }

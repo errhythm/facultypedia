@@ -9,7 +9,7 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\ReviewsController;
 use App\Http\Controllers\AdminController;
-
+use App\Http\Middleware\AuthAdmin;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,7 +33,7 @@ Route::get('/', function () {
 Route::get('/faculties/{page?}', [FacultyController::class, 'index'])->name('faculties');
 
 // user profile
-Route::get('/profile/{user}', [UserController::class, 'show']);
+Route::get('/profile/{user}', [UserController::class, 'show'])->name('profile');
 
 // Profile Redirect
 Route::get('/profile', [UserController::class, 'profileRedirect']);
@@ -46,8 +46,9 @@ Route::get('/courses', function () {
     ]);
 });
 
+
 // create route group for login register
-Route::group(['middleware' => 'guest'], function () {
+Route::group([], function () {
 
     // show Register/Sign Up form
     Route::get('/register', [UserController::class, 'create'])->name('register');
@@ -69,6 +70,9 @@ Route::group(['middleware' => 'guest'], function () {
 
     // verify user email page
     Route::get('/verify', [UserController::class, 'verifyPage']);
+
+    // user onboarding page
+    Route::get('/onboarding', [UserController::class, 'onboardingPage']);
 
     // forgot password page
     Route::get('/recover', [UserController::class, 'forgetPassword']);
@@ -93,40 +97,74 @@ Route::group(['middleware' => 'guest'], function () {
 });
 
 
+// user onboarding page
+Route::get('/onboarding', [UserController::class, 'onboardingPage'])->name('onboarding');
+
+// user onboarding save
+Route::post('/onboarding', [UserController::class, 'onboardingStore'])->name('onboardingSave');
+
 // Log User Out
-Route::get('/logout', [UserController::class, 'logout']);
+Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
 // create review in ReviewsController
 Route::post('/createreview', [ReviewsController::class, 'store']);
 
 // create a route group named dashboard
 Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
-
     // show admin dashboard
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
 
-    // show all reviews
-    Route::get('/reviews', [AdminController::class, 'reviews'])->name('reviews');
+    // create a route subgroup where the user role must be admin
+    Route::group(['middleware' => 'admin'], function () {
 
-    // show pending reviews
-    Route::get('/reviews/pending/{page?}', [AdminController::class, 'pendingReviews'])->name('pendingReviews');
+        // show all reviews
+        Route::get('/reviews', [AdminController::class, 'reviews'])->name('reviews');
 
-    // approve pending reviews
-    Route::post('/reviews/approve/{id}', [AdminController::class, 'approveReview']);
+        // show pending reviews
+        Route::get('/reviews/pending/{page?}', [AdminController::class, 'pendingReviews'])->name('pendingReviews');
 
-    // delete pending reviews
-    Route::post('/reviews/delete/{id}', [AdminController::class, 'deleteReview']);
+        // approve pending reviews
+        Route::post('/reviews/approve/{id}', [AdminController::class, 'approveReview']);
 
-    // show all users
-    Route::get('/users', [AdminController::class, 'users'])->name('allUsers');
+        // delete pending reviews
+        Route::post('/reviews/delete/{id}', [AdminController::class, 'deleteReview']);
 
-    // show all faculties
-    Route::get('/faculties', [AdminController::class, 'faculties'])->name('allFaculties');
+        // show all users
+        Route::get('/users', [AdminController::class, 'users'])->name('allUsers');
 
-    // show all students
-    Route::get('/students', [AdminController::class, 'students'])->name('allStudents');
+        // show all faculties
+        Route::get('/faculties', [AdminController::class, 'faculties'])->name('allFaculties');
 
-    // edit a user
-    Route::get('/users/edit/{id}', [AdminController::class, 'editUser'])->name('editUser');
-    Route::post('/users/edit/{id}', [AdminController::class, 'editUserStore'])->name('editUserStore');
+        // show all students
+        Route::get('/students', [AdminController::class, 'students'])->name('allStudents');
+
+        // edit a user
+        Route::get('/users/edit/{id}', [AdminController::class, 'editUser'])->name('editUser');
+        Route::post('/users/edit/{id}', [AdminController::class, 'editUserStore'])->name('editUserStore');
+
+        // delete a user
+        Route::post('/users/delete/{id}', [AdminController::class, 'deleteUser'])->name('deleteUser');
+
+        // show all courses
+        Route::get('/courses', [AdminController::class, 'courses'])->name('allCourses');
+
+        // add a course POST
+        Route::post('/courses/add', [AdminController::class, 'addCourse'])->name('addCourse');
+
+        // edit a course POST
+        Route::post('/courses/edit/{id}', [AdminController::class, 'editCourse'])->name('editCourse');
+
+        // delete a course POST
+        Route::post('/courses/delete/{id}', [AdminController::class, 'deleteCourse'])->name('deleteCourse');
+    });
+
+
+    // create a route subgroup where the user role must be student
+    Route::group(['prefix' => 'student', 'middleware' => 'student'], function () {
+        // delete pending reviews
+        Route::post('/reviews/delete/{id}', [UserController::class, 'deleteReview'])->name('studentDeleteReview');
+
+        // show all reviews
+        Route::get('/reviews', [UserController::class, 'showAllReviews'])->name('studentReviews');
+    });
 });
