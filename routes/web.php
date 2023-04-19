@@ -165,5 +165,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
 
         // create consultation slot page
         Route::get('/consultation/slot', [ConsultationController::class, 'create'])->name('createConsultation');
+
+        // add consultation slot
+        Route::post('/consultation/slot', [ConsultationController::class, 'store'])->name('addConsultation');
     });
 });

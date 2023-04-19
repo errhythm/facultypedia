@@ -33,7 +33,6 @@ class UserController extends Controller
         }
     }
 
-
     // show user profile registration form
     public function create()
     {

@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('consultation_slots', function (Blueprint $table) {
             $table->id();
             $table->foreignId('faculty_id')->constrained('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->enum('day_of_week', ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']);
-            $table->time('start_time');
-            $table->time('end_time');
+            $table->string('day_of_week');
+            $table->string('start_time');
+            $table->string('end_time');
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
