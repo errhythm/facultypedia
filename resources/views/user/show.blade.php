@@ -67,8 +67,7 @@
                                     @endif
                                     </p>
                                 </div>
-                                {{-- if the user is faculty --}}
-                                @if (Auth::check() AND $user->role == 'faculty')
+                                @if (Auth::check() AND $user->role == 'faculty' AND Auth::user()->id != $user->id AND Auth::user()->role == 'student')
                                     <div class="ml-auto">
                                         <label for="my-modal-4"
                                             class="box-border relative z-30 inline-flex items-center justify-center w-auto px-3 py-2 overflow-hidden font-bold text-base-100 transition-all duration-300 bg-primary rounded-md cursor-pointer group ring-offset-2 ring-1 ring-primary/30 ring-offset-primary/20 hover:ring-offset-primary/50 ease focus:outline-none">
@@ -258,8 +257,7 @@
             <!-- end of review content -->
         </div>
     </div>
-    {{-- check if the user is logged in --}}
-    @if (Auth::check() AND $user->role == 'faculty')
+    @if (Auth::check() AND $user->role == 'faculty' AND Auth::user()->id != $user->id AND Auth::user()->role == 'student')
         <input type="checkbox" id="my-modal-4" class="modal-toggle" />
         <label for="my-modal-4" class="modal cursor-pointer">
             <label class="modal-box px-4 mx-auto sm:px-6 lg:px-8 max-w-5xl" for="">

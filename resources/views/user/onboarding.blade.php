@@ -1,9 +1,8 @@
-@if (Auth::user()->email_verified_at != null)
-@php
-header("Location: /profile");
-exit();
-@endphp
-
+@if (Auth::user()->university_id != null)
+    @php
+        header('Location: /profile');
+        exit();
+    @endphp
 @endif
 
 
@@ -22,22 +21,22 @@ exit();
                     <h2 class="text-3xl font-bold leading-tight text-base-content sm:text-4xl">
                         {{ $heading }}
                     </h2>
-@php
-// if logged in user is a student
-if (Auth::user()->role == 'student') {
-    $idfield = "Student ID";
-    $idplaceholder = "Enter your university ID";
-} else {
-    $idfield = "ID";
-    $idplaceholder = "Enter your ID";
-}
-// if logged in user is a faculty
-if (Auth::user()->role == 'faculty') {
-    $idfield = "Initials";
-    $idplaceholder = "Enter your Initials";
-}
+                    @php
+                        // if logged in user is a student
+                        if (Auth::user()->role == 'student') {
+                            $idfield = 'Student ID';
+                            $idplaceholder = 'Enter your university ID';
+                        } else {
+                            $idfield = 'ID';
+                            $idplaceholder = 'Enter your ID';
+                        }
+                        // if logged in user is a faculty
+                        if (Auth::user()->role == 'faculty') {
+                            $idfield = 'Initials';
+                            $idplaceholder = 'Enter your Initials';
+                        }
 
-@endphp
+                    @endphp
                     <form method="POST" action="{{ route('onboardingSave') }}" class="mt-8">
                         @csrf
                         <div class="space-y-5">
@@ -52,17 +51,15 @@ if (Auth::user()->role == 'faculty') {
                                             viewBox="0 0 24 24">
                                             <path
                                                 d="M15.71,12.71a6,6,0,1,0-7.42,0,10,10,0,0,0-6.22,8.18,1,1,0,0,0,2,.22,8,8,0,0,1,15.9,0,1,1,0,0,0,1,.89h.11a1,1,0,0,0,.88-1.1A10,10,0,0,0,15.71,12.71ZM12,12a4,4,0,1,1,4-4A4,4,0,0,1,12,12Z">
-                                              </svg>
+                                        </svg>
                                     </div>
 
-
                                     <input type="text" name="university_id" id="university_id"
-                                        placeholder="{{ $idplaceholder }}" value="{{ user->university_id }}"
+                                        placeholder="{{ $idplaceholder }}" value="{{ $user->university_id }}"
                                         class="block w-full py-4 pl-10 pr-4 text-base-content placeholder-base-2000 transition-all duration-200 border border-base-content/20 rounded-md bg-base-200 focus:outline-none focus:border-info-content/80 focus:bg-base-100 caret-info-content/80" />
                                 </div>
                             </div>
 
-                            {{-- department, select --}}
                             <div>
                                 <label for="department" class="text-base font-medium text-base-content/90">
                                     Department
@@ -72,7 +69,8 @@ if (Auth::user()->role == 'faculty') {
                                         <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                             viewBox="0 0 24 24">
                                             <path
-                                                d="M15.71,12.71a6,6,0,1,0-7.42,0,10,10,0,0,0-6.22,8.18,1,1,0,0,0,2,.22,8,8,0,0,1,15.9,0,1,1,0,0,0,1,.89h.11a1,1,0,0,0,.88-1.1A10,10,0,0,0,15.71,12.71ZM12,12a4,4,0,1,1,4-4A4,4,0,0,1,12,12Z"></svg>
+                                                d="M15.71,12.71a6,6,0,1,0-7.42,0,10,10,0,0,0-6.22,8.18,1,1,0,0,0,2,.22,8,8,0,0,1,15.9,0,1,1,0,0,0,1,.89h.11a1,1,0,0,0,.88-1.1A10,10,0,0,0,15.71,12.71ZM12,12a4,4,0,1,1,4-4A4,4,0,0,1,12,12Z">
+                                        </svg>
                                     </div>
                                     <select name="department" id="department"
                                         class="block w-full py-4 pl-10 pr-4 text-base-content placeholder-base-2000 transition-all duration-200 border border-base-content/20 rounded-md bg-base-200 focus:outline-none focus:border-info-content/80 focus:bg-base-100 caret-info-content/80">

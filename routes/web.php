@@ -9,7 +9,8 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\ReviewsController;
 use App\Http\Controllers\AdminController;
-use App\Http\Middleware\AuthAdmin;
+use App\Http\Controllers\ConsultationController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -46,62 +47,53 @@ Route::get('/courses', function () {
     ]);
 });
 
+// show Register/Sign Up form
+Route::get('/register', [UserController::class, 'create'])->name('register');
 
-// create route group for login register
-Route::group([], function () {
+// show Login form
+Route::get('/login', [UserController::class, 'login'])->name('login');
 
-    // show Register/Sign Up form
-    Route::get('/register', [UserController::class, 'create'])->name('register');
+// create new user
+Route::post('/registeruser', [UserController::class, 'store']);
 
-    // show Login form
-    Route::get('/login', [UserController::class, 'login'])->name('login');
+// verify user email
+Route::post('/verifyOTP', [UserController::class, 'verifyOTP']);
 
-    // create new user
-    Route::post('/registeruser', [UserController::class, 'store']);
+// resend OTP
+Route::get('/resendOTP', [UserController::class, 'sendOTP']);
 
-    // verify user email
-    Route::post('/verifyOTP', [UserController::class, 'verifyOTP']);
+// verify user email page
+Route::get('/verify', [UserController::class, 'verifyPage']);
 
-    // resend OTP
-    Route::get(
-        '/resendOTP',
-        [UserController::class, 'sendOTP']
-    );
+// user onboarding page
+Route::get('/onboarding', [UserController::class, 'onboardingPage']);
 
-    // verify user email page
-    Route::get('/verify', [UserController::class, 'verifyPage']);
+// forgot password page
+Route::get('/recover', [UserController::class, 'forgetPassword']);
 
-    // user onboarding page
-    Route::get('/onboarding', [UserController::class, 'onboardingPage']);
+// forgot password page OTP
+Route::post('/recover/1', [UserController::class, 'sendOTPForgetPassword']);
 
-    // forgot password page
-    Route::get('/recover', [UserController::class, 'forgetPassword']);
+// verify otp for forgot password
+Route::get('/recover/2', [UserController::class, 'verifyOTPForgetPassword']);
 
-    // forgot password page OTP
-    Route::post('/recover/1', [UserController::class, 'sendOTPForgetPassword']);
+// check if otp is correct
+Route::post('/recover/2', [UserController::class, 'checkOTPForgetPassword']);
 
-    // verify otp for forgot password
-    Route::get('/recover/2', [UserController::class, 'verifyOTPForgetPassword']);
+// set recover password page
+Route::get('/recover/3', [UserController::class, 'changePasswordForgetPassword']);
 
-    // check if otp is correct
-    Route::post('/recover/2', [UserController::class, 'checkOTPForgetPassword']);
+// set recover password
+Route::post('/recover/4', [UserController::class, 'changePasswordForgetPasswordStore']);
 
-    // set recover password page
-    Route::get('/recover/3', [UserController::class, 'changePasswordForgetPassword']);
-
-    // set recover password
-    Route::post('/recover/4', [UserController::class, 'changePasswordForgetPasswordStore']);
-
-    // Log User In
-    Route::post('/loginuser', [UserController::class, 'loginUser']);
-});
-
+// Log User In
+Route::post('/loginuser', [UserController::class, 'loginUser']);
 
 // user onboarding page
 Route::get('/onboarding', [UserController::class, 'onboardingPage'])->name('onboarding');
 
 // user onboarding save
-Route::post('/onboarding', [UserController::class, 'onboardingStore'])->name('onboardingSave');
+Route::post('/onboarding-complete', [UserController::class, 'onboardingStore'])->name('onboardingSave');
 
 // Log User Out
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
@@ -116,7 +108,6 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
 
     // create a route subgroup where the user role must be admin
     Route::group(['middleware' => 'admin'], function () {
-
         // show all reviews
         Route::get('/reviews', [AdminController::class, 'reviews'])->name('reviews');
 
@@ -158,13 +149,21 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
         Route::post('/courses/delete/{id}', [AdminController::class, 'deleteCourse'])->name('deleteCourse');
     });
 
-
     // create a route subgroup where the user role must be student
     Route::group(['prefix' => 'student', 'middleware' => 'student'], function () {
-        // delete pending reviews
+        // delete review
         Route::post('/reviews/delete/{id}', [UserController::class, 'deleteReview'])->name('studentDeleteReview');
 
         // show all reviews
         Route::get('/reviews', [UserController::class, 'showAllReviews'])->name('studentReviews');
+    });
+
+    // create a route subgroup where the user role must be faculty
+    Route::group(['prefix' => 'faculty', 'middleware' => 'faculty'], function () {
+        // show all reviews
+        Route::get('/reviews', [UserController::class, 'showAllReviews'])->name('facultyReviews');
+
+        // create consultation slot page
+        Route::get('/consultation/slot', [ConsultationController::class, 'create'])->name('createConsultation');
     });
 });

@@ -86,7 +86,7 @@
                             <div class="sm:flex sm:items-center sm:justify-between items-center">
                                 <h2 class="text-base font-bold text-base-content/80">Your Reviews
                                 </h2>
-                                <a href="{{ route('pendingReviews') }}"><span
+                                <a href="{{ route('studentReviews') }}"><span
                                         class="px-3 py-1 text-xs text-warning-content bg-warning rounded-full">
                                         See all
                                     </span></a>

@@ -81,7 +81,7 @@ class UserController extends Controller
             $user->email_verified_at = now();
             /** @var \App\Models\User $user **/
             $user->save();
-            return redirect(route('onboarding'));
+            return redirect('/onboarding')->with('message', 'Email verified successfully. Please fill in the details below to complete your registration.');
         } else {
             return redirect('/verify')->with('message', 'Invalid OTP. Actual OTP is ' . $otp . '. Please try again.');
         }
@@ -98,8 +98,10 @@ class UserController extends Controller
     // user onboarding page
     public function onboardingPage()
     {
+        $user = Auth::user();
         return view('user.onboarding', [
             'heading' => 'User Onboarding',
+            'user' => $user,
         ]);
     }
 
