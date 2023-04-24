@@ -23,7 +23,7 @@ class ReviewsController extends Controller
     // show the reviews of an user (faculty) as api
     public function show_faculty_api($user)
     {
-        $faculty = Faculties::where('user_id', $user)->first();
+        $faculty = Faculties::where('id', $user)->first();
         return Reviews::where('faculty_id', $faculty->id)->where('isApproved', 1)->paginate(5);
     }
 

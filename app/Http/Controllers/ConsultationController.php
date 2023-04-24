@@ -2,13 +2,48 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\Faculties;
 use App\Models\Consultation;
+use Illuminate\Http\Request;
+use App\Models\Consultations;
 use App\Models\ConsultationSlots;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ConsultationController extends Controller
 {
+    // api to get slot availability of a faculty on a particular date  Route::get('/slot_availability/{user}/{date}', [ConsultationController::class, 'show_slot_availability_api']);
+    public function show_slot_availability_api($user, $date)
+    {
+
+        // get the date of the request and get its day like Sunday, Monday
+        $day = date('l', strtotime($date));
+
+        // get the slots of the faculty from ConsultationSlots model with $user as faculty_id
+        $slots = ConsultationSlots::where('faculty_id', $user)
+            ->where('day_of_week', $day)
+            ->where('status', 1)
+            ->get();
+
+        // format date into YYYY-MM_DD format
+        $date = date('Y-m-d', strtotime($date));
+
+        // check if the given slots has any booking on that day where slots are slot_id and date is consultation_date in YYYY-MM-DD format
+        $booked_slots = Consultations::where('consultation_date', $date)
+            ->where('is_approved', 'Approved')
+            ->get();
+
+        // get all the slots from booked_slots where slot_id is the slots ID and remove them from $slots
+        foreach ($booked_slots as $booked_slot) {
+            $slots = $slots->where('id', '!=', $booked_slot->slot_id);
+        }
+
+        // return the slots in json format
+        return response()->json($slots);
+    }
+
+
+
     /**
      * Create consultation slot page.
      *
@@ -17,7 +52,10 @@ class ConsultationController extends Controller
     public function create()
     {
         // Get the consultation slots model for the logged in user.
-        $consultationSlots = ConsultationSlots::where('faculty_id', auth()->user()->id)->get();
+        $consultationSlots = ConsultationSlots::where('faculty_id', auth()->user()->id)
+            ->orderBy('day_of_week', 'asc')
+            ->orderBy('start_time', 'asc')
+            ->paginate(10);
 
         // Return the create consultation slot page with the necessary data.
         return view('dashboard.consultation.create', [
@@ -34,9 +72,6 @@ class ConsultationController extends Controller
      */
     public function store(Request $request)
     {
-        // mode=on&start_time=11%3A30&end_time=13%3A30&total_slots=4&day=Sunday&status=on
-        // if the mode is on, then the consultation is mass mode
-        // if the mode is off, then the consultation is solo mode
         if ($request->mode == 'on') {
             // Validate the request.
             $request->validate([
@@ -144,5 +179,208 @@ class ConsultationController extends Controller
 
         // Redirect back to the consultation slot page.
         return redirect()->route('createConsultation')->with('success', 'Consultation slot created successfully!');
+    }
+
+    /**
+     * Delete consultation slot.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function delete(Request $request)
+    {
+        // Get the consultation slot.
+        $consultationSlot = ConsultationSlots::find($request->id);
+
+        // Delete the consultation slot.
+        $consultationSlot->delete();
+
+        // Redirect back to the consultation slot page.
+        return redirect()->route('createConsultation')->with('success', 'Consultation slot deleted successfully!');
+    }
+
+    /**
+     * Create consultation.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+
+    public function createConsultation(Request $request)
+    {
+        // create consultation from the request from student side
+        // Validate the request.
+        // request message=Hey&studentName=Ehsanur+Rahman+Rhythm&studentId=22241163&date=2023-04-24&timeSlot=32
+        $request->validate([
+            'message' => 'required',
+            'studentName' => 'required',
+            'studentId' => 'required',
+            'date' => 'required',
+            'timeSlot' => 'required',
+        ]);
+
+        $user_id = Auth::user()->id;
+
+        $faculty_id = ConsultationSlots::where('id', $request->timeSlot)->first()->faculty_id;
+
+        $humandate = date('d F Y', strtotime($request->date));
+
+        // Get the consultation slot where time slot id is equal to the given time slot id.
+        $consultationSlot = ConsultationSlots::find($request->timeSlot);
+
+        // check if the consultation slot is available or not.
+        if ($consultationSlot->status == 0) {
+            return redirect()->back()->with('message', 'The consultation slot is not available.');
+        }
+
+        // check if the consultation slot has been taken on same day or not.
+        $consultationbooked = Consultations::where('slot_id', $request->timeSlot)
+            ->where('consultation_date', $request->date)
+            ->first();
+
+        if ($consultationbooked) {
+            return redirect()->back()->with('message', 'The consultation slot has already been taken by someone else on this day.');
+        }
+
+        // check if the consultation slot has been taken on same day or not.
+        $consultationtakenthisday = Consultations::where('student_id', $user_id)
+            ->where('consultation_date', $request->date)
+            ->first();
+
+        if ($consultationtakenthisday) {
+
+            if ($consultationtakenthisday->is_approved == 'Pending') {
+                return redirect()->back()->with('message', 'You already have a pending request on ' . $humandate . '. Please wait for the approval.');
+            }
+
+            if ($consultationtakenthisday->is_approved == 'Approved') {
+                return redirect()->back()->with('message', 'You already have a consultation on ' . $humandate . '.');
+            }
+        }
+
+        // get the student logged in by auth
+        $student = Auth::user();
+
+        // get the consultation end time by adding the slot end time with the consultation date, it will be in DATETIME format
+        $consultationEndTime = date('Y-m-d H:i:s', strtotime($consultationSlot->end_time . ' ' . $request->date));
+
+        // generate brave talk link
+
+        /**
+         * Generates a valid room name.
+         *
+         */
+        function generateValidRoomName()
+        {
+            $randomBytes = random_bytes(32);
+            $base64 = str_replace(['+', '/', '='], [
+                '-', '_', ''
+            ], base64_encode($randomBytes));
+
+            $roomNamePattern = '/^[A-Za-z0-9-_]{43}$/';
+            while (!preg_match($roomNamePattern, $base64)) {
+                $randomBytes = random_bytes(32);
+                $base64 = str_replace(['+', '/', '='], ['-', '_', ''], base64_encode($randomBytes));
+            }
+
+            return $base64;
+        }
+
+        $roomName = generateValidRoomName();
+
+        // create the consultation.
+        // id	student_id faculty_id slot_id	message	consultation_date	complete_time	meeting_link is_approved
+        $data = [
+            'student_id' => $student->id,
+            'faculty_id' => $faculty_id,
+            'slot_id' => $request->timeSlot,
+            'message' => $request->message,
+            'consultation_date' => $request->date,
+            'complete_time' => $consultationEndTime,
+            'meeting_link' => $roomName,
+            'is_approved' => 'Pending',
+        ];
+
+        Consultations::create($data);
+
+        return redirect()->route('profileRedirect')->with('message', 'Consultation created successfully!');
+    }
+
+    // show all consultations
+    public function index()
+    {
+        $user_id = Auth::user()->id;
+
+        // get all the consultations of the logged in faculty user
+        $consultations = Consultations::where('faculty_id', $user_id)
+            ->where('is_approved', 'Approved')
+            ->orderBy('complete_time', 'asc')
+            ->limit(10)
+            ->get();
+
+        // show max 3 consultations
+        $pendingConsultations = Consultations::where('faculty_id', $user_id)
+            ->where('is_approved', 'Pending')
+            ->orderBy('complete_time', 'asc')
+            ->limit(3)
+            ->get();
+
+        $pendingHeading = 'Pending Consultations';
+        $approvedHeading = 'Scheduled Consultations';
+
+        return view('dashboard.consultation.index', [
+            'pendingHeading' => $pendingHeading,
+            'approvedHeading' => $approvedHeading,
+            'consultations' => $consultations,
+            'pendingConsultations' => $pendingConsultations,
+        ]);
+    }
+
+    // reject consultation
+    public function reject(Request $request)
+    {
+        $consultation = Consultations::find($request->id);
+
+        $consultation->is_approved = 'Rejected';
+
+        $consultation->save();
+
+        return redirect()->back()->with('message', 'Consultation rejected successfully!');
+    }
+
+    // approve consultation
+    public function approve(Request $request)
+    {
+        $consultation = Consultations::find($request->id);
+
+        $consultation->is_approved = 'Approved';
+
+        $consultation->save();
+
+        return redirect()->back()->with('message', 'Consultation approved successfully!');
+    }
+
+    /**
+     * Show consultation details.
+     *
+     * @param int $id The ID of the consultation to show.
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
+     */
+    public function show($id)
+    {
+        $consultation = Consultations::findOrFail($id);
+
+        $user = Auth::user();
+
+        // Check if the logged in user is authorized to view this consultation
+        if ($user->role == 'student' && $user->id !== $consultation->student_id) {
+            return redirect()->back()->with('message', 'You are not authorized to view this consultation!');
+        }
+
+        if ($user->role == 'faculty' && $user->id !== $consultation->faculty_id) {
+            return redirect()->back()->with('message', 'You are not authorized to view this consultation!');
+        }
+
+        return view('dashboard.consultation.show', ['consultation' => $consultation]);
     }
 }

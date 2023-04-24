@@ -30,6 +30,9 @@ Route::get('/', function () {
     ]);
 });
 
+// api to get the available consultation slots of a faculty of that date, the date is in the format of YYYY-MM-DD
+Route::get('/fpapi/getslot/{faculty_id?}&{date?}', [ConsultationController::class, 'fp_slot_available_api']);
+
 //  faculty index
 Route::get('/faculties/{page?}', [FacultyController::class, 'index'])->name('faculties');
 
@@ -37,7 +40,7 @@ Route::get('/faculties/{page?}', [FacultyController::class, 'index'])->name('fac
 Route::get('/profile/{user}', [UserController::class, 'show'])->name('profile');
 
 // Profile Redirect
-Route::get('/profile', [UserController::class, 'profileRedirect']);
+Route::get('/profile', [UserController::class, 'profileRedirect'])->name('profileRedirect');
 
 // show all courses
 Route::get('/courses', function () {
@@ -100,6 +103,9 @@ Route::get('/logout', [UserController::class, 'logout'])->name('logout');
 
 // create review in ReviewsController
 Route::post('/createreview', [ReviewsController::class, 'store']);
+
+// create consultation in ConsultationController
+Route::post('/createconsultation', [ConsultationController::class, 'createConsultation'])->name('NewConsultation');
 
 // create a route group named dashboard
 Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
@@ -168,5 +174,23 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
 
         // add consultation slot
         Route::post('/consultation/slot', [ConsultationController::class, 'store'])->name('addConsultation');
+
+        // show all consultations
+        Route::get('/consultation', [ConsultationController::class, 'index'])->name('showAllConsultations');
+
+        // pending consultations
+        Route::get('/consultation/pending', [ConsultationController::class, 'pending'])->name('pendingConsultations');
+
+        // approved consultation
+        Route::get('/consultation/approved', [ConsultationController::class, 'approved'])->name('approvedConsultations');
+
+        // reject consultation
+        Route::post('/consultation/reject/{id}', [ConsultationController::class, 'reject'])->name('rejectConsultation');
+
+        // approve consultation
+        Route::post('/consultation/approve/{id}', [ConsultationController::class, 'approve'])->name('approveConsultation');
+
+        // view consultation details
+        Route::get('/consultation/{id}', [ConsultationController::class, 'show'])->name('showConsultation');
     });
 });

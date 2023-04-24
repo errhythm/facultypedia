@@ -61,6 +61,11 @@ printMenuItem('studentReviews', 'M22,9.67A1,1,0,0,0,21.14,9l-5.69-.83L12.9,3a1,1
 
 if (Auth::user()->role == 'faculty') {
     printMenuItem('createConsultation', 'M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18a8,8,0,1,1,8-8A8,8,0,0,1,12,20Zm4-9H13V8a1,1,0,0,0-2,0v3H8a1,1,0,0,0,0,2h3v3a1,1,0,0,0,2,0V13h3a1,1,0,0,0,0-2Z', 'Add Slot', $activeClass, $inactiveClass);
+
+    echo '<hr class="border-base-content/20"/>';
+
+    // showAllConsultations
+    printMenuItem('showAllConsultations', 'M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18a8,8,0,1,1,8-8A8,8,0,0,1,12,20Zm4-9H13V8a1,1,0,0,0-2,0v3H8a1,1,0,0,0,0,2h3v3a1,1,0,0,0,2,0V13h3a1,1,0,0,0,0-2Z', 'Consultations', $activeClass, $inactiveClass);
 }
 
 // logout

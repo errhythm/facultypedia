@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReviewsController;
+use App\Http\Controllers\ConsultationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,4 +23,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // api to get reviews of a faculty with pagination of 5
-Route::get('/reviews/{user}', 'App\Http\Controllers\ReviewsController@show_faculty_api');
+Route::get('/reviews/{user}', [ReviewsController::class, 'show_faculty_api']);
+
+// api to get slot availability of a faculty on a particular date
+Route::get('/slot_availability/{user}/{date}', [ConsultationController::class, 'show_slot_availability_api'])->name('slot_availability');

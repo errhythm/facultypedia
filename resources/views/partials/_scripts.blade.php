@@ -1,8 +1,6 @@
 <!-- COMMON SCRIPTS -->
 
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-
-
 {{-- if there is any sesson message --}}
 @if (session()->has('message'))
     <div x-data>

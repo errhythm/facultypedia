@@ -3,23 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Reviews;
+use App\Mail\MyTestMail;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Models\ConsultationSlots;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Route;
-use App\Mail\MyTestMail;
-use App\Models\Reviews;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Route;
 
 class UserController extends Controller
 {
     // show user profile
     public function show(User $user)
     {
+        // get consultation slots model for the user
+        $consultationSlots = ConsultationSlots::where('faculty_id', $user->id)->get();
         return view('user.show', [
             'heading' => 'Profile',
             'user' => $user,
+            'consultationSlots' => $consultationSlots,
         ]);
     }
 
@@ -27,9 +31,12 @@ class UserController extends Controller
     public function profileRedirect()
     {
         if (auth()->check()) {
-            return redirect('/profile/' . auth()->user()->id);
-        } else {
-            return redirect('/login');
+            // check for any messages and keep it on the redirect page as well
+            if (session()->has('message')) {
+                return redirect('/profile/' . auth()->user()->id)->with('message', session()->get('message'));
+            } else {
+                return redirect('/login')->with('message', 'Please login to view your profile.');
+            }
         }
     }
 
