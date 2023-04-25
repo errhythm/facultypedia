@@ -45,28 +45,28 @@
 
 **Consultation Management System:**
 
-- [ ] Ability for students to request consultation with faculty
-- [ ] Faculty can accept or reject consultation requests
-- [ ] Auto-generated meet link for approved consultations
+- [x] Ability for students to request consultation with faculty
+- [x] Faculty can accept or reject consultation requests
+- [x] Auto-generated meet link for approved consultations
 - [ ] Email notifications sent to both students and faculty for consultation updates
 
 #### Requirement 5
 
 **Scheduling and Availability Management:**
 
-- [ ] Faculty can manage their availability for consultation
-- [ ] Ability for students to see faculty availability and schedule consultations accordingly
-- [ ] Option to reschedule or cancel consultations
+- [x] Faculty can manage their availability for consultation
+- [x] Ability for students to see faculty availability and schedule consultations accordingly
+- [x] Option to reschedule or cancel consultations
 
 #### Requirement X
 
 **Faculty Dashboard:**
 
-- [ ] Ability to view and manage their consultation requests
+- [x] Ability to view and manage their consultation requests
 
 **Student Profile:**
 
-- [ ] Ability to see all reviews given to the faculties in one page (except the anonymous one)
+- [x] Ability to see all reviews given to the faculties in one page (except the anonymous one)
 
 **Registration Restriction:**
 
