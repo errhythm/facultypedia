@@ -15,8 +15,9 @@
     @endif
     <!-- /header -->
 
+    <main class="min-h-screen">
         {{ $slot }}
-
+</main>
 
     <!--footer-->
     @if ($footer == true)

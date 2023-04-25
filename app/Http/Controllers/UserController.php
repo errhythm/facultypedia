@@ -35,8 +35,10 @@ class UserController extends Controller
             if (session()->has('message')) {
                 return redirect('/profile/' . auth()->user()->id)->with('message', session()->get('message'));
             } else {
-                return redirect('/login')->with('message', 'Please login to view your profile.');
+                return redirect('/profile/' . auth()->user()->id);
             }
+        } else {
+            return redirect('/login')->with('message', 'Please login to view your profile.');
         }
     }
 

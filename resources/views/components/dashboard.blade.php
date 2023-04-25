@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="flex flex-col flex-1 overflow-x-hidden">
-            <main>
+            <main class="min-h-screen">
                 {{ $slot }}
             </main>
         </div>
