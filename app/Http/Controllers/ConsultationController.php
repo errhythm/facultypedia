@@ -475,7 +475,7 @@ class ConsultationController extends Controller
         $consultations = Consultations::where($id_query, $user_id)
             ->where('is_approved', 'Pending')
             ->orderBy('complete_time', 'asc')
-            ->paginate(3);
+            ->paginate(10);
 
         $heading = 'Pending Consultations';
 
@@ -501,7 +501,7 @@ class ConsultationController extends Controller
         $consultations = Consultations::where($id_query, $user_id)
             ->where('is_approved', 'Approved')
             ->orderBy('complete_time', 'asc')
-            ->paginate(3);
+            ->paginate(10);
 
         $heading = 'Approved Consultations';
 
@@ -526,7 +526,7 @@ class ConsultationController extends Controller
 
         $consultations = Consultations::where($id_query, $user_id)
             ->orderBy('complete_time', 'asc')
-            ->paginate(3);
+            ->paginate(10);
 
         $heading = 'All Consultations';
 

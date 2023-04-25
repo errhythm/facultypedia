@@ -20,6 +20,16 @@
             <section class="px-4 py-5 sm:p-6">
                 <div class="flex sm:items-center justify-between items-center">
                     <h2 class="text-xl font-bold text-base-content/80">{{ $pendingHeading }}</h2>
+                    @php
+                        if ($role == 'faculty')
+                            $allpending = route('pendingConsultations');
+                        elseif ($role == 'student')
+                            $allpending = route('pendingConsultations_student');
+                    @endphp
+
+                    <a href="{{ $allpending }}" class="text-sm text-base-content/60">
+                        See All
+                    </a>
                 </div>
 
                 <div class="flex flex-col mt-6">
@@ -180,6 +190,16 @@
             <section class="px-4 py-5 sm:p-6">
                 <div class="flex sm:items-center justify-between items-center">
                     <h2 class="text-xl font-bold text-base-content/80">{{ $approvedHeading }}</h2>
+                    @php
+                        if ($role == 'faculty')
+                            $allapproved = route('approvedConsultations');
+                        elseif ($role == 'student')
+                            $allapproved = route('approvedConsultations_student');
+                    @endphp
+
+                    <a href="{{ $allapproved }}" class="text-sm text-base-content/60">
+                        See All
+                    </a>
                 </div>
 
                 <div class="flex flex-col mt-6">

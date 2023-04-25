@@ -11,6 +11,11 @@
 
     $activeClass = 'text-base-100 bg-primary/60';
     $inactiveClass = 'text-base-content/90 hover:text-base-100 hover:bg-primary/50';
+
+
+// {{-- icons --}}
+$consultationIcon = "M 6.25 2.5 C 6.25 1.121094 7.371094 0 8.75 0 L 22.5 0 C 23.878906 0 25 1.121094 25 2.5 L 25 13.75 C 25 15.128906 23.878906 16.25 22.5 16.25 L 13.15625 16.25 C 12.695312 15.253906 11.988281 14.394531 11.109375 13.75 L 15 13.75 L 15 12.5 C 15 11.808594 15.558594 11.25 16.25 11.25 L 18.75 11.25 C 19.441406 11.25 20 11.808594 20 12.5 L 20 13.75 L 22.5 13.75 L 22.5 2.5 L 8.75 2.5 L 8.75 4.417969 C 8.015625 3.992188 7.160156 3.75 6.25 3.75 Z M 6.25 5 C 8.320312 5 10 6.679688 10 8.75 C 10 10.820312 8.320312 12.5 6.25 12.5 C 4.179688 12.5 2.5 10.820312 2.5 8.75 C 2.5 6.679688 4.179688 5 6.25 5 Z M 5.207031 13.75 L 7.289062 13.75 C 10.167969 13.75 12.5 16.082031 12.5 18.957031 C 12.5 19.53125 12.035156 20 11.457031 20 L 1.042969 20 C 0.464844 20 0 19.535156 0 18.957031 C 0 16.082031 2.332031 13.75 5.207031 13.75 Z M 5.207031 13.75";
+
 @endphp
 
 
@@ -59,7 +64,8 @@ if (Auth::user()->role == 'student') {
 printMenuItem('studentReviews', 'M22,9.67A1,1,0,0,0,21.14,9l-5.69-.83L12.9,3a1,1,0,0,0-1.8,0L8.55,8.16,2.86,9a1,1,0,0,0-.81.68,1,1,0,0,0,.25,1l4.13,4-1,5.68a1,1,0,0,0,.4,1,1,1,0,0,0,1.05.07L12,18.76l5.1,2.68a.93.93,0,0,0,.46.12,1,1,0,0,0,.59-.19,1,1,0,0,0,.4-1l-1-5.68,4.13-4A1,1,0,0,0,22,9.67Zm-6.15,4a1,1,0,0,0-.29.89l.72,4.19-3.76-2a1,1,0,0,0-.94,0l-3.76,2,.72-4.19a1,1,0,0,0-.29-.89l-3-3,4.21-.61a1,1,0,0,0,.76-.55L12,5.7l1.88,3.82a1,1,0,0,0,.76.55l4.21.61Z', 'Reviews', $activeClass, $inactiveClass);
 
 // showAllConsultations
-    printMenuItem('showAllConsultations_student', 'M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18a8,8,0,1,1,8-8A8,8,0,0,1,12,20Zm4-9H13V8a1,1,0,0,0-2,0v3H8a1,1,0,0,0,0,2h3v3a1,1,0,0,0,2,0V13h3a1,1,0,0,0,0-2Z', 'Consultations', $activeClass, $inactiveClass);
+    printMenuItem('allConsultations_student', $consultationIcon, 'All Consultations', $activeClass, $inactiveClass);
+    printMenuItem('showAllConsultations_student', $consultationIcon, 'My Consultations', $activeClass, $inactiveClass);
 
 }
 
@@ -69,7 +75,8 @@ if (Auth::user()->role == 'faculty') {
     echo '<hr class="border-base-content/20"/>';
 
     // showAllConsultations
-    printMenuItem('showAllConsultations', 'M12,2A10,10,0,1,0,22,12,10,10,0,0,0,12,2Zm0,18a8,8,0,1,1,8-8A8,8,0,0,1,12,20Zm4-9H13V8a1,1,0,0,0-2,0v3H8a1,1,0,0,0,0,2h3v3a1,1,0,0,0,2,0V13h3a1,1,0,0,0,0-2Z', 'Consultations', $activeClass, $inactiveClass);
+    printMenuItem('allConsultations', $consultationIcon, 'All Consultations', $activeClass, $inactiveClass);
+    printMenuItem('showAllConsultations', $consultationIcon, 'My Consultations', $activeClass, $inactiveClass);
 }
 
 // logout
