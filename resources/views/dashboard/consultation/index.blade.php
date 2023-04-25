@@ -1,6 +1,5 @@
 @php
     $query = '';
-    $page = 1;
     $route = Route::currentRouteName();
     // break the query string into array
     $query = explode('&', $query);
@@ -11,6 +10,7 @@
     // convert array to string
     $query = implode('&', $query);
     $query = $query ? $query . '&' : $query;
+    $role = Auth::user()->role;
 @endphp
 
 <x-dashboard>
@@ -131,6 +131,7 @@
                                                     </td>
                                                     <td class="px-4 py-2 text-sm">
                                                         <div class="flex items-center gap-x-6">
+                                                            @if ($role == 'faculty')
                                                             <form
                                                                 action="/dashboard/faculty/consultation/approve/{{ $pendingConsultation->id }}"
                                                                 method="POST">
@@ -148,6 +149,7 @@
                                                                     </button>
                                                                 </label>
                                                             </form>
+                                                            @endif
 
 
                                                             <label for="delete-consultation-{{ $pendingConsultation->id }}"
@@ -317,7 +319,11 @@
                                                     <td class="px-4 py-2 text-sm">
                                                         <div class="flex items-center gap-x-6">
                                                             <a
+                                                            @if ($role == 'student')
+                                                                href="{{ route('showConsultation_student', $consultation->id) }}"
+                                                                @elseif ($role == 'faculty')
                                                                 href="{{ route('showConsultation', $consultation->id) }}">
+                                                            @endif
                                                                 @csrf
                                                                 <label>
                                                                     <button
@@ -374,17 +380,19 @@
 
         function createModal(consultationId) {
             const modal = document.createElement('div');
+            const role = "{{ $role }}";
+            const action = role == 'student' ? 'cancel' : 'reject';
             modal.innerHTML = `
             <input type="checkbox" id="delete-consultation-${consultationId}" class="modal-toggle" />
             <label for="delete-consultation-${consultationId}" class="modal cursor-pointer">
         <label class="modal-box relative" for="">
             <h3 class="text-lg font-bold">Are you sure?</h3>
-            <p class="py-4">Are you sure you want to reject this consultation?</p>
+            <p class="py-4">Are you sure you want to ${action} this consultation?</p>
             <div class="modal-action">
                 <label for="delete-consultation-${consultationId}" class="btn btn-ghost">Cancel</label>
-                <form action="/dashboard/faculty/consultation/reject/${consultationId}" method="POST">
+                <form action="/dashboard/${role}/consultation/reject/${consultationId}" method="POST">
                     @csrf
-                    <button class="btn btn-error">Reject</button>
+                    <button class="btn btn-error">${action}</button>
                 </form>
             </div>
         </label>

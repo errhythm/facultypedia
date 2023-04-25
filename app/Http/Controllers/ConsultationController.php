@@ -182,6 +182,33 @@ class ConsultationController extends Controller
     }
 
     /**
+     * Update consultation slot.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function update(Request $request)
+    {
+        // Get the consultation slot.
+        $consultationSlot = ConsultationSlots::findOrFail($request->id);
+
+
+        $status = $request->status;
+        $status = $status == 'on' ? 1 : 0;
+
+        // Update the consultation slot.
+        $consultationSlot->update([
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time,
+            'day_of_week' => $request->day,
+            'status' => $status,
+        ]);
+
+        // Redirect back to the consultation slot page.
+        return redirect()->route('createConsultation')->with('success', 'Consultation slot updated successfully!');
+    }
+
+    /**
      * Delete consultation slot.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -311,15 +338,22 @@ class ConsultationController extends Controller
     {
         $user_id = Auth::user()->id;
 
-        // get all the consultations of the logged in faculty user
-        $consultations = Consultations::where('faculty_id', $user_id)
+        // check the role of the logged in user
+        $role = Auth::user()->role;
+        if ($role == 'student') {
+            $id_query = 'student_id';
+        } elseif ($role == 'faculty') {
+            $id_query = 'faculty_id';
+        }
+
+        $consultations = Consultations::where($id_query, $user_id)
             ->where('is_approved', 'Approved')
             ->orderBy('complete_time', 'asc')
             ->limit(10)
             ->get();
 
         // show max 3 consultations
-        $pendingConsultations = Consultations::where('faculty_id', $user_id)
+        $pendingConsultations = Consultations::where($id_query, $user_id)
             ->where('is_approved', 'Pending')
             ->orderBy('complete_time', 'asc')
             ->limit(3)
@@ -339,19 +373,44 @@ class ConsultationController extends Controller
     // reject consultation
     public function reject(Request $request)
     {
+
+        $user = Auth::user();
+        $role = $user->role;
+
+        // if the role is student then action is Cancelled otherwise if the role is faculty then action is Rejected
+        $action = $role == 'student' ? 'Cancelled' : 'Rejected';
+
         $consultation = Consultations::find($request->id);
 
-        $consultation->is_approved = 'Rejected';
+        // Check if the logged in user is authorized to view this consultation
+        if ($user->role == 'student' && $user->id !== $consultation->student_id) {
+            return redirect()->back()->with('message', 'You are not authorized to view this consultation!');
+        }
+
+        if ($user->role == 'faculty' && $user->id !== $consultation->faculty_id) {
+            return redirect()->back()->with('message', 'You are not authorized to view this consultation!');
+        }
+
+
+        $consultation->is_approved = $action;
 
         $consultation->save();
 
-        return redirect()->back()->with('message', 'Consultation rejected successfully!');
+        return redirect()->back()->with('message', 'Consultation ' . $action . ' successfully!');
     }
 
     // approve consultation
     public function approve(Request $request)
     {
+
+        $user = Auth::user();
+
         $consultation = Consultations::find($request->id);
+
+
+        if ($user->role == 'faculty' && $user->id !== $consultation->faculty_id) {
+            return redirect()->back()->with('message', 'You are not authorized to view this consultation!');
+        }
 
         $consultation->is_approved = 'Approved';
 
@@ -381,6 +440,99 @@ class ConsultationController extends Controller
             return redirect()->back()->with('message', 'You are not authorized to view this consultation!');
         }
 
-        return view('dashboard.consultation.show', ['consultation' => $consultation]);
+        return view('dashboard.consultation.show', [
+            'heading' => 'Consultation Details',
+            'consultation' => $consultation,
+        ]);
+    }
+
+    // change consultation slot
+    public function changeSlot(Request $request)
+    {
+        $consultation = Consultations::find($request->id);
+
+        $consultation->slot_id = $request->slot_id;
+        $consultation->updated_at = now();
+
+        $consultation->save();
+
+        return redirect()->back()->with('message', 'Consultation slot changed successfully!');
+    }
+
+    // show all pending consultations
+    public function pending()
+    {
+        $user_id = Auth::user()->id;
+
+        // check the role of the logged in user
+        $role = Auth::user()->role;
+        if ($role == 'student') {
+            $id_query = 'student_id';
+        } elseif ($role == 'faculty') {
+            $id_query = 'faculty_id';
+        }
+
+        $consultations = Consultations::where($id_query, $user_id)
+            ->where('is_approved', 'Pending')
+            ->orderBy('complete_time', 'asc')
+            ->paginate(3);
+
+        $heading = 'Pending Consultations';
+
+        return view('dashboard.consultation.index_status', [
+            'heading' => $heading,
+            'consultations' => $consultations,
+        ]);
+    }
+
+    // show all approved consultations
+    public function approved()
+    {
+        $user_id = Auth::user()->id;
+
+        // check the role of the logged in user
+        $role = Auth::user()->role;
+        if ($role == 'student') {
+            $id_query = 'student_id';
+        } elseif ($role == 'faculty') {
+            $id_query = 'faculty_id';
+        }
+
+        $consultations = Consultations::where($id_query, $user_id)
+            ->where('is_approved', 'Approved')
+            ->orderBy('complete_time', 'asc')
+            ->paginate(3);
+
+        $heading = 'Approved Consultations';
+
+        return view('dashboard.consultation.index_status', [
+            'heading' => $heading,
+            'consultations' => $consultations,
+        ]);
+    }
+
+    // show all consultations even if they are cancelled or rejected
+    public function all()
+    {
+        $user_id = Auth::user()->id;
+
+        // check the role of the logged in user
+        $role = Auth::user()->role;
+        if ($role == 'student') {
+            $id_query = 'student_id';
+        } elseif ($role == 'faculty') {
+            $id_query = 'faculty_id';
+        }
+
+        $consultations = Consultations::where($id_query, $user_id)
+            ->orderBy('complete_time', 'asc')
+            ->paginate(3);
+
+        $heading = 'All Consultations';
+
+        return view('dashboard.consultation.index_status', [
+            'heading' => $heading,
+            'consultations' => $consultations,
+        ]);
     }
 }

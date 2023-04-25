@@ -33,8 +33,7 @@ class Kernel extends ConsoleKernel
             $consultations = Consultations::where('is_approved', 'Pending')->get();
             foreach ($consultations as $consultation) {
                 if ($consultation->complete_time < now()) {
-                    $consultation->is_approved = 'Rejected';
-                    $consultation->message = $consultation->message . ' [Rejected as the consultation slot expired]';
+                    $consultation->is_approved = 'Cancelled';
                     $consultation->updated_at = now();
                     $consultation->save();
                 }

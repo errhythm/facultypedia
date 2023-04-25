@@ -162,6 +162,24 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
 
         // show all reviews
         Route::get('/reviews', [UserController::class, 'showAllReviews'])->name('studentReviews');
+
+        // show all consultations
+        Route::get('/consultation', [ConsultationController::class, 'index'])->name('showAllConsultations_student');
+
+        // pending consultations
+        Route::get('/consultation/pending', [ConsultationController::class, 'pending'])->name('pendingConsultations_student');
+
+        // approved consultation
+        Route::get('/consultation/approved', [ConsultationController::class, 'approved'])->name('approvedConsultations_student');
+
+        // show all consultation even if they are cancelled
+        Route::get('/consultation/all', [ConsultationController::class, 'all'])->name('allConsultations_student');
+
+        // view consultation details
+        Route::get('/consultation/{id}', [ConsultationController::class, 'show'])->name('showConsultation_student');
+
+        // reject consultation
+        Route::post('/consultation/reject/{id}', [ConsultationController::class, 'reject'])->name('rejectConsultation_student');
     });
 
     // create a route subgroup where the user role must be faculty
@@ -175,6 +193,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
         // add consultation slot
         Route::post('/consultation/slot', [ConsultationController::class, 'store'])->name('addConsultation');
 
+        // update consultation slot
+        Route::post('/consultation/slot/{id}', [ConsultationController::class, 'update'])->name('updateConsultation');
+
         // show all consultations
         Route::get('/consultation', [ConsultationController::class, 'index'])->name('showAllConsultations');
 
@@ -184,6 +205,9 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
         // approved consultation
         Route::get('/consultation/approved', [ConsultationController::class, 'approved'])->name('approvedConsultations');
 
+        // show all consultation even if they are cancelled
+        Route::get('/consultation/all', [ConsultationController::class, 'all'])->name('allConsultations');
+
         // reject consultation
         Route::post('/consultation/reject/{id}', [ConsultationController::class, 'reject'])->name('rejectConsultation');
 
@@ -192,5 +216,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
 
         // view consultation details
         Route::get('/consultation/{id}', [ConsultationController::class, 'show'])->name('showConsultation');
+
+        // change consultation slot
+        Route::post('/consultation/{id}', [ConsultationController::class, 'changeSlot'])->name('changeConsultationSlot');
     });
 });

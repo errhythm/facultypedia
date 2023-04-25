@@ -17,7 +17,7 @@ class AuthStudent
     public function handle(Request $request, Closure $next)
     {
         if (auth()->user()->role != 'student') {
-            return redirect()->route('dashboard');
+            return redirect()->route('dashboard')->with('message', 'You are not authorized to access this page');
         }
         return $next($request);
     }

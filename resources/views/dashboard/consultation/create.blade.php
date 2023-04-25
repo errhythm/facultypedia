@@ -455,9 +455,6 @@
         function createModal(slotId) {
             const modal = document.createElement('div');
             const start_time = document.querySelector(`#slot_start_${slotId}`).innerHTML.trim();
-            // convert to 24 hour format end
-
-            // convert to 24 hour format
             const end_time = document.querySelector(`#slot_end_${slotId}`).innerHTML.trim();
             const slot_day = document.querySelector(`#slot_day_${slotId}`).innerHTML.trim();
             const status = document.querySelector(`#slot_status_${slotId}`).innerHTML.trim();
@@ -471,7 +468,7 @@
                                 <h3 class="text-2xl font-semibold text-center text-base-content">
                                     Edit Consultation Slot
                                 </h3>
-                                <form action="{{ route('addConsultation') }}" method="POST" class="mt-10">
+                                <form action="/dashboard/faculty/consultation/slot/${slotId}" method="POST" class="mt-10">
                                     @csrf
                                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
                                     <div class="sm:col-span-2">
@@ -492,7 +489,7 @@
                                             <div class="mt-2.5 relative">
                                                 <input type="text" name="end_time" id="end_time"
                                                     class="w-full px-4 py-2 text-base-content placeholder-base-content/40 transition-all duration-200 bg-base-100 border border-base-300 rounded-md resize-y focus:outline-none focus:border-primary caret-primary"
-                                                    placeholder="End Time" />
+                                                    placeholder="End Time" value="${end_time}"/>
                                             </div>
                                         </div>
 
@@ -503,13 +500,13 @@
                                             <div class="mt-2.5 relative">
                                                 <select name="day" id="day"
                                                     class="w-full px-4 py-2 text-base-content placeholder-base-content/40 transition-all duration-200 bg-base-100 border border-base-300 rounded-md resize-y focus:outline-none focus:border-primary caret-primary">
-                                                    <option value="Sunday">Sunday</option>
-                                                    <option value="Monday">Monday</option>
-                                                    <option value="Tuesday">Tuesday</option>
-                                                    <option value="Wednesday">Wednesday</option>
-                                                    <option value="Thursday">Thursday</option>
-                                                    <option value="Friday">Friday</option>
-                                                    <option value="Saturday">Saturday</option>
+                                                    <option value="Sunday" ${slot_day == 'Sunday' ? 'selected' : ''}>Sunday</option>
+                                                    <option value="Monday" ${slot_day == 'Monday' ? 'selected' : ''}>Monday</option>
+                                                    <option value="Tuesday" ${slot_day == 'Tuesday' ? 'selected' : ''}>Tuesday</option>
+                                                    <option value="Wednesday" ${slot_day == 'Wednesday' ? 'selected' : ''}>Wednesday</option>
+                                                    <option value="Thursday" ${slot_day == 'Thursday' ? 'selected' : ''}>Thursday</option>
+                                                    <option value="Friday" ${slot_day == 'Friday' ? 'selected' : ''}>Friday</option>
+                                                    <option value="Saturday" ${slot_day == 'Saturday' ? 'selected' : ''}>Saturday</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -518,8 +515,7 @@
                                         <div class="sm:col-span-2">
                                             <label class="label cursor-pointer">
                                                 <span class="label-text">Active</span>
-                                                {{-- default is on --}}
-                                                <input name="status" type="checkbox" class="toggle" checked />
+                                                <input name="status" type="checkbox" class="toggle" ${status == '1' ? 'checked' : ''}/>
                                             </label>
                                         </div>
 

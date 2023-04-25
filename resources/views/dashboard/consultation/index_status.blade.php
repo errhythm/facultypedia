@@ -1,33 +1,28 @@
 @php
-    // $page = request()->query('page') ?? 1;
-    // $page_count = $consultations->lastPage();
-    // $per_page = $consultations->perPage();
-    // $total = $consultations->total();
+    $user = Auth::user();
+    $role = $user->role;
+    $page = request()->query('page') ?? 1;
+    $page_count = $consultations->lastPage();
+    $per_page = $consultations->perPage();
+    $total = $consultations->total();
     $query = '';
-    $page = 1;
-    // if (request('rsearch')) {
-    //     $query = http_build_query([
-    //         'rsearch' => request('rsearch'),
-    //     ]);
-    // }
-    // get current route
+
     $route = Route::currentRouteName();
-    // break the query string into array
     $query = explode('&', $query);
-    // remove page from query string
     $query = array_filter($query, function ($item) {
         return !str_contains($item, 'page');
     });
-    // convert array to string
     $query = implode('&', $query);
     $query = $query ? $query . '&' : $query;
+
 @endphp
-{{-- @if ($page != 1 && $consultations->isEmpty())
+
+@if ($page != 1 && $consultations->isEmpty())
     @php
         header('Location: ' . route($route, '?' . $query . 'page=' . $page_count));
         exit();
     @endphp
-@endif --}}
+@endif
 
 <x-dashboard>
     <div class="py-6">
@@ -36,21 +31,11 @@
             <section class="px-4 py-5 sm:p-6">
                 <div class="flex sm:items-center justify-between items-center">
                     <h2 class="text-xl font-bold text-base-content/80">{{ $heading }}</h2>
-                    <div
-                        class="relative flex items-center lg:w-1/6 w-64 h-12 rounded-lg focus-within:shadow-lg bg-base-200 focus-within:border-primary border overflow-hidden">
-                        <div class="grid place-items-center h-full w-12 text-base-content/30">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
-                        </div>
-                        <form action="{{ route('pendingReviews') }}" method="get">
-                            <input class="peer h-full w-full outline-none text-sm text-base-content/70 bg-base-200 pr-2"
-                                type="text" id="rsearch" name="rsearch" value="{{ request('rsearch') }}"
-                                placeholder="Search something.." />
-                        </form>
-                    </div>
+                    {{-- Text "showing 3 out of 9" --}}
+                    <p class="text-sm text-base-content/60">
+                        Showing {{ $consultations->firstItem() }} to {{ $consultations->lastItem() }} out of
+                        {{ $consultations->total() }} results
+                    </p>
                 </div>
 
                 <div class="flex flex-col mt-6">
@@ -158,10 +143,21 @@
                                                                 class="px-2 py-1 text-xs font-medium leading-4 tracking-wide text-red-800 bg-red-100 rounded-full">
                                                                 Rejected
                                                             </span>
+                                                            @elseif ($consultation->is_approved == 'Cancelled')
+                                                            <span
+                                                                class="px-2 py-1 text-xs font-medium leading-4 tracking-wide text-red-800 bg-red-100 rounded-full">
+                                                                Cancelled
+                                                            </span>
+                                                            @elseif ($consultation->is_approved == 'Completed')
+                                                            <span
+                                                                class="px-2 py-1 text-xs font-medium leading-4 tracking-wide text-green-800 bg-green-100 rounded-full">
+                                                                Completed
+                                                            </span>
                                                         @endif
                                                     </td>
                                                     <td class="px-4 py-2 text-sm">
-                                                        <div class="flex items-center gap-x-6">
+                                                        <div class="flex items-center justify-end mx-4 gap-x-6">
+                                                            @if ($consultation->is_approved == 'Pending' && $role == 'faculty')
                                                             <form
                                                                 action="/dashboard/reviews/approve/{{ $consultation->id }}"
                                                                 method="POST">
@@ -179,8 +175,32 @@
                                                                     </button>
                                                                 </label>
                                                             </form>
+                                                            @endif
 
+                                                            @if ($consultation->is_approved != 'Pending')
+                                                            <a
+                                                            @if ($role == 'student')
+                                                                href="{{ route('showConsultation_student', $consultation->id) }}"
+                                                                @elseif ($role == 'faculty')
+                                                                href="{{ route('showConsultation', $consultation->id) }}">
+                                                            @endif
+                                                                @csrf
+                                                                <label>
+                                                                    <button
+                                                                        class="text-base-content/50 transition-colors duration-200 cursor-pointer  hover:text-success focus:outline-none">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                                            viewBox="0 0 24 24" class="w-5 h-5"
+                                                                            stroke="currentColor" id="check-circle">
+                                                                            <path fill="currentColor"
+                                                                                d="M18,10.82a1,1,0,0,0-1,1V19a1,1,0,0,1-1,1H5a1,1,0,0,1-1-1V8A1,1,0,0,1,5,7h7.18a1,1,0,0,0,0-2H5A3,3,0,0,0,2,8V19a3,3,0,0,0,3,3H16a3,3,0,0,0,3-3V11.82A1,1,0,0,0,18,10.82Zm3.92-8.2a1,1,0,0,0-.54-.54A1,1,0,0,0,21,2H15a1,1,0,0,0,0,2h3.59L8.29,14.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L20,5.41V9a1,1,0,0,0,2,0V3A1,1,0,0,0,21.92,2.62Z">
+                                                                            </path>
+                                                                        </svg>
+                                                                    </button>
+                                                                </label>
+                                                            </a>
+                                                            @endif
 
+                                                            @if ($consultation->is_approved == 'Approved' || $consultation->is_approved == 'Pending')
                                                             <label for="delete-review-{{ $consultation->id }}"
                                                                 data-review-id="{{ $consultation->id }}"
                                                                 id="delete-review"
@@ -193,6 +213,7 @@
                                                                     </path>
                                                                 </svg>
                                                             </label>
+                                                            @endif
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -206,7 +227,7 @@
                 </div>
             </section>
             {{-- table end --}}
-            {{-- <div class="py-12 bg-base-100 sm:py-16">
+            <div class="py-12 bg-base-100 sm:py-16">
                 <div class="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
                     <div class="flex items-center justify-center space-x-2">
                         @if ($page != 1)
@@ -259,34 +280,36 @@
                         @endif
                     </div>
                 </div>
-            </div> --}}
+            </div>
         </div>
     </div>
 
     {{-- modal to reject review --}}
     <script>
-        const deleteReview = document.querySelectorAll('#delete-review');
-        deleteReview.forEach((review) => {
-            review.addEventListener('click', () => {
-                const reviewId = review.getAttribute('data-review-id');
-                const modal = createModal(reviewId);
+        const deleteReview = document.querySelectorAll('#delete-consultation');
+        deleteReview.forEach((consultation) => {
+            consultation.addEventListener('click', () => {
+                const consultationId = consultation.getAttribute('data-consultation-id');
+                const modal = createModal(consultationId);
                 document.body.appendChild(modal);
             });
         });
 
-        function createModal(reviewId) {
+        function createModal(consultationId) {
             const modal = document.createElement('div');
+            const role = "{{ $role }}";
+            const action = role == 'student' ? 'cancel' : 'reject';
             modal.innerHTML = `
-            <input type="checkbox" id="delete-review-${reviewId}" class="modal-toggle" />
-            <label for="delete-review-${reviewId}" class="modal cursor-pointer">
+            <input type="checkbox" id="delete-consultation-${consultationId}" class="modal-toggle" />
+            <label for="delete-consultation-${consultationId}" class="modal cursor-pointer">
         <label class="modal-box relative" for="">
             <h3 class="text-lg font-bold">Are you sure?</h3>
-            <p class="py-4">Are you sure you want to delete this review?</p>
+            <p class="py-4">Are you sure you want to ${action} this consultation?</p>
             <div class="modal-action">
-                <label for="delete-review-${reviewId}" class="btn btn-ghost">Cancel</label>
-                <form action="/dashboard/reviews/delete/${reviewId}" method="POST">
+                <label for="delete-consultation-${consultationId}" class="btn btn-ghost">Cancel</label>
+                <form action="/dashboard/${role}/consultation/reject/${consultationId}" method="POST">
                     @csrf
-                    <button class="btn btn-error">Delete</button>
+                    <button class="btn btn-error">${action}</button>
                 </form>
             </div>
         </label>
@@ -299,10 +322,5 @@
             return modal;
         }
     </script>
-
-
-
-
-
 
 </x-dashboard>
