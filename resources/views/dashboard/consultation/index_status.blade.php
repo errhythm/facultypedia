@@ -42,7 +42,7 @@
                     <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                             <div class="overflow-hidden border border-base-content/20  md:rounded-lg">
-                                <table id="pending-review" class="min-w-full divide-y divide-base-content/20">
+                                <table id="pending-consultation" class="min-w-full divide-y divide-base-content/20">
                                     <thead class="bg-base-300">
                                         <tr>
                                             <th scope="col"
@@ -201,9 +201,9 @@
                                                             @endif
 
                                                             @if ($consultation->is_approved == 'Approved' || $consultation->is_approved == 'Pending')
-                                                            <label for="delete-review-{{ $consultation->id }}"
-                                                                data-review-id="{{ $consultation->id }}"
-                                                                id="delete-review"
+                                                            <label for="delete-consultation-{{ $consultation->id }}"
+                                                                data-consultation-id="{{ $consultation->id }}"
+                                                                id="delete-consultation"
                                                                 class="pb-1.5 text-base-content/50 transition-colors duration-200 cursor-pointer hover:text-warning focus:outline-none">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                                     viewBox="0 0 24 24" stroke="currentColor"
@@ -284,7 +284,7 @@
         </div>
     </div>
 
-    {{-- modal to reject review --}}
+    {{-- modal to reject consultation --}}
     <script>
         const deleteReview = document.querySelectorAll('#delete-consultation');
         deleteReview.forEach((consultation) => {
