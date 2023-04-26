@@ -1,1 +1,0 @@
-window.addEventListener("app:mounted",(function(){new Tab("#feed-tab")}),{once:!0});
