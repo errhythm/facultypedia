@@ -28,7 +28,9 @@
         <li><a>Submenu 2</a></li>
     </ul>
 </li> --}}
-<li><a href="{{ route('dashboard') }}" >Dashboard</a></li>
+@if (Auth::user())
+<li><a href="{{ route('dashboard') }}">Dashboard</a></li>
+@endif
 @if ($mode == 0)
 <li><a href="/login">Login</a></li>
 <li><a href="/register">Register</a></li>

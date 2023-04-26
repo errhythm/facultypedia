@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
                     $consultation->save();
                 }
             }
-        })->everyThreeMinutes();
+        })->everyMinute();
 
         $schedule->call(function () {
             $consultations = Consultations::where('is_approved', 'Pending')->get();
@@ -38,7 +38,7 @@ class Kernel extends ConsoleKernel
                     $consultation->save();
                 }
             }
-        })->everyThreeMinutes();
+        })->everyMinute();
     }
 
     /**

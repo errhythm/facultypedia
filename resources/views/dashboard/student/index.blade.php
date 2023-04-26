@@ -1,5 +1,5 @@
 @php
-// get total reviews of the user who is logged in which is approved and not deleted
+    // get total reviews of the user who is logged in which is approved and not deleted
     $user_reviews = \App\Models\Reviews::where('user_id', Auth::user()->id)
         ->where('isApproved', 1)
         ->where('isDeleted', 0)
@@ -13,6 +13,21 @@
         ->where('isDeleted', 0)
         ->get();
     $totalUserPendingReviews = $user_pending_reviews->count();
+
+
+    // get the Approved consultation requests of the logged in faculty
+    $approvedConsultationRequests = \App\Models\Consultations::where('student_id', Auth::user()->id)
+        ->where('is_approved', 'Approved')
+        ->orderBy('complete_time', 'asc')
+        ->count();
+
+
+    // get the pending consultation requests of the logged in faculty
+    $pendingConsultationRequests = \App\Models\Consultations::where('student_id', Auth::user()->id)
+        ->where('is_approved', 'Pending')
+        ->orderBy('complete_time', 'asc')
+        ->count();
+
 @endphp
 
 <x-dashboard>
@@ -54,7 +69,7 @@
                             </p>
                             <div class="flex items-center mt-3">
                                 <p class="text-xl font-bold text-base-content/80">
-                                    X
+                                    {{ $approvedConsultationRequests }}
                                 </p>
                             </div>
                         </div>
@@ -63,11 +78,11 @@
                     <div class="bg-base-100 border border-base-content rounded-xl">
                         <div class="px-5 py-4">
                             <p class="text-xs font-medium tracking-wider text-base-content/80 uppercase">
-                                Total Consultations
+                                Pending Consultations
                             </p>
                             <div class="flex items-center mt-3">
                                 <p class="text-xl font-bold text-base-content/80">
-                                    X
+                                    {{ $pendingConsultationRequests }}
                                 </p>
                             </div>
                         </div>
@@ -96,8 +111,7 @@
                                 <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                                     <div class="inline-block min-w-full py-2 align-middle md:px-6 lg:px-8">
                                         <div class="overflow-hidden border border-base-content/20  md:rounded-lg">
-                                            <table id="user-review"
-                                                class="min-w-full divide-y divide-base-content/20">
+                                            <table id="user-review" class="min-w-full divide-y divide-base-content/20">
                                                 <thead class="bg-base-300">
                                                     <tr>
                                                         <th scope="col"
@@ -141,8 +155,8 @@
                                                                 class="px-4 py-20 mx-auto text-sm font-medium text-base-content/70">
                                                                 <div class="flex items-center justify-center gap-x-3">
                                                                     <svg xmlns="http://www.w3.org/2000/svg"
-                                                                        class="h-10 w-10 text-error"
-                                                                        viewBox="0 0 25 25" fill="currentColor">
+                                                                        class="h-10 w-10 text-error" viewBox="0 0 25 25"
+                                                                        fill="currentColor">
                                                                         <path fill-rule="evenodd"
                                                                             d="M15.71,8.29a1,1,0,0,0-1.42,0L12,10.59,9.71,8.29A1,1,0,0,0,8.29,9.71L10.59,12l-2.3,2.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l2.29,2.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42L13.41,12l2.3-2.29A1,1,0,0,0,15.71,8.29Zm3.36-3.36A10,10,0,1,0,4.93,19.07,10,10,0,1,0,19.07,4.93ZM17.66,17.66A8,8,0,1,1,20,12,7.95,7.95,0,0,1,17.66,17.66Z"
                                                                             clip-rule="evenodd" />
@@ -163,31 +177,36 @@
                                                                 // get the course code from the course_id
                                                                 $course = App\Models\Courses::find($review->course_id);
                                                             @endphp
-                                                    <tr>
-                                                    <td class="px-8 py-2 text-sm font-medium text-base-content/70">
-                                                        <a href="/profile/{{ $faculty->id }}">{{ $faculty->name }}</a>
-                                                    </td>
-                                                    <td class="px-6 py-2 text-sm text-base-content/50 ">
-                                                        {{ $course->course_code }}</td>
-                                                    <td class="px-6 py-2 text-sm text-base-content/50 ">
-                                                        {{ $review->rating }}</td>
-                                                    <td class="px-4 py-2 text-sm text-base-content/50 ">
-                                                        {{ $review->review }}</td>
-                                                    <td class="px-4 py-2 text-sm">
-                                                        <div class="flex items-center gap-x-6">
-                                                            <label for="delete-review-{{ $review->id }}" data-review-id="{{ $review->id }}" id="delete-review"
-                                                                class="pb-1.5 text-base-content/50 transition-colors duration-200 cursor-pointer hover:text-warning focus:outline-none">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                                    viewBox="0 0 24 24" stroke="currentColor"
-                                                                    class="w-5 h-5" id="times-circle">
-                                                                    <path fill="currentColor"
-                                                                        d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z">
-                                                                    </path>
-                                                                </svg>
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                </tr>
+                                                            <tr>
+                                                                <td
+                                                                    class="px-8 py-2 text-sm font-medium text-base-content/70">
+                                                                    <a
+                                                                        href="/profile/{{ $faculty->id }}">{{ $faculty->name }}</a>
+                                                                </td>
+                                                                <td class="px-6 py-2 text-sm text-base-content/50 ">
+                                                                    {{ $course->course_code }}</td>
+                                                                <td class="px-6 py-2 text-sm text-base-content/50 ">
+                                                                    {{ $review->rating }}</td>
+                                                                <td class="px-4 py-2 text-sm text-base-content/50 ">
+                                                                    {{ $review->review }}</td>
+                                                                <td class="px-4 py-2 text-sm">
+                                                                    <div class="flex items-center gap-x-6">
+                                                                        <label for="delete-review-{{ $review->id }}"
+                                                                            data-review-id="{{ $review->id }}"
+                                                                            id="delete-review"
+                                                                            class="pb-1.5 text-base-content/50 transition-colors duration-200 cursor-pointer hover:text-warning focus:outline-none">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                                                fill="none" viewBox="0 0 24 24"
+                                                                                stroke="currentColor" class="w-5 h-5"
+                                                                                id="times-circle">
+                                                                                <path fill="currentColor"
+                                                                                    d="M20,6H16V5a3,3,0,0,0-3-3H11A3,3,0,0,0,8,5V6H4A1,1,0,0,0,4,8H5V19a3,3,0,0,0,3,3h8a3,3,0,0,0,3-3V8h1a1,1,0,0,0,0-2ZM10,5a1,1,0,0,1,1-1h2a1,1,0,0,1,1,1V6H10Zm7,14a1,1,0,0,1-1,1H8a1,1,0,0,1-1-1V8H17Z">
+                                                                                </path>
+                                                                            </svg>
+                                                                        </label>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
                                                         @endforeach
                                                     @endif
 
@@ -200,87 +219,62 @@
                         </section>
                     </div>
 
+
                     {{-- column 2 --}}
                     @php
-                        $faculties = App\Models\Faculties::all();
-                        $reviews = App\Models\Reviews::all();
-
-                        $topFaculty = DB::table('reviews')
-                            ->join('users', 'reviews.faculty_id', '=', 'users.id')
-                            ->select('reviews.faculty_id', 'users.name', DB::raw('count(*) as total'))
-                            ->groupBy('reviews.faculty_id', 'users.name')
-                            ->orderByDesc('total')
-                            ->take(5)
+                        $approvedConsultations = \App\Models\Consultations::where('student_id', Auth::user()->id)
+                            ->where('is_approved', 'Approved')
+                            ->orderBy('consultation_date', 'asc')
+                            ->orderBy('complete_time', 'desc')
+                            ->take(1)
                             ->get();
-
                     @endphp
-                    <div class="overflow-hidden bg-base-100 border border-base-content/80 rounded-xl lg:col-span-2">
-                        <div class="px-4 py-5 sm:p-6">
+                    <div class="overflow-hidden bg-base-100 border border-base-content/80 rounded-xl lg:col-span-2 row-span-2">
+                        <div class="px-4 py-5 sm:p-6 space-y-5">
                             <div class="sm:flex sm:items-center sm:justify-between items-center">
-                                <p class="text-base font-bold text-base-content/80">Top Reviewed Faculties
+                                <p class="text-base font-bold text-base-content/80">Upcoming Consultation
                                 </p>
                             </div>
-                            <div class="mt-8 space-y-3">
-                                @foreach ($topFaculty as $faculty)
-                                    @php
-                                        // get the total number of reviews of this faculty where rating value is more than 3
-                                        $posReviews = DB::table('reviews')
-                                            ->where('faculty_id', $faculty->faculty_id)
-                                            ->where('isDeleted', '!=', '1')
-                                            ->where('isApproved', '!=', '0')
-                                            ->where('rating', '>', 3)
-                                            ->count();
-                                        // get the total number of reviews of this faculty where rating value is less than 3
-                                        $negReviews = DB::table('reviews')
-                                            ->where('faculty_id', $faculty->faculty_id)
-                                            ->where('isDeleted', '!=', '1')
-                                            ->where('isApproved', '!=', '0')
-                                            ->where('rating', '<', 3)
-                                            ->count();
-                                        // get the total number of reviews of this faculty
-                                        $totalReviews = DB::table('reviews')
-                                            ->where('faculty_id', $faculty->faculty_id)
-                                            ->where('isDeleted', '!=', '1')
-                                            ->where('isApproved', '!=', '0')
-                                            ->count();
-                                        // calculate the percentage of positive reviews
-                                        $posrevpercentage = round(($posReviews / $totalReviews) * 100, 0);
-
-                                        // calculate the percentage of negative reviews
-                                        $negrevpercentage = round(($negReviews / $totalReviews) * 100, 0);
-
-                                    @endphp
-                                    <div class="flex items-center justify-between">
-                                        <a href="/profile/{{ $faculty->faculty_id }}">
-                                            <p class="text-sm font-medium text-base-content/80">
-                                                {{ $faculty->name }}
-                                            </p>
-                                        </a>
-                                        <p class="text-sm font-medium text-base-content/80">
-                                            {{ $faculty->total }}
-                                        </p>
-                                    </div>
-                                    <div class="mt-1 bg-warning h-1.5 rounded-full relative">
-                                        <div class="absolute inset-y-0 left-0 bg-success rounded-full"
-                                            style="width: {{ $posrevpercentage }}%;">
-                                        </div>
-                                        <div class="absolute inset-y-0 right-0 bg-error rounded-full"
-                                            style="width: {{ $negrevpercentage }}%;">
+                            @if ($approvedConsultations->count() == 0)
+                                <div class="flex flex-col items-center justify-center mt-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-16 h-16"
+                                        stroke="currentColor">
+                                        <path fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 6v6m0 0v6m0-6h6m-6 0H6">
+                                        </path>
+                                    </svg>
+                                    <p class="mt-2 text-base font-semibold text-base-content/80">No Upcoming Consultation
+                                    </p>
+                                </div>
+                            @else
+                            @foreach ($approvedConsultations as $consultation)
+                                @php
+                                    // get faculty name from the $consultation->faculty_id by searching the faculty model with the id
+                                    $student = App\Models\User::find($consultation->student_id);
+                                    $slot = App\Models\ConsultationSlots::find($consultation->slot_id);
+                                    // get the slots start time and end time and make it in 12 hour format
+                                    $start_time = date('h:i A', strtotime($slot->start_time));
+                                    $end_time = date('h:i A', strtotime($slot->end_time));
+                                    $message = Str::limit($consultation->message, 30);
+                                @endphp
+                                <div class="card card-side bg-base-100 border border-base-200 shadow-xl">
+                                    <div class="card-body card-compact">
+                                        <p class="text-xs text-base-content/50">{{ $consultation->consultation_date }} - {{ $slot->day_of_week }}</p>
+                                        <h2 class="card-title text-base">{{ $start_time }} to {{ $end_time }}</h2>
+                                        <p class="text-base-content/80">{{ $student->name }} <span class="font-medium">({{ $student->university_id }})</span></p>
+                                        <p class="text-base-content/80">{{ $student->email }}</p>
+                                        <p class="font-semibold text-base-content/80">Message: <span class="font-normal text-base-content/80">{{ $message }}</span></p>
+                                        <div class="card-actions justify-end">
+                                            <a href="{{ route('showConsultation', $consultation->id) }}">
+                                                <button class="btn btn-primary">Join</button>
+                                            </a>
                                         </div>
                                     </div>
-                                @endforeach
-                            </div>
+                                </div>
+                            @endforeach
+                            @endif
                         </div>
                     </div>
-                </div>
-            </div>
-            {{-- row 3 --}}
-            <div class="grid grid-cols-1 gap-5 sm:gap-6 lg:grid-cols-6">
-                {{-- column1 --}}
-                <div class="overflow-hidden bg-base-100 border border-base-content/80 rounded-xl lg:col-span-4">
-                </div>
-                {{-- column 2 --}}
-                <div class="overflow-hidden bg-base-100 border border-base-content/80 rounded-xl lg:col-span-2">
                 </div>
             </div>
         </div>

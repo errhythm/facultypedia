@@ -7,19 +7,19 @@
             <p
               class="text-base font-semibold tracking-wider text-info-content uppercase"
             >
-              A social media for learners
+              Welcome to FacultyPedia
             </p>
             <h1
               class="mt-4 text-4xl font-bold text-base-content lg:mt-8 sm:text-6xl xl:text-8xl"
             >
-              Connect & learn from the experts
+              Review & Consult your faculty
             </h1>
             <p class="mt-4 text-base text-base-content lg:mt-8 sm:text-xl">
-              Grow your career fast with right mentor.
+              Get help from your faculty and review them to help others.
             </p>
 
             <a
-              href="#"
+              href="{{ route('register') }}"
               title=""
               class="inline-flex items-center px-6 py-4 mt-8 font-semibold text-base-content transition-all duration-200 bg-yellow-300 rounded-full lg:mt-16 hover:bg-yellow-400 focus:bg-yellow-400"
               role="button"
@@ -44,7 +44,7 @@
             <p class="mt-5 text-neutral">
               Already joined us?
               <a
-                href="#"
+                href="{{ route('login') }}"
                 title=""
                 class="text-base-content transition-all duration-200 hover:underline"
               >
@@ -53,11 +53,6 @@
             </p>
           </div>
           <div>
-            <!-- <img
-              class="w-full"
-              src="https://cdn.rareblocks.xyz/collection/celebration/images/hero/1/hero-img.png"
-              alt=""
-            /> -->
             <!-- svg start -->
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 575.69 583.56">
               <path
@@ -113,72 +108,6 @@
                 transform="translate(-13 -132.53)"
                 style="fill: none; stroke: #000; stroke-width: 3px;"
               />
-              <text
-                transform="translate(246.97 97.43)"
-                style="
-                  font-size: 18px;
-                  fill: #fff;
-                  font-family: MyriadPro-Regular, Myriad Pro;
-                "
-              >
-                <tspan style="letter-spacing: -0.011990017361111112em;">
-                  Active
-                </tspan>
-                <tspan
-                  x="0"
-                  y="21.6"
-                  style="letter-spacing: -0.002983940972222222em;"
-                >
-                  Students
-                </tspan>
-              </text>
-              <text
-                transform="translate(339.34 209.1)"
-                style="
-                  font-size: 36px;
-                  fill: #fff;
-                  font-family: MyriadPro-Regular, Myriad Pro;
-                "
-              >
-                422
-              </text>
-              <text
-                transform="translate(249.82 460.95)"
-                style="
-                  font-size: 18px;
-                  fill: #fff;
-                  font-family: MyriadPro-Regular, Myriad Pro;
-                "
-              >
-                <tspan style="letter-spacing: -0.045003255208333336em;">
-                  Faculties
-                </tspan>
-                <tspan
-                  x="-3.37"
-                  y="21.6"
-                  style="letter-spacing: -0.02099609375em;"
-                >
-                  A
-                </tspan>
-                <tspan
-                  x="7.27"
-                  y="21.6"
-                  style="letter-spacing: -0.003987630208333333em;"
-                >
-                  v
-                </tspan>
-                <tspan x="15.86" y="21.6">ailable</tspan>
-              </text>
-              <text
-                transform="translate(232.87 554.1)"
-                style="
-                  font-size: 36px;
-                  fill: #fff;
-                  font-family: MyriadPro-Regular, Myriad Pro;
-                "
-              >
-                522
-              </text>
             </svg>
             <!-- svg end -->
           </div>
@@ -193,7 +122,7 @@
           <h2
             class="text-3xl font-bold tracking-tight text-neutral-focus sm:text-4xl"
           >
-            Stay on top of customer support
+            Schedule your Consultations
           </h2>
           <p class="mt-6 text-lg leading-8 text-neutral">
             Lorem ipsum dolor sit amet consect adipisicing elit. Possimus magnam
@@ -222,28 +151,17 @@
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
-                      d="M2.25 13.5h3.86a2.25 2.25 0 012.012 1.244l.256.512a2.25 2.25 0 002.013 1.244h3.218a2.25 2.25 0 002.013-1.244l.256-.512a2.25 2.25 0 012.013-1.244h3.859m-19.5.338V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18v-4.162c0-.224-.034-.447-.1-.661L19.24 5.338a2.25 2.25 0 00-2.15-1.588H6.911a2.25 2.25 0 00-2.15 1.588L2.35 13.177a2.25 2.25 0 00-.1.661z"
+                      d="M15.75 15.75l-2.489-2.489m0 0a3.375 3.375 0 10-4.773-4.773 3.375 3.375 0 004.774 4.774zM21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
                 </div>
-                Unlimited inboxes
+                Faculty Profile & Search System
               </dt>
               <dd
                 class="mt-1 flex flex-auto flex-col text-base leading-7 text-neutral"
               >
                 <p class="flex-auto">
-                  Non quo aperiam repellendus quas est est. Eos aut dolore aut
-                  ut sit nesciunt. Ex tempora quia. Sit nobis consequatur
-                  dolores incidunt.
-                </p>
-                <p class="mt-6">
-                  <a
-                    href="#"
-                    class="text-base font-semibold leading-7 text-info"
-                  >
-                    Learn more
-                    <span aria-hidden="true">→</span>
-                  </a>
+                  Find and view faculty profiles based on criteria such as course, department, initials, etc.
                 </p>
               </dd>
             </div>
@@ -270,24 +188,13 @@
                     />
                   </svg>
                 </div>
-                Manage team members
+                Faculty Review System
               </dt>
               <dd
                 class="mt-1 flex flex-auto flex-col text-base leading-7 text-neutral"
               >
                 <p class="flex-auto">
-                  Vero eum voluptatem aliquid nostrum voluptatem. Vitae esse
-                  natus. Earum nihil deserunt eos quasi cupiditate. A inventore
-                  et molestiae natus.
-                </p>
-                <p class="mt-6">
-                  <a
-                    href="#"
-                    class="text-base font-semibold leading-7 text-info"
-                  >
-                    Learn more
-                    <span aria-hidden="true">→</span>
-                  </a>
+                  Leave feedback on faculty and can also mark the review as anonymous (with admin approval).
                 </p>
               </dd>
             </div>
@@ -310,28 +217,17 @@
                     <path
                       stroke-linecap="round"
                       stroke-linejoin="round"
-                      d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                      d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5m-9-6h.008v.008H12v-.008zM12 15h.008v.008H12V15zm0 2.25h.008v.008H12v-.008zM9.75 15h.008v.008H9.75V15zm0 2.25h.008v.008H9.75v-.008zM7.5 15h.008v.008H7.5V15zm0 2.25h.008v.008H7.5v-.008zm6.75-4.5h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm2.25-4.5h.008v.008H16.5v-.008zm0 2.25h.008v.008H16.5V15z"
                     />
                   </svg>
                 </div>
-                Spam report
+                Consultation Management System
               </dt>
               <dd
                 class="mt-1 flex flex-auto flex-col text-base leading-7 text-neutral"
               >
                 <p class="flex-auto">
-                  Et quod quaerat dolorem quaerat architecto aliquam
-                  accusantium. Ex adipisci et doloremque autem quia quam. Quis
-                  eos molestiae at iure impedit.
-                </p>
-                <p class="mt-6">
-                  <a
-                    href="#"
-                    class="text-base font-semibold leading-7 text-info"
-                  >
-                    Learn more
-                    <span aria-hidden="true">→</span>
-                  </a>
+                  Request consultations with faculty and receive video conference links for approved consultations.
                 </p>
               </dd>
             </div>
@@ -348,32 +244,48 @@
             class="space-y-5 sm:mx-auto sm:max-w-xl sm:space-y-4 lg:max-w-5xl"
           >
             <h2 class="text-3xl font-bold tracking-tight sm:text-4xl">
-              The People
+              Our Faculties
             </h2>
             <p class="text-xl text-neutral">
-              Risus velit condimentum vitae tincidunt tincidunt. Mauris
-              ridiculus fusce amet urna nunc. Ut nisl ornare diam in.
+              Here are some top reviewed faculties of FacultyPedia.
             </p>
           </div>
+          @php
+        //   get 10 top reviewed faculties
+                        $faculties = App\Models\Faculties::all();
+                        $reviews = App\Models\Reviews::all();
+
+                        $topFaculty = DB::table('reviews')
+                            ->join('users', 'reviews.faculty_id', '=', 'users.id')
+                            ->select('reviews.faculty_id', 'users.name', 'users.created_at', 'users.university_id', DB::raw('count(*) as total'))
+                            ->groupBy('reviews.faculty_id', 'users.name')
+                            ->orderByDesc('total')
+                            ->take(6)
+                            ->get();
+          @endphp
           <ul
             role="list"
             class="mx-auto grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-4 md:gap-x-6 lg:max-w-5xl lg:gap-x-8 lg:gap-y-12 xl:grid-cols-6"
           >
+          @foreach ($topFaculty as $faculty)
             <li>
               <div class="space-y-4">
+                <a href="{{ route('profile', $faculty->faculty_id) }}">
                 <img
                   class="mx-auto h-20 w-20 rounded-full lg:h-24 lg:w-24"
-                  src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80"
-                  alt=""
+                  src="https://api.dicebear.com/5.x/bottts-neutral/svg?seed={{ md5($faculty->faculty_id . $faculty->created_at) }}&scale=110"
+                alt="{{ $faculty->name }}"
                 />
                 <div class="space-y-2">
                   <div class="text-xs font-medium lg:text-sm">
-                    <h3>Michael Foster</h3>
-                    <p class="text-info">Co-Founder / CTO</p>
+                    <h3>{{ $faculty->name }}</h3>
+                    <p class="text-info">{{ $faculty->university_id }}</p>
                   </div>
                 </div>
+                </a>
               </div>
             </li>
+          @endforeach
 
             <!-- More people... -->
           </ul>

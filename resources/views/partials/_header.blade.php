@@ -295,12 +295,12 @@ $course = request('course');
                             </a>
                         </li>
                         <li>
-                            <a href="/profile" class="justify-between">
+                            <a href="{{ route('profileRedirect') }}" class="justify-between">
                                 Profile
                             </a>
                         </li>
-                        <li><a>Settings</a></li>
-                        <li><a href="/logout">Logout</a></li>
+                        <li><a href="{{ route('settings') }}">Settings</a></li>
+                        <li><a href="{{ route('logout') }}">Logout</a></li>
                     </ul>
                 </div>
             @else

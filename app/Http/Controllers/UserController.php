@@ -10,6 +10,7 @@ use Illuminate\Validation\Rule;
 use App\Models\ConsultationSlots;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
@@ -320,13 +321,100 @@ class UserController extends Controller
     // show all reviews
     public function showAllReviews()
     {
-        $reviews = Reviews::where('isDeleted', 0)
-            ->where('user_id', auth()->user()->id)
-            ->where('isApproved', 1)
-            ->orderBy('created_at', 'desc')->paginate(10);
+
+        $user = auth()->user();
+        $role = $user->role;
+
+        // if the role is student
+        if ($role == 'student') {
+            $reviews = Reviews::where('isDeleted', 0)
+                ->where('user_id', auth()->user()->id)
+                ->orderBy('created_at', 'desc')->paginate(10);
+        } elseif ($role == 'faculty') {
+            $reviews = Reviews::where('isDeleted', 0)
+                ->where('faculty_id', auth()->user()->id)
+                ->where('isApproved', 1)
+                ->orderBy('created_at', 'desc')->paginate(10);
+        }
+
+
         return view('dashboard.student.showAllReviews', [
             'heading' => 'All Reviews',
             'reviews' => $reviews,
+            'role' => $role,
         ]);
+    }
+
+    // change settings
+    public function settings()
+    {
+        $user = Auth::user();
+        return view('dashboard.changeSettings', [
+            'heading' => 'Change Settings',
+            'user' => $user,
+        ]);
+    }
+
+    /**
+     * Store the user's settings.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function settingsStore(Request $request)
+    {
+        try {
+            $user = Auth::user();
+            $data = $request->validate([
+                'name' => 'required',
+                'university_id' => 'required',
+            ]);
+
+            $user->name = $data['name'];
+            $user->university_id = $data['university_id'];
+            /** @var \App\Models\User $user **/
+            $user->save();
+
+            return back()->with('message', 'Settings updated successfully');
+        } catch (\Exception $e) {
+            return back()->with('message', 'Something went wrong: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Changes the user's password.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function changePassword(Request $request)
+    {
+        try {
+            $data = $request->validate([
+                'current_password' => 'required',
+                'password' => 'required|min:8|max:255|confirmed',
+            ]);
+
+            $user = Auth::user();
+
+            if (!$user) {
+                return back()->with('message', 'User not found');
+            }
+
+            $current_password = $data['current_password'];
+            $new_password = bcrypt($data['password']);
+
+            if (!Hash::check($current_password, $user->password)) {
+                return back()->with('message', 'Current password does not match');
+            }
+
+            $user->password = $new_password;
+            /** @var \App\Models\User $user **/
+            $user->save();
+
+            return back()->with('message', 'Password changed successfully');
+        } catch (\Exception $e) {
+            return back()->with('message', 'Something went wrong: ' . $e->getMessage());
+        }
     }
 }

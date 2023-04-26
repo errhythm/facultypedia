@@ -30,9 +30,6 @@ Route::get('/', function () {
     ]);
 });
 
-// api to get the available consultation slots of a faculty of that date, the date is in the format of YYYY-MM-DD
-Route::get('/fpapi/getslot/{faculty_id?}&{date?}', [ConsultationController::class, 'fp_slot_available_api']);
-
 //  faculty index
 Route::get('/faculties/{page?}', [FacultyController::class, 'index'])->name('faculties');
 
@@ -112,6 +109,15 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
     // show admin dashboard
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
 
+    // change settings
+    Route::get('/settings', [UserController::class, 'settings'])->name('settings');
+
+    // change settings
+    Route::post('/settings', [UserController::class, 'settingsStore'])->name('settingsStore');
+
+    // change password
+    Route::post('/settings/password', [UserController::class, 'changePassword'])->name('changePassword');
+
     // create a route subgroup where the user role must be admin
     Route::group(['middleware' => 'admin'], function () {
         // show all reviews
@@ -186,6 +192,15 @@ Route::group(['prefix' => 'dashboard', 'middleware' => 'auth'], function () {
     Route::group(['prefix' => 'faculty', 'middleware' => 'faculty'], function () {
         // show all reviews
         Route::get('/reviews', [UserController::class, 'showAllReviews'])->name('facultyReviews');
+
+        // add courses POST
+        Route::post('/courses/add', [FacultyController::class, 'addCourseStore'])->name('addCourseStore_faculty');
+
+        // remove courses POST
+        Route::post('/courses/remove/{id}', [FacultyController::class, 'removeCourseStore'])->name('removeCourseStore_faculty');
+
+        // view courses
+        Route::get('/courses', [FacultyController::class, 'viewCourses'])->name('viewCourses_faculty');
 
         // create consultation slot page
         Route::get('/consultation/slot', [ConsultationController::class, 'create'])->name('createConsultation');

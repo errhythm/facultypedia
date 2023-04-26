@@ -33,25 +33,9 @@
     <div class="py-6">
         <div class="px-4 ml-auto mt-8 sm:px-6 md:px-8">
             {{-- Table --}}
-
             <section class="px-4 py-5 sm:p-6">
                 <div class="flex sm:items-center justify-between items-center">
                     <h2 class="text-xl font-bold text-base-content/80">{{ $heading }}</h2>
-                    <div
-                        class="relative flex items-center lg:w-1/6 w-64 h-12 rounded-lg focus-within:shadow-lg bg-base-200 focus-within:border-primary border overflow-hidden">
-                        <div class="grid place-items-center h-full w-12 text-base-content/30">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
-                        </div>
-                        <form action="{{ route('reviews') }}" method="get">
-                            <input class="peer h-full w-full outline-none text-sm text-base-content/70 bg-base-200 pr-2"
-                                type="text" id="rsearch" name="rsearch" value="{{ request('rsearch') }}"
-                                placeholder="Search something.." />
-                        </form>
-                    </div>
                 </div>
 
                 <div class="flex flex-col mt-6">
@@ -140,6 +124,7 @@
                                                         {{ $review->review }}</td>
                                                     <td class="px-4 py-2 text-sm">
                                                         <div class="flex items-center gap-x-6">
+                                                            @if ($role != 'faculty')
                                                             <label for="delete-review-{{ $review->id }}"
                                                                 data-review-id="{{ $review->id }}"
                                                                 id="delete-review"
@@ -152,6 +137,7 @@
                                                                     </path>
                                                                 </svg>
                                                             </label>
+                                                            @endif
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -222,6 +208,7 @@
         </div>
     </div>
 
+    @if ($role != 'faculty')
     {{-- modal to reject review --}}
     <script>
         const deleteReview = document.querySelectorAll('#delete-review');
@@ -258,4 +245,5 @@
             return modal;
         }
     </script>
+    @endif
 </x-dashboard>

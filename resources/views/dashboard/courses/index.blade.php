@@ -1,6 +1,7 @@
 @php
+    $user = auth()->user();
+    $role = $user->role;
     $page = request()->query('page') ?? 1;
-
     $page_count = $courses->lastPage();
     $per_page = $courses->perPage();
     $total = $courses->total();
@@ -40,9 +41,11 @@
                         <h2 class="text-xl font-bold text-base-content/80">{{ $heading }} - <span>
                                 <label for="addCourses" class="text-primary hover:text-primary-focus cursor-pointer">Add
                                     New Course</label>
-                            </span></h2>
+                            </span>
+                        </h2>
 
                     </div>
+                    @if ($role != 'faculty')
                     <div
                         class="relative flex items-center lg:w-1/6 w-64 h-12 rounded-lg focus-within:shadow-lg bg-base-200 focus-within:border-primary border overflow-hidden">
                         <div class="grid place-items-center h-full w-12 text-base-content/30">
@@ -58,6 +61,7 @@
                                 placeholder="Search something.." />
                         </form>
                     </div>
+                    @endif
                 </div>
                 {{-- content --}}
 
@@ -147,6 +151,7 @@
                                                     </td>
                                                     <td class="px-4 py-2 text-sm">
                                                         <div class="flex items-center gap-x-6">
+                                                        @if ($role != 'faculty')
                                                             <label for="edit-course-{{ $course->id }}"
                                                                 data-course-id="{{ $course->id }}" id="edit-course"
                                                                 class="pb-1.5 text-base-content/50 transition-colors duration-200 cursor-pointer hover:text-warning focus:outline-none">
@@ -158,6 +163,20 @@
                                                                     </path>
                                                                 </svg>
                                                             </label>
+                                                            @endif
+                                                            @if ($role == 'faculty')
+                                                            <label for="remove-course-{{ $course->id }}"
+                                                                data-course-id="{{ $course->id }}" id="remove-course"
+                                                                class="pb-1.5 text-base-content/50 transition-colors duration-200 cursor-pointer hover:text-error focus:outline-none">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                                    viewBox="0 0 24 24" stroke="currentColor"
+                                                                    class="w-5 h-5" id="times-circle">
+                                                                    <path fill="currentColor"
+                                                                        d="M15.71,8.29a1,1,0,0,0-1.42,0L12,10.59,9.71,8.29A1,1,0,0,0,8.29,9.71L10.59,12l-2.3,2.29a1,1,0,0,0,0,1.42,1,1,0,0,0,1.42,0L12,13.41l2.29,2.3a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42L13.41,12l2.3-2.29A1,1,0,0,0,15.71,8.29Zm3.36-3.36A10,10,0,1,0,4.93,19.07,10,10,0,1,0,19.07,4.93ZM17.66,17.66A8,8,0,1,1,20,12,7.95,7.95,0,0,1,17.66,17.66Z">
+                                                                    </path>
+                                                                </svg>
+                                                            </label>
+                                                            @endif
                                                         </div>
                                                     </td>
                                                 </tr>
@@ -229,6 +248,8 @@
     </div>
 
 
+
+    @if ($role != 'faculty')
     <input type="checkbox" id="addCourses" class="modal-toggle" />
     <label for="addCourses" class="modal cursor-pointer">
         <label class="modal-box px-4 sm:px-6 lg:px-8 max-w-4xl" for="">
@@ -376,6 +397,95 @@
             return modal;
         }
     </script>
+    @endif
+
+    @if ($role == 'faculty')
+
+    <input type="checkbox" id="addCourses" class="modal-toggle" />
+    <label for="addCourses" class="modal cursor-pointer">
+        <label class="modal-box px-4 sm:px-6 lg:px-8 max-w-4xl" for="">
+            <div class="lg:px-8 sm:px-6 px-4 max-w-7xl ">
+                <div class="bg-base-100 rounded-xl overflow-hidden max-w-6xl">
+                    <div class="px-3 pt-4 sm:pt-2">
+                        <h3 class="text-2xl font-semibold text-center text-base-content">
+                            Add Courses
+                        </h3>
+                        <form action="{{ route('addCourseStore_faculty') }}" method="POST" class="mt-10">
+                            @csrf
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+                                <div class="sm:col-span-2">
+                                    <label for="" class="text-base font-medium text-base-content">
+                                        Course Title
+                                    </label>
+                                    <div class="mt-2.5 relative">
+                                        {{-- select all the courses of the courses model except the taken ones --}}
+                                        <select name="course_id" id="course_id" required
+                                            class="block w-full px-4 py-4 text-base-content placeholder-base-content/40 transition-all duration-200 bg-base-100 border border-base-300 rounded-md focus:outline-none focus:border-primary caret-primary">
+                                            <option value="" disabled selected>Select Course</option>
+                                            @foreach ($coursesNotTeaching as $course)
+                                            <option value="{{ $course->id }}">{{ $course->course_code }} - {{ $course->course_title }} - ({{ $course->course_credit }} credits)</option>
+                                            @endforeach
+                                        </select>
+
+                                    </div>
+                                </div>
+
+                                <div class="sm:col-span-2">
+                                    <button type="submit"
+                                        class="inline-flex items-center justify-center w-full px-4 py-4 mt-2 text-base font-semibold text-base-100 transition-all duration-200 bg-primary border border-transparent rounded-md focus:outline-none hover:bg-primary focus:bg-primary">
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {{-- </section> --}}
+        </label>
+    </label>
+
+
+    <script>
+        const removeCourse = document.querySelectorAll('#remove-course');
+        removeCourse.forEach((course) => {
+            course.addEventListener('click', () => {
+                const courseId = course.getAttribute('data-course-id');
+                const modal = createModal(courseId);
+                document.body.appendChild(modal);
+            });
+        });
+
+        function createModal(courseId) {
+            const modal = document.createElement('div');
+            const courseCode = document.querySelector(`#course-code-${courseId}`).innerText;
+            const courseTitle = document.querySelector(`#course-title-${courseId}`).innerText;
+            const courseCredit = document.querySelector(`#course-credit-${courseId}`).innerText;
+            modal.innerHTML = `
+            <input type="checkbox" id="remove-course-${courseId}" class="modal-toggle" />
+            <label for="remove-course-${courseId}" class="modal cursor-pointer">
+        <label class="modal-box relative" for="">
+            <h3 class="text-lg font-bold">Are you sure?</h3>
+            <p class="py-4">Are you sure you want to remove this course?</p>
+            <div class="modal-action">
+                <label for="remove-course-${courseId}" class="btn btn-ghost">Cancel</label>
+                <form action="/dashboard/faculty/courses/remove/${courseId}" method="POST">
+                    @csrf
+                    <button class="btn btn-error">Remove</button>
+                </form>
+            </div>
+        </label>
+    </label>`;
+            modal.addEventListener('click', (e) => {
+                if (e.target.hasAttribute('data-close-modal')) {
+                    modal.remove();
+                }
+            });
+            return modal;
+        }
+    </script>
+
+    @endif
 
 
 </x-dashboard>
