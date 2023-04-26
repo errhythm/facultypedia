@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Faculties;
 use App\Models\Consultation;
 use Illuminate\Http\Request;
@@ -9,6 +10,7 @@ use App\Models\Consultations;
 use App\Models\ConsultationSlots;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class ConsultationController extends Controller
 {
@@ -415,6 +417,33 @@ class ConsultationController extends Controller
         $consultation->is_approved = 'Approved';
 
         $consultation->save();
+
+
+        try {
+            // send mail to both student and faculty
+            $student = User::find($consultation->student_id);
+            $faculty = User::find($consultation->faculty_id);
+
+            $studentdetails = [
+                'title' => 'Consultation Approved',
+                'body' => 'Your consultation with ' . $faculty->name . ' has been approved. Please check your dashboard for more details.',
+            ];
+
+            $facultydetails = [
+                'title' => 'Consultation Approved',
+                'body' => 'You have approved the consultation with ' . $student->name . '. Please check your dashboard for more details.',
+            ];
+
+            Mail::send('emails.myTestMail', array('user' => $student, 'details' => $studentdetails), function ($message) use ($student) {
+                $message->to($student->email, $student->name)->subject('Consultation Approved');
+            });
+
+            Mail::send('emails.myTestMail', array('user' => $faculty, 'details' => $facultydetails), function ($message) use ($faculty) {
+                $message->to($faculty->email, $faculty->name)->subject('Consultation Approved');
+            });
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
 
         return redirect()->back()->with('message', 'Consultation approved successfully!');
     }

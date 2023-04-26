@@ -48,7 +48,7 @@
 - [x] Ability for students to request consultation with faculty
 - [x] Faculty can accept or reject consultation requests
 - [x] Auto-generated meet link for approved consultations
-- [ ] Email notifications sent to both students and faculty for consultation updates
+- [x] Email notifications sent to both students and faculty for consultation updates
 
 #### Requirement 5
 
