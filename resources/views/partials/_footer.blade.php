@@ -45,9 +45,9 @@
                     </svg>
                 </a>
             </div>
-            <p class="mt-10 text-center text-s leading-5 text-base-200">
+            <p class="mt-10 text-center text-s leading-5 text-base-content">
                 &copy; 2023
-                <span class="hover:bg-base-content">FacultyPedia,</span>
+                <span class="hover:bg-info hover:text-base-100">FacultyPedia</span>,
                 Inc. All rights reserved.
             </p>
         </div>
