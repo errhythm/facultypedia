@@ -70,6 +70,7 @@ class UserController extends Controller
         $details = [
             'title' => 'Verify your email',
             'body' => 'Your email is ' . $user->email . '. Your OTP is ' . $otp . '.',
+            'preheader' => $otp,
         ];
 
         Mail::send('emails.myTestMail', array('user' => $user, 'details' => $details), function ($message) use ($user) {
@@ -159,6 +160,7 @@ class UserController extends Controller
         $details = [
             'title' => 'Verify your email',
             'body' => 'Your email is ' . $user->email . '. Your OTP is ' . $otp . '.',
+            'preheader' => $otp,
         ];
 
         Mail::send('emails.myTestMail', array('user' => $user, 'details' => $details), function ($message) use ($user) {

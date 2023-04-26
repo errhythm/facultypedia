@@ -125,8 +125,7 @@
             Schedule your Consultations
           </h2>
           <p class="mt-6 text-lg leading-8 text-neutral">
-            Lorem ipsum dolor sit amet consect adipisicing elit. Possimus magnam
-            voluptatum cupiditate veritatis in accusamus quisquam.
+            Schedule your consultation with your desired Faculty very easily!
           </p>
         </div>
         <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">

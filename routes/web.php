@@ -28,7 +28,7 @@ Route::get('/', function () {
         'heading' => 'Find your Faculty!',
         'subheading' => 'Search for your faculty, book a consultation, review them.',
     ]);
-});
+})->name('home');
 
 //  faculty index
 Route::get('/faculties/{page?}', [FacultyController::class, 'index'])->name('faculties');
