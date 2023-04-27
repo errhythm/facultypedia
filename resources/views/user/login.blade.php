@@ -71,7 +71,7 @@
 
                             <div>
                                 <button type="submit" value="login"
-                                    class="inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-primary-content transition-all duration-200 border border-transparent rounded-md bg-gradient-to-r from-success-content to-info-content/80 focus:outline-none hover:opacity-80 focus:opacity-80">
+                                    class="inline-flex items-center justify-center w-full px-4 py-4 text-base font-semibold text-primary-content transition-all duration-200 border border-transparent rounded-md bg-gradient-to-r from-primary-focus to-primary/80 focus:outline-none hover:opacity-80 focus:opacity-80">
                                     Log in
                                 </button>
                             </div>
