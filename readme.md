@@ -16,6 +16,19 @@
 
 **Project Title**: FacultyPedia - Faculty Review and Consultancy Management System
 
+**Project URL**: https://myfacultypedia.errhythm.me
+
+**Project Status**: Completed all features and requirements by the blessings of Allah SWT
+
+### Demo Accounts
+
+| **Account** | **Email**                           | **Password** |
+|-------------|-------------------------------------|--------------|
+| **Student** | ehsanur.rahman.rhythm@g.bracu.ac.bd | 12345678     |
+| **Faculty** | juston.conn@bracu.ac.bd             | 12345678     |
+| **Admin**   | facultypedia@errhythm.me            | 12345678     |
+
+
 ## Features
 
 #### Requirement 1
